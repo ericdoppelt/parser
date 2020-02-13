@@ -1,0 +1,47 @@
+### SLogo High Level Design
+
+1. When does parsing need to take place and what does it need to start properly?
+
+Parsing takes place when a command is inputed. It needs a command to start properly (a String to parse) which either executes or throws an exception.
+
+Complex commands (such as square) need a database that already has the instruction implemented. The other way is to create a new datebase can be made to represent a complex command.
+
+2. What is the result of parsing and who receives it?
+
+The result of parsing is a series of instructions for the Turtle to undergo. The instructions are then sent to the Controller which understands the command and then operates on the Model.
+
+3. When are errors detected and how are they reported?
+
+Errors are detected in the Interpretor and are reported via a Popup.
+
+4. What do commands know, when do they know it, and how do they get it?
+As of now, it seems as if there are two types of commands. Simple commands contain a direction and magnitude, which includes moving in one direction for a length, or turning for a length.
+
+Complex commands, on the other hand, contain a type. The type needs to be known by the Interpretor, meaning an instruction has already been entered.
+
+5. How is the GUI updated after a command has completed execution?
+The turtle is moved to the new location, with or without a trace.
+
+General Design:
+
+*Model*:
+2D Polar Grid Class
+Turtle Class
+
+*View*:
+Grid Display (likely GridView or a General Pane)
+Turtle Display (image)
+Database Display (That lists commands)
+Interprator Display (That takes in commands)
+
+*Controller*
+Interprator (goes from Input to Model)
+Drawer (goes from Model to View)
+Error Checker
+
+Workflow for a Instruction.
+In Dialogue Box, user inputs Command.
+Command goes to Error Checker to either create Pop Up or pass through
+If passed, command goes to Interpretaor which maps the String to the series of changes.
+Interpretaor makes the changes to the Turtle/Grid Model.
+Drawer is called, which then adds lines (or not, if desired) to the View. Turtle location is updated.
