@@ -1,3 +1,6 @@
+Authors: Benjamin Lu (bll32), Eric Doppelt (ead45), Erik Gregorio (eg158), Frank Tang (ft39)
+
+
 ### SLogo High Level Design
 
 1. When does parsing need to take place and what does it need to start properly?

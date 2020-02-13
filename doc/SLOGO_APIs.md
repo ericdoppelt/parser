@@ -1,3 +1,5 @@
+Authors: Benjamin Lu (bll32), Eric Doppelt (ead45), Erik Gregorio (eg158), Frank Tang (ft39)
+
 
 ## External:
 ### How you plan to separate the graphical interface from the interpreter and how do you plan to let them communicate when necessary?

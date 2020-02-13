@@ -1,3 +1,5 @@
+Authors: Benjamin Lu (bll32), Eric Doppelt (ead45), Erik Gregorio (eg158), Frank Tang (ft39)
+
 ## API Discovery
 ### Working on Simulation Team 5
 
