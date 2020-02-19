@@ -8,7 +8,7 @@ import java.util.*;
  * Handles the display of an error that is called after External is given an error to be handled by Contoller
  * Capable of clearing the screen too, resetting the game upon command
  */
-public interface FrontEnd Internal {
+public interface UserInterface {
 
     /**
      * Method used to visualize the Turtle upon its initialization (prior to receiving commands).
