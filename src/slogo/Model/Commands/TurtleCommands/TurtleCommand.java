@@ -1,14 +1,13 @@
-package slogo.Commands.TurtleCommands;
+package slogo.Model.Commands.TurtleCommands;
 
-import slogo.Commands.Command;
-import slogo.TurtleData;
+import slogo.Model.CommandInterface;
 
 /**
  * Abstract parent class for making the shapes representing the grid of the simulation
  *
  * @author Frank Tang
  */
-public abstract class TurtleCommand implements Command {
+public abstract class TurtleCommand implements CommandInterface {
 
 //  private double turtleOldPointX;
 //  private double turtleOldPointY;

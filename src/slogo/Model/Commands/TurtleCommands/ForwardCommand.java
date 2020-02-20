@@ -1,6 +1,6 @@
-package slogo.Commands.TurtleCommands;
+package slogo.Model.Commands.TurtleCommands;
 
-import slogo.TurtleData;
+import slogo.Model.TurtleData;
 
 /**
  * Subclass to create a Forward Command
