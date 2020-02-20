@@ -10,10 +10,32 @@ import slogo.TurtleData;
  */
 public abstract class TurtleCommand implements Command {
 
+  private double turtleOldPointX;
+  private double turtleOldPointY;
+//  private double turtleNewPointX;
+//  private double turtleNewPointY;
+//
+
   /**
-   * Parent class to make ShapeGrid object
+   * Superconstructor for a Turtle Command
    */
   public TurtleCommand(TurtleData turtle, double distance) {
+    turtleOldPointX = turtle.getTurtleX();
+    turtleOldPointY = turtle.getTurtleY();
+  }
+
+  /**
+   * Method to get the old turtle x point.
+   */
+  public double getOldX() {
+    return turtleOldPointX;
+  }
+
+  /**
+   * Method to get the old turtle x point.
+   */
+  public double getOldY() {
+    return turtleOldPointY;
   }
 
 }
