@@ -10,8 +10,8 @@ import slogo.TurtleData;
  */
 public abstract class TurtleCommand implements Command {
 
-  private double turtleOldPointX;
-  private double turtleOldPointY;
+//  private double turtleOldPointX;
+//  private double turtleOldPointY;
 //  private double turtleNewPointX;
 //  private double turtleNewPointY;
 //
@@ -19,23 +19,23 @@ public abstract class TurtleCommand implements Command {
   /**
    * Superconstructor for a Turtle Command
    */
-  public TurtleCommand(TurtleData turtle, double distance) {
-    turtleOldPointX = turtle.getTurtleX();
-    turtleOldPointY = turtle.getTurtleY();
+  public TurtleCommand() {
+//    turtleOldPointX = turtle.getTurtleX();
+//    turtleOldPointY = turtle.getTurtleY();
   }
-
-  /**
-   * Method to get the old turtle x point.
-   */
-  public double getOldX() {
-    return turtleOldPointX;
-  }
-
-  /**
-   * Method to get the old turtle x point.
-   */
-  public double getOldY() {
-    return turtleOldPointY;
-  }
+//
+//  /**
+//   * Method to get the old turtle x point.
+//   */
+//  public double getOldX() {
+//    return turtleOldPointX;
+//  }
+//
+//  /**
+//   * Method to get the old turtle x point.
+//   */
+//  public double getOldY() {
+//    return turtleOldPointY;
+//  }
 
 }

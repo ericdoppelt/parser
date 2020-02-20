@@ -1,18 +1,19 @@
 package slogo;
 
-import slogo.Commands.TurtleCommands.ForwardCommand;
 
-/**
- * Feel free to completely change this code or delete it entirely. 
- */
+import javafx.scene.layout.Background;
+import slogo.Commands.*;
+import slogo.Commands.TurtleCommands.BackCommand;
+import slogo.Commands.TurtleCommands.LeftCommand;
+import slogo.Commands.TurtleCommands.RightCommand;
+
 public class Main {
     /**
      * Start of the program.
      */
     public static void main (String[] args) {
-      TurtleData hello = new TurtleData(50, 50, 50);
-      ForwardCommand hs = new ForwardCommand(hello, 50);
-      hs.execute();
-
+      TurtleData turtle1 = new TurtleData(50, 50, 0);
+      RightCommand command1 = new RightCommand(turtle1, 50);
+      command1.execute();
     }
 }

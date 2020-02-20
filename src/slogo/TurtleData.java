@@ -49,4 +49,9 @@ public class TurtleData {
     this.yCoord += distance;
   }
 
+  public void rotateTurtleHeading(double angleAmount){
+//    System.out.println(this.yCoord);
+    this.headingDirection += angleAmount;
+  }
+
 }
