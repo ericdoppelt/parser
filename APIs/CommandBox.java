@@ -5,7 +5,7 @@ import java.util.*;
  * This interface was developed to give a general idea of how the front end will look like to an outside class.
  * In general, the front end will simply take a in a string and deliver it to the controller to be processed.
  */
-public interface UserInterface {
+public interface CommandBox {
 
     /**
      * This method allows a given class to retrieve the command that has just been given the the view

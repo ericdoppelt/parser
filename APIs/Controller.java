@@ -4,7 +4,7 @@ import java.util.*;
 /**
  * Backend External is reponsible for methods that connect the model and controller to the view
  */
-public interface BackEnd External {
+public interface Controller {
 
     /**
      * getInfoPackage will reside within the model package
