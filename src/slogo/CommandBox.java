@@ -118,17 +118,6 @@ public class CommandBox {
         myCommandLine.getChildren().addAll(myCommandField,runButton, clearButton, expandButton);
     }
 
-    /*private boolean commandLineIsExtended(){
-        System.out.println( myCommandField == extendedCommandField);
-        return myCommandField == extendedCommandField;
-    }*/
-
-    private void switchToExtendedLine(){
-        myCommandLine.getChildren().remove(shortCommandField);
-        myCommandLine.getChildren().add(0, extendedCommandField);
-        myCommandField = extendedCommandField;
-        expandButton.setText(MINIMIZE);
-    }
     private void switchCommandLine(TextInputControl currentField, TextInputControl newField, String newLabel){
         myCommandLine.getChildren().remove(currentField);
         myCommandLine.getChildren().add(0, newField);
