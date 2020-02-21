@@ -1,5 +1,6 @@
 package slogo.Model.Commands.TurtleCommands;
 
+import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
 /**
@@ -7,7 +8,7 @@ import slogo.Model.TurtleData;
  *
  * @author Frank Tang
  */
-public class RightCommand extends TurtleCommand {
+public class RightCommand extends Command {
 
   private TurtleData turtleObject;
   private double turtleHeading;
@@ -24,9 +25,7 @@ public class RightCommand extends TurtleCommand {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   public void execute() {
-    System.out.println(turtleObject.getTurtleHeading());
     turtleObject.rotateTurtleHeading(angleChangeCC);
-    System.out.println(turtleObject.getTurtleHeading());
   }
 
 }

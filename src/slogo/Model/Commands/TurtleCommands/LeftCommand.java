@@ -1,5 +1,6 @@
 package slogo.Model.Commands.TurtleCommands;
 
+import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
 /**
@@ -7,7 +8,7 @@ import slogo.Model.TurtleData;
  *
  * @author Frank Tang
  */
-public class LeftCommand extends TurtleCommand {
+public class LeftCommand extends Command {
 
   private TurtleData turtleObject;
   private double turtleHeading;

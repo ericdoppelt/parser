@@ -8,14 +8,17 @@ public class TurtleData {
   private double xCoord;
   private double yCoord;
   private double headingDirection;
+  private String turtleID;
+
   private List<Collection> historyList;
 
 
 
-  public TurtleData(double initX, double initY, double initHeading){
+  public TurtleData(String ID, double initX, double initY, double initHeading){
     xCoord = initX;
     yCoord = initY;
     headingDirection = initHeading;
+    turtleID = ID;
   }
 
   public double getTurtleX(){
@@ -28,6 +31,10 @@ public class TurtleData {
 
   public double getTurtleHeading(){
     return this.headingDirection;
+  }
+
+  public String getTurtleID(){
+    return this.turtleID;
   }
 
   public List<Collection> getHistory(){

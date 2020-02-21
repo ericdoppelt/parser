@@ -1,5 +1,6 @@
 package slogo.Model.Commands.TurtleCommands;
 
+import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
 /**
@@ -7,7 +8,7 @@ import slogo.Model.TurtleData;
  *
  * @author Frank Tang
  */
-public class ForwardCommand extends TurtleCommand {
+public class ForwardCommand extends Command {
 
   private TurtleData turtleObject;
   private double distanceToTravel;
@@ -20,12 +21,10 @@ public class ForwardCommand extends TurtleCommand {
     turtleObject = turtle;
     distanceToTravel = distance;
     turtleHeading = turtleObject.getTurtleHeading();
-
     distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
     distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
-
-
   }
+
 
   /**
    * Moves the turtle forward by a pixel amount.

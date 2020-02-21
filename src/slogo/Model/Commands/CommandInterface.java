@@ -1,4 +1,4 @@
-package slogo.Model;
+package slogo.Model.Commands;
 
 public interface CommandInterface {
 

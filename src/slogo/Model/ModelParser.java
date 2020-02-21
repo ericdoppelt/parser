@@ -1,12 +1,19 @@
 package slogo.Model;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Stack;
 import java.util.regex.Pattern;
+import slogo.Model.Commands.CommandProducer;
 
 public class ModelParser {
 
@@ -18,13 +25,14 @@ public class ModelParser {
    */
 
   private String commandFromController;
-//  private static final String RESOURCES_PACKAGE;
-//  private static final String PROPERTIES;
+  private static final String RESOURCES_PACKAGE = "resources\\languages\\";
+  private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
 
-
-  public ModelParser(){
+  public ModelParser(String language){
     mySymbols = new ArrayList<>();
+    addPatterns(language);
+    addPatterns(REGEX_SYNTAX);
 //    commandFromController = inputString;
   }
 
@@ -33,7 +41,7 @@ public class ModelParser {
    * Adds the given resource file to this language's recognized types
    */
   public void addPatterns (String syntax) {
-    ResourceBundle resources = ResourceBundle.getBundle(syntax);
+    ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + syntax);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
       mySymbols.add(new SimpleEntry<>(key,
@@ -56,9 +64,40 @@ public class ModelParser {
     return ERROR;
   }
 
+  // utility function that reads given file and returns its entire contents as a single string
+  public String readFileToString (String inputSource) {
+    try {
+      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
+      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
+    }
+    catch (URISyntaxException | IOException e) {
+      // NOT ideal way to handle exception, but this is just a simple test program
+      System.out.println("ERROR: Unable to read input file " + e.getMessage());
+      return "";
+    }
+  }
+
   // Returns true if the given text matches the given regular expression pattern
   private boolean match (String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
     return regex.matcher(text).matches();
   }
+
+  // given some text, prints results of parsing it using the given language
+  public void parseText (List<String> lines) {
+    Stack<String> commandStack = new Stack<>();
+    Stack<Integer> argumentStack = new Stack<>();
+    for (String line : lines) {
+      if (line.trim().length() > 0) {
+        if (this.getSymbol(line).equals("Constant")){
+          argumentStack.push(Integer.parseInt(line));
+        }
+        else{
+          commandStack.push(this.getSymbol(line));
+        }
+      }
+    }
+    new CommandProducer(commandStack, argumentStack);
+  }
+
 }
