@@ -155,4 +155,3 @@ Our team will work on each of our parts separately and integrate them together w
 1) The parser detects an error while parsing the command string. 
 2) The parser then uses throwError(Error E) in order to notify the view that there has been an error. It also passes an Error along with a message detailing what has gone wrong.
 3) View uses throwError to display an error message to the user notifying them that there has been an error with the command they tried to excute and displays the error message for further details.
-
