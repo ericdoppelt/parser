@@ -15,7 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * CommandBox class was created to develop the object in which users feed commands. There is
+ * CommandBox class holds a node with all appropriate buttons and fields for a command line
+ * @author erikgregorio
  */
 public class CommandBox {
     public static final String COMMAND_PROMPT = "Enter a Command";
@@ -39,6 +40,10 @@ public class CommandBox {
     private String myCurrentCommand;
     private boolean commandLineIsExtended;
 
+    /**
+     * Initializes command line text field as well as the buttons to run, clear and expand
+     * text field.
+     */
     public CommandBox(){
         shortCommandField = getCommandField();
         myCommandField = shortCommandField;
@@ -47,20 +52,28 @@ public class CommandBox {
         expandButton = getButton(EXPAND, event -> resizeCommandField());
         setUpCommandLine();
     }
-
+    /**
+     * Returns command line node to be displayed
+     */
     public Node getCommandLine() {
         return myCommandLine;
     }
-
+    /**
+     * Returns all user fed command instructions
+     */
     public List<String> getAllCommands(){
         if(myCommands == null) return Collections.unmodifiableList(new ArrayList<>());
         return Collections.unmodifiableList(myCommands);
     }
-
+    /**
+     * Returns the most recent user written command
+     */
     public String getCommand(){
         return myCurrentCommand;
     }
-
+    /**
+     * Allows the other programs to display errors with the most recent command given
+     */
     public void displayError(String x){
         //myCommandField.setText(x);
     }
@@ -92,6 +105,9 @@ public class CommandBox {
         }
     }
 
+    /**
+     * Methods that create both the shorten and extended versions of the command line
+     */
     private TextField getCommandField(){
         TextField myText = new TextField();
         myText.setPromptText(COMMAND_PROMPT);
@@ -105,19 +121,19 @@ public class CommandBox {
         myText.setPrefHeight(COMMAND_HEIGHT);
         return myText;
     }
-
+    // Returns a button with a specified label, and action
     private Button getButton(String label, EventHandler<ActionEvent> event){
         Button myButton = new Button(label);
         myButton.setOnAction(event);
         myButton.setPrefWidth(BUTTON_WIDTH);
         return myButton;
     }
-
+    // Places all buttons and textfields into a singular node
     private void setUpCommandLine(){
         myCommandLine = new HBox();
         myCommandLine.getChildren().addAll(myCommandField,runButton, clearButton, expandButton);
     }
-
+    // Switches the visible command line to minimize or expand
     private void switchCommandLine(TextInputControl currentField, TextInputControl newField, String newLabel){
         myCommandLine.getChildren().remove(currentField);
         myCommandLine.getChildren().add(0, newField);
