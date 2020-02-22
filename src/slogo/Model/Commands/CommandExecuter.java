@@ -1,7 +1,5 @@
 package slogo.Model.Commands;
 
-import java.util.List;
-
 public class CommandExecuter {
 
   /**
@@ -9,17 +7,7 @@ public class CommandExecuter {
    * @author Frank Tang
    */
 
-  public CommandExecuter(List<Command> commandList){
-    executeCommands(commandList);
+  public CommandExecuter(Command commandToExecute){
+    commandToExecute.execute();
   }
-
-  /**
-   * Adds the given resource file to this language's recognized types
-   */
-  public void executeCommands (List<Command> commandList) {
-    for (int i = 0; i < commandList.size(); i++){
-      commandList.get(i).execute();
-    }
-  }
-
 }

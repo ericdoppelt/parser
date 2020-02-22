@@ -24,11 +24,17 @@ public class LeftCommand extends Command {
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
+  @Override
   public void execute() {
-    System.out.println(turtleObject.getTurtleHeading());
     turtleObject.rotateTurtleHeading(angleChangeCCW);
-    System.out.println(turtleObject.getTurtleHeading());
+//    System.out.println(turtleObject.getTurtleHeading());
   }
+
+  @Override
+  public Integer returnArgValue() {
+    return (int) this.angleChangeCCW;
+  }
+
 
 }
 

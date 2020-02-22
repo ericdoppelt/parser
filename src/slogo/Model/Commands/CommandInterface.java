@@ -4,4 +4,6 @@ public interface CommandInterface {
 
   void execute();
 
+  Integer returnArgValue();
+
 }

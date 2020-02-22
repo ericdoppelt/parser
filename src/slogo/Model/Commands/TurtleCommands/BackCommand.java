@@ -31,13 +31,17 @@ public class BackCommand extends Command {
   /**
    * Moves the turtle backwards by a pixel amount.
    */
+  @Override
   public void execute() {
-    System.out.println(turtleObject.getTurtleX());
-    System.out.println(turtleObject.getTurtleY());
     turtleObject.moveXCoord(reverseDirection * distanceToTravel * distanceProportionX);
     turtleObject.moveYCoord(reverseDirection * distanceToTravel * distanceProportionY);
-    System.out.println(turtleObject.getTurtleX());
-    System.out.println(turtleObject.getTurtleY());
+//    System.out.println(turtleObject.getTurtleX());
+//    System.out.println(turtleObject.getTurtleY());
+  }
+
+  @Override
+  public Integer returnArgValue() {
+    return (int) this.distanceToTravel;
   }
 
 }

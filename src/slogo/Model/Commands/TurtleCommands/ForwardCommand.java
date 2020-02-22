@@ -29,9 +29,18 @@ public class ForwardCommand extends Command {
   /**
    * Moves the turtle forward by a pixel amount.
    */
+  @Override
   public void execute() {
     turtleObject.moveXCoord(distanceToTravel * distanceProportionX);
     turtleObject.moveYCoord(distanceToTravel * distanceProportionY);
+//    System.out.println(turtleObject.getTurtleX());
+//    System.out.println(turtleObject.getTurtleY());
+
+  }
+
+  @Override
+  public Integer returnArgValue() {
+    return (int) this.distanceToTravel;
   }
 
 }
