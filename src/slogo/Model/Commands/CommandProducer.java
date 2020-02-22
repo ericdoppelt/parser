@@ -29,8 +29,12 @@ public class CommandProducer {
       commandFactory = new CommandFactory(commStack.pop().toString(), turtle, Integer.parseInt(argStack.pop().toString()));
       Command newCommand = commandFactory.makeCommand();
       if(commStack.size() > argStack.size()){
+//        System.out.println("BeforeA" + argStack);
+//        System.out.println("BeforeC" + commStack);
         argStack.push(newCommand.returnArgValue());
-      }
+//        System.out.println("AfterA" + argStack);
+//        System.out.println("AfterC" + commStack);
+     }
       new CommandExecuter(newCommand);
     }
 

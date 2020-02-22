@@ -33,8 +33,8 @@ public class ForwardCommand extends Command {
 
     turtleObject.moveXCoord(distanceToTravel * distanceProportionX);
     turtleObject.moveYCoord(distanceToTravel * distanceProportionY);
-    System.out.println("turtle X " + turtleObject.getTurtleX());
-    System.out.println("turtle Y " + turtleObject.getTurtleY());
+//    System.out.println("turtle X " + turtleObject.getTurtleX());
+//    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }
 

@@ -106,6 +106,8 @@ public class ModelParser {
         else{
           commandStack.push(this.getSymbol(line));
         }
+//        System.out.println(commandStack);
+//        System.out.println(argumentStack);
         new CommandProducer(commandStack, argumentStack, turtle);
       }
     }

@@ -19,7 +19,7 @@ public class CommandFactory {
     targetCommand = command;
     POSSIBLE_COMMANDS_MAPS = Map.ofEntries(
         entry("Forward", new ForwardCommand(targetTurtle, argValue)),
-        entry("Back", new BackCommand(targetTurtle, argValue)),
+        entry("Backward", new BackCommand(targetTurtle, argValue)),
         entry("Left", new LeftCommand(targetTurtle, argValue)),
         entry("Right", new RightCommand(targetTurtle, argValue))
     );
