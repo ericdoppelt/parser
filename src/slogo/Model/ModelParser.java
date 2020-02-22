@@ -15,17 +15,17 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 import slogo.Model.Commands.CommandProducer;
 
-enum ParserEnum{
-  Constant,
-  Variable,
-  Command,
-  List,
-  Comment
-
-}
-
-
 public class ModelParser {
+
+  private enum ParserEnum{
+    Constant,
+    Variable,
+    Command,
+    List,
+    Comment
+  }
+
+  private ParserEnum symbolName;
 
   /**
    * Simple parser based on regular expressions that matches input strings to kinds of program elements.
@@ -100,11 +100,16 @@ public class ModelParser {
     Stack<Integer> argumentStack = new Stack<>();
     for (String line : lines) {
       if (line.trim().length() > 0) {
-        if (this.getSymbol(line).equals("Constant")){
-          argumentStack.push(Integer.parseInt(line));
-        }
-        else{
-          commandStack.push(this.getSymbol(line));
+        System.out.print(this.getSymbol(line));
+        symbolName = ParserEnum.valueOf(this.getSymbol(line));
+        switch (symbolName){
+          case Constant:
+            argumentStack.push(Integer.parseInt(line));
+          case Variable:
+          case Command:
+            commandStack.push(this.getSymbol(line));
+          case Comment:
+          case List:
         }
 //        System.out.println(commandStack);
 //        System.out.println(argumentStack);
