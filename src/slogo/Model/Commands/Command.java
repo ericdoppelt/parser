@@ -11,7 +11,6 @@ public abstract class Command implements CommandInterface {
    * Superconstructor for a Turtle Command
    */
   public Command() {
-
   }
 
 }

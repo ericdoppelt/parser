@@ -17,8 +17,9 @@ public class Main {
 //      command1.execute();
     ModelDatabase m = new ModelDatabase();
     ModelParser modelParser = new ModelParser("English");
-    String userInput = "fd 50 rt 90";
+    String userInput = "[ fd rt fd rt bk lt 90 ]";
     modelParser.parseText(Arrays.asList(userInput.split(WHITESPACE)));
+
 
 
 
