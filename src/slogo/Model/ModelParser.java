@@ -100,19 +100,27 @@ public class ModelParser {
     Stack<Integer> argumentStack = new Stack<>();
     for (String line : lines) {
       if (line.trim().length() > 0) {
-        System.out.print(this.getSymbol(line));
-        symbolName = ParserEnum.valueOf(this.getSymbol(line));
-        switch (symbolName){
-          case Constant:
-            argumentStack.push(Integer.parseInt(line));
-          case Variable:
-          case Command:
-            commandStack.push(this.getSymbol(line));
-          case Comment:
-          case List:
-        }
+        //enum stuff that will probably used for the final implementation
+//        System.out.print(this.getSymbol(line));
+//        symbolName = ParserEnum.valueOf(this.getSymbol(line));
+//        switch (symbolName){
+//          case Constant:
+//            argumentStack.push(Integer.parseInt(line));
+//          case Variable:
+//          case Command:
+//            commandStack.push(this.getSymbol(line));
+//          case Comment:
+//          case List:
+//        }
 //        System.out.println(commandStack);
 //        System.out.println(argumentStack);
+        if(this.getSymbol(line) == "Constant"){
+          argumentStack.push(Integer.parseInt(this.getSymbol(line)));
+        }
+        else {
+          commandStack.push(this.getSymbol(line));
+        }
+
         new CommandProducer(commandStack, argumentStack, turtle);
       }
     }
