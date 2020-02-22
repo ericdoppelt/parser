@@ -1,32 +1,32 @@
 package slogo.Model;
 
+import javafx.beans.property.SimpleDoubleProperty;
+
 import java.util.Collection;
 import java.util.List;
 
 public class TurtleData {
 
-  private double xCoord;
-  private double yCoord;
+  private SimpleDoubleProperty xCoord;
+  private SimpleDoubleProperty yCoord;
   private double headingDirection;
   private String turtleID;
 
   private List<Collection> historyList;
 
-
-
   public TurtleData(String ID, double initX, double initY, double initHeading){
-    xCoord = initX;
-    yCoord = initY;
+    xCoord.set(initX);
+    yCoord.set(initY);
     headingDirection = initHeading;
     turtleID = ID;
   }
 
   public double getTurtleX(){
-    return this.xCoord;
+    return this.xCoord.get();
   }
 
   public double getTurtleY(){
-    return this.yCoord;
+    return this.yCoord.get();
   }
 
   public double getTurtleHeading(){
@@ -48,12 +48,12 @@ public class TurtleData {
 
   public void moveXCoord(double distance){
     //System.out.println(this.xCoord);
-    this.xCoord += distance;
+    this.xCoord.set(xCoord.get() + distance);
   }
 
   public void moveYCoord(double distance){
 //    System.out.println(this.yCoord);
-    this.yCoord += distance;
+    this.yCoord.set(yCoord.get() + distance);
   }
 
   public void rotateTurtleHeading(double angleAmount){
