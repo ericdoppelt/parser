@@ -15,6 +15,16 @@ import java.util.Stack;
 import java.util.regex.Pattern;
 import slogo.Model.Commands.CommandProducer;
 
+enum ParserEnum{
+  Constant,
+  Variable,
+  Command,
+  List,
+  Comment
+
+}
+
+
 public class ModelParser {
 
   /**
@@ -28,6 +38,7 @@ public class ModelParser {
   private static final String RESOURCES_PACKAGE = "resources\\languages\\";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
+  private TurtleData turtle = new TurtleData("yeet",50,50,0);
 
   public ModelParser(String language){
     mySymbols = new ArrayList<>();
@@ -95,9 +106,10 @@ public class ModelParser {
         else{
           commandStack.push(this.getSymbol(line));
         }
+        new CommandProducer(commandStack, argumentStack, turtle);
       }
     }
-    new CommandProducer(commandStack, argumentStack);
+
   }
 
 }

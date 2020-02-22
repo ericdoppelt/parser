@@ -10,12 +10,13 @@ public class CommandProducer {
    * @author Frank Tang
    */
 
-  private TurtleData turtle = new TurtleData("yeet",50,50,0);
   private CommandFactory commandFactory;
+  private TurtleData turtle;
 
 
 
-  public CommandProducer(Stack commStack, Stack argStack){
+  public CommandProducer(Stack commStack, Stack argStack, TurtleData turtleObject){
+    turtle = turtleObject;
     parseStacks(commStack, argStack);
   }
 
@@ -24,7 +25,7 @@ public class CommandProducer {
    * Adds the given resource file to this language's recognized types
    */
   public void parseStacks (Stack commStack, Stack argStack) {
-    while (commStack.size() > 0){
+    while (commStack.size() > 0 && argStack.size() > 0){
       commandFactory = new CommandFactory(commStack.pop().toString(), turtle, Integer.parseInt(argStack.pop().toString()));
       Command newCommand = commandFactory.makeCommand();
       if(commStack.size() > argStack.size()){

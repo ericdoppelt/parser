@@ -11,14 +11,11 @@ import slogo.Model.TurtleData;
 public class LeftCommand extends Command {
 
   private TurtleData turtleObject;
-  private double turtleHeading;
-  private double angleChangeCCW;
-
+  private double originalArgValue;
 
   public LeftCommand(TurtleData turtle, double degreeAngleChange) {
     turtleObject = turtle;
-    turtleHeading = turtleObject.getTurtleHeading();
-    angleChangeCCW = degreeAngleChange;
+    originalArgValue = degreeAngleChange;
   }
 
   /**
@@ -26,13 +23,14 @@ public class LeftCommand extends Command {
    */
   @Override
   public void execute() {
+    double angleChangeCCW = originalArgValue;
     turtleObject.rotateTurtleHeading(angleChangeCCW);
 //    System.out.println(turtleObject.getTurtleHeading());
   }
 
   @Override
   public Integer returnArgValue() {
-    return (int) this.angleChangeCCW;
+    return (int) this.originalArgValue;
   }
 
 

@@ -11,18 +11,12 @@ import slogo.Model.TurtleData;
 public class ForwardCommand extends Command {
 
   private TurtleData turtleObject;
-  private double distanceToTravel;
-  private double turtleHeading;
-  private double distanceProportionX;
-  private double distanceProportionY;
+  private double originalArgValue;
 
 
   public ForwardCommand(TurtleData turtle, double distance) {
     turtleObject = turtle;
-    distanceToTravel = distance;
-    turtleHeading = turtleObject.getTurtleHeading();
-    distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
-    distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
+    originalArgValue = distance;
   }
 
 
@@ -31,16 +25,22 @@ public class ForwardCommand extends Command {
    */
   @Override
   public void execute() {
+    double turtleHeading = turtleObject.getTurtleHeading();
+    double distanceToTravel = originalArgValue;
+
+    double distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
+    double distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
+
     turtleObject.moveXCoord(distanceToTravel * distanceProportionX);
     turtleObject.moveYCoord(distanceToTravel * distanceProportionY);
-//    System.out.println(turtleObject.getTurtleX());
-//    System.out.println(turtleObject.getTurtleY());
+    System.out.println("turtle X " + turtleObject.getTurtleX());
+    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }
 
   @Override
   public Integer returnArgValue() {
-    return (int) this.distanceToTravel;
+    return (int) this.originalArgValue;
   }
 
 }
