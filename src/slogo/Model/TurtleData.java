@@ -7,8 +7,8 @@ import java.util.List;
 
 public class TurtleData {
 
-  private SimpleDoubleProperty xCoord;
-  private SimpleDoubleProperty yCoord;
+  private SimpleDoubleProperty xCoord = new SimpleDoubleProperty();
+  private SimpleDoubleProperty yCoord = new SimpleDoubleProperty();
   private double headingDirection;
   private String turtleID;
 

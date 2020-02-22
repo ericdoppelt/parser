@@ -4,11 +4,14 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import slogo.Model.ModelDatabase;
+import slogo.Model.ModelParser;
 
 public class tester extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        CommandBox myCommandLine = new CommandBox();
+        ModelParser modelParser = new ModelParser("English");
+        CommandBox myCommandLine = new CommandBox(modelParser);
         Group myGroup = new Group();
         myGroup.getChildren().add(myCommandLine.getCommandLine());
         Scene myScene = new Scene(myGroup, 500,500);

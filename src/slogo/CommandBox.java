@@ -9,8 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import slogo.Model.ModelParser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class CommandBox {
     public static final String CLEAR = "Clear";
     public static final String EXPAND = "Expand";
     public static final String MINIMIZE = "Minimize";
+    public static final String WHITESPACE = "\\s+";
     public static final int COMMAND_WIDTH = 200;
     public static final int COMMAND_HEIGHT = 100;
     public static final int BUTTON_WIDTH = 60;
@@ -40,11 +43,14 @@ public class CommandBox {
     private String myCurrentCommand;
     private boolean commandLineIsExtended;
 
+    private ModelParser myParser;
+
     /**
      * Initializes command line text field as well as the buttons to run, clear and expand
      * text field.
      */
-    public CommandBox(){
+    public CommandBox(ModelParser parser){
+        myParser = parser;
         shortCommandField = getCommandField();
         myCommandField = shortCommandField;
         runButton = getButton(RUN, event -> retrieveText());
@@ -83,11 +89,11 @@ public class CommandBox {
      */
     private void retrieveText(){
         // TODO add mechanism to deal with parser call\
-        System.out.println("here");
         if(myCommands == null) myCommands = new ArrayList<>();
         myCurrentCommand = myCommandField.getText();
         myCommands.add(myCurrentCommand);
         myCommandField.clear();
+        myParser.parseText(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
         System.out.println(myCurrentCommand);
     }
     private void clearText(){
