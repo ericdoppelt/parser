@@ -35,7 +35,7 @@ public class ModelParser {
    */
 
   private String commandFromController;
-  private static final String RESOURCES_PACKAGE = "resources\\languages\\";
+  private static final String RESOURCES_PACKAGE = "resources/languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
   private TurtleData turtle = new TurtleData("yeet",50,50,0);
@@ -96,6 +96,7 @@ public class ModelParser {
 
   // given some text, prints results of parsing it using the given language
   public void parseText (List<String> lines) {
+    //System.out.println(lines);
     Stack<String> commandStack = new Stack<>();
     Stack<Integer> argumentStack = new Stack<>();
     for (String line : lines) {
@@ -112,15 +113,15 @@ public class ModelParser {
 //          case Comment:
 //          case List:
 //        }
-//        System.out.println(commandStack);
-//        System.out.println(argumentStack);
-        if(this.getSymbol(line) == "Constant"){
-          argumentStack.push(Integer.parseInt(this.getSymbol(line)));
+
+        if(this.getSymbol(line).equals("Constant")){
+          argumentStack.push(Integer.parseInt(line));
         }
         else {
           commandStack.push(this.getSymbol(line));
         }
-
+        //System.out.println(commandStack);
+        //System.out.println(argumentStack);
         new CommandProducer(commandStack, argumentStack, turtle);
       }
     }
