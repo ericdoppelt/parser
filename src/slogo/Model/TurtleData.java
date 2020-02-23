@@ -29,6 +29,14 @@ public class TurtleData {
     return this.yCoord.get();
   }
 
+  public SimpleDoubleProperty getTurtleXProperty(){
+    return this.xCoord;
+  }
+
+  public SimpleDoubleProperty getTurtleYProperty(){
+    return this.yCoord;
+  }
+
   public double getTurtleHeading(){
     return this.headingDirection.get();
   }
