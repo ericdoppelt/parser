@@ -15,6 +15,7 @@ import slogo.Model.Commands.TurtleCommands.ForwardCommand;
 import slogo.Model.Commands.TurtleCommands.LeftCommand;
 import slogo.Model.Commands.TurtleCommands.RightCommand;
 import slogo.Model.Commands.TurtleCommands.SetHeadingCommand;
+import slogo.Model.Commands.TurtleCommands.TowardsCommand;
 import slogo.Model.TurtleData;
 
 public class CommandFactory {
@@ -75,7 +76,8 @@ public class CommandFactory {
         entry("Difference", new Pair<>(new DifferenceCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("Product", new Pair<>(new ProductCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("Quotient", new Pair<>(new QuotientCommand(parameterOne, parameterTwo), twoParametersNeeded)),
-        entry("Remainder", new Pair<>(new RemainderCommand(parameterOne, parameterTwo), twoParametersNeeded))
+        entry("Remainder", new Pair<>(new RemainderCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("SetTowards", new Pair<>(new TowardsCommand(targetTurtle, parameterOne, parameterTwo), twoParametersNeeded))
     );
 
   }

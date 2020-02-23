@@ -39,7 +39,7 @@ public class ModelParser {
   private static final String RESOURCES_PACKAGE = "resources/languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
-  private TurtleData turtle = new TurtleData("yeet",50,50,270);
+  private TurtleData turtle = new TurtleData("yeet",0,0,45);
   private int argumentThreshold;
 
   public ModelParser(String language){

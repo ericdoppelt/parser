@@ -1,8 +1,5 @@
 package slogo.Model.Commands.TurtleCommands;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.min;
-
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -23,7 +20,8 @@ public class SetHeadingCommand extends Command {
     turtleObject = turtle;
     originalTurtleDirection = turtle.getTurtleHeading();
     newTurtleDirection = degreeAngle;
-    returnArgValue = min(abs(newTurtleDirection - originalTurtleDirection), fullRevolution - abs(newTurtleDirection - originalTurtleDirection));
+    //returnArgValue = min(abs(newTurtleDirection - originalTurtleDirection), fullRevolution - abs(newTurtleDirection - originalTurtleDirection));
+    returnArgValue = newTurtleDirection - originalTurtleDirection;
 
   }
 

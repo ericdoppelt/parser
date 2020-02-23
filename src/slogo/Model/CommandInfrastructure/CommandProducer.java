@@ -28,8 +28,8 @@ public class CommandProducer {
     argumentRunningTotal = argumentThreshold;
 //    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
-//      System.out.println("BeforeA" + argStack.size());
-//      System.out.println("BeforeC" + commStack.size());
+      System.out.println("BeforeA" + argStack);
+      System.out.println("BeforeC" + commStack);
       commandFactory = new CommandFactory(commStack.pop().toString(), turtle);
       double parametersNeeded = commandFactory.getAmountOfParametersNeeded();
       Command newCommand = null;
@@ -53,8 +53,8 @@ public class CommandProducer {
         //System.out.println("return" + newCommand.returnArgValue());
         argStack.push(newCommand.returnArgValue());
       }
-//      System.out.println("AfterA" + argStack);
-//      System.out.println("AfterC" + commStack);
+      System.out.println("AfterA" + argStack);
+      System.out.println("AfterC" + commStack);
     }
   }
 
