@@ -11,7 +11,7 @@ public class ProductCommand extends Command {
 
   private double firstTerm;
   private double secondTerm;
-  private double productResult;
+  private double returnArgValue;
 
 
   public ProductCommand(double parameterOne, double parameterTwo) {
@@ -25,7 +25,7 @@ public class ProductCommand extends Command {
    */
   @Override
   public void execute() {
-    productResult = firstTerm * secondTerm;
+    returnArgValue = firstTerm * secondTerm;
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
@@ -33,7 +33,7 @@ public class ProductCommand extends Command {
 
   @Override
   public Integer returnArgValue() {
-    return (int) this.productResult;
+    return (int) this.returnArgValue;
   }
 
 }

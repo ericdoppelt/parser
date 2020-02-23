@@ -11,8 +11,11 @@ public class TurtleData {
 
   private SimpleDoubleProperty xCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty yCoord = new SimpleDoubleProperty();
-  private SimpleDoubleProperty headingDirection;
+  private SimpleDoubleProperty headingDirection = new SimpleDoubleProperty();
   private String turtleID;
+
+  private static final int fullRevolution = 360;
+  private static final int zeroAngle = 0;
   private List<Collection> historyList;
   private ObservableList<List<Double>> coordList;
   private List<Double> coord;
@@ -24,10 +27,10 @@ public class TurtleData {
     headingDirection.set(initHeading);
     turtleID = ID;
 
-    coord.add(initX);
-    coord.add(initY);
-    coordList.add(coord);
-    coordHistory.set(coordList);
+//    coord.add(initX);
+//    coord.add(initY);
+//    coordList.add(coord);
+//    coordHistory.set(coordList);
   }
 
   public double getTurtleX(){
@@ -86,7 +89,18 @@ public class TurtleData {
 
   public void rotateTurtleHeading(double angleAmount){
 //    System.out.println(this.yCoord);
-    this.headingDirection.set(headingDirection.get() + angleAmount);
+    this.headingDirection.set(this.headingDirection.get() + angleAmount);
+    if(this.headingDirection.get() >= fullRevolution){
+      this.headingDirection.set(this.headingDirection.get() - fullRevolution);
+    }
+    else if (this.headingDirection.get() < zeroAngle){
+      this.headingDirection.set(this.headingDirection.get() + fullRevolution);
+    }
+  }
+
+  public void setTurtleDirection(double angle){
+//    System.out.println(this.yCoord);
+    this.headingDirection.set(angle);
   }
 
 }

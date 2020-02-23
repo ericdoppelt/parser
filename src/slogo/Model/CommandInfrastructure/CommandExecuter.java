@@ -1,4 +1,6 @@
-package slogo.Model.Commands;
+package slogo.Model.CommandInfrastructure;
+
+import slogo.Model.Commands.Command;
 
 public class CommandExecuter {
 

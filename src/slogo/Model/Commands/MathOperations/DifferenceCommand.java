@@ -11,7 +11,7 @@ public class DifferenceCommand extends Command {
 
   private double firstTerm;
   private double secondTerm;
-  private double differenceResult;
+  private double returnArgValue;
 
 
   public DifferenceCommand(double parameterOne, double parameterTwo) {
@@ -25,7 +25,7 @@ public class DifferenceCommand extends Command {
    */
   @Override
   public void execute() {
-    differenceResult = firstTerm - secondTerm;
+    returnArgValue = firstTerm - secondTerm;
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
@@ -33,7 +33,7 @@ public class DifferenceCommand extends Command {
 
   @Override
   public Integer returnArgValue() {
-    return (int) this.differenceResult;
+    return (int) this.returnArgValue;
   }
 
 }

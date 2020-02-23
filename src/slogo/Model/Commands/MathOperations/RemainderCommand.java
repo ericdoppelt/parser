@@ -11,7 +11,7 @@ public class RemainderCommand extends Command {
 
   private double firstTerm;
   private double secondTerm;
-  private double remainderResult;
+  private double returnArgValue;
 
 
   public RemainderCommand(double parameterOne, double parameterTwo) {
@@ -25,7 +25,7 @@ public class RemainderCommand extends Command {
    */
   @Override
   public void execute() {
-    remainderResult = firstTerm % secondTerm;
+    returnArgValue = firstTerm % secondTerm;
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
@@ -33,7 +33,7 @@ public class RemainderCommand extends Command {
 
   @Override
   public Integer returnArgValue() {
-    return (int) this.remainderResult;
+    return (int) this.returnArgValue;
   }
 
 }
