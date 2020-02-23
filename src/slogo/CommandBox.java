@@ -44,18 +44,17 @@ public class CommandBox {
     private boolean commandLineIsExtended;
 
     private ModelParser myParser;
-
+    private TurtleView turtle;
     /**
      * Initializes command line text field as well as the buttons to run, clear and expand
      * text field.
      */
-    public CommandBox(ModelParser parser){
+    public CommandBox(ModelParser parser, TurtleView t){
+        turtle = t;
         myParser = parser;
         shortCommandField = getCommandField();
         myCommandField = shortCommandField;
-        runButton = getButton(RUN, event -> retrieveText());
-        clearButton = getButton(CLEAR, event -> clearText());
-        expandButton = getButton(EXPAND, event -> resizeCommandField());
+        stetUpButtons();
         setUpCommandLine();
     }
     /**
@@ -94,7 +93,6 @@ public class CommandBox {
         myCommands.add(myCurrentCommand);
         myCommandField.clear();
         myParser.parseText(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
-        System.out.println(myCurrentCommand);
     }
     private void clearText(){
         myCommandField.clear();
@@ -145,5 +143,11 @@ public class CommandBox {
         myCommandLine.getChildren().add(0, newField);
         myCommandField = newField;
         expandButton.setText(newLabel);
+    }
+    // Method to create all buttons
+    private void stetUpButtons(){
+        runButton = getButton(RUN, event -> retrieveText());
+        clearButton = getButton(CLEAR, event -> clearText());
+        expandButton = getButton(EXPAND, event -> resizeCommandField());
     }
 }

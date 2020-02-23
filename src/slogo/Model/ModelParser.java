@@ -47,6 +47,10 @@ public class ModelParser {
 //    commandFromController = inputString;
   }
 
+  public TurtleData getMyTurtle(){
+    return turtle;
+  }
+
 
   /**
    * Adds the given resource file to this language's recognized types
