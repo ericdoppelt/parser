@@ -11,7 +11,7 @@ public class QuotientCommand extends Command {
 
   private double firstTerm;
   private double secondTerm;
-  private double quotientResult;
+  private double returnArgValue;
 
 
   public QuotientCommand(double parameterOne, double parameterTwo) {
@@ -25,7 +25,7 @@ public class QuotientCommand extends Command {
    */
   @Override
   public void execute() {
-    quotientResult = firstTerm / secondTerm;
+    returnArgValue =  firstTerm / secondTerm;
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
@@ -33,7 +33,7 @@ public class QuotientCommand extends Command {
 
   @Override
   public Integer returnArgValue() {
-    return (int) this.quotientResult;
+    return (int) this.returnArgValue;
   }
 
 }

@@ -17,30 +17,30 @@ public class CommandProducer {
   private static final int oneParametersNeeded = 1;
   private static final int twoParametersNeeded = 2;
 
-
-
   public CommandProducer(TurtleData turtleObject){
     turtle = turtleObject;
   }
-
 
   /**
    * Adds the given resource file to this language's recognized types
    */
   public void parseStacks (Stack commStack, Stack argStack, int argumentThreshold) {
     argumentRunningTotal = argumentThreshold;
-    System.out.println(argumentRunningTotal);
+//    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
-      System.out.println("BeforeA" + argStack.size());
-      System.out.println("BeforeC" + commStack.size());
+//      System.out.println("BeforeA" + argStack.size());
+//      System.out.println("BeforeC" + commStack.size());
       commandFactory = new CommandFactory(commStack.pop().toString(), turtle);
       double parametersNeeded = commandFactory.getAmountOfParametersNeeded();
       Command newCommand = null;
       if(parametersNeeded == oneParametersNeeded) {
-        newCommand = commandFactory.makeOneParameterCommand(Integer.parseInt(argStack.pop().toString()));
+        Integer firstParameter = Integer.parseInt(argStack.pop().toString());
+        newCommand = commandFactory.makeOneParameterCommand(firstParameter);
       }
       else if (parametersNeeded == twoParametersNeeded){
-        newCommand = commandFactory.makeTwoParameterCommand(Integer.parseInt(argStack.pop().toString()), Integer.parseInt(argStack.pop().toString()));
+        Integer secondParameter = Integer.parseInt(argStack.pop().toString()); //must be in this order because the second parameter is popped off first
+        Integer firstParameter = Integer.parseInt(argStack.pop().toString());
+        newCommand = commandFactory.makeTwoParameterCommand(firstParameter, secondParameter);
       }
       new CommandExecuter(newCommand);
       argumentRunningTotal--;
@@ -53,8 +53,8 @@ public class CommandProducer {
         //System.out.println("return" + newCommand.returnArgValue());
         argStack.push(newCommand.returnArgValue());
       }
-      System.out.println("AfterA" + argStack);
-      System.out.println("AfterC" + commStack);
+//      System.out.println("AfterA" + argStack);
+//      System.out.println("AfterC" + commStack);
     }
   }
 

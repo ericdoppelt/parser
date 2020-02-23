@@ -125,9 +125,11 @@ public class ModelParser {
           argumentThreshold = argumentStack.size() + parameterGetter.getAmountOfParametersNeeded();
 
         }
-        System.out.println(commandStack);
-        System.out.println(argumentStack);
+        System.out.println("Before Parse: " + commandStack);
+        System.out.println("Before Parse: " + argumentStack);
         commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
+        System.out.println("After Parse: " + commandStack);
+        System.out.println("After Parse: " + argumentStack);
       }
     }
 
