@@ -32,7 +32,7 @@ public class tester extends Application {
         //myGroup.getChildren().addAll(myTurtle.getTurtle());
 
         mypane.setBottom(myCommandLine.getCommandLine());
-        mypane.setCenter(new Pane(myTurtle.getTurtle()));
+        mypane.setCenter(myTurtle.getTurtle());
 
 
         Scene myScene = new Scene(mypane, 500,500);
