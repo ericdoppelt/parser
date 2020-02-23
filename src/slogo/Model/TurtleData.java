@@ -9,7 +9,7 @@ public class TurtleData {
 
   private SimpleDoubleProperty xCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty yCoord = new SimpleDoubleProperty();
-  private double headingDirection;
+  private SimpleDoubleProperty headingDirection;
   private String turtleID;
 
   private List<Collection> historyList;
@@ -17,7 +17,7 @@ public class TurtleData {
   public TurtleData(String ID, double initX, double initY, double initHeading){
     xCoord.set(initX);
     yCoord.set(initY);
-    headingDirection = initHeading;
+    headingDirection.set(initHeading);
     turtleID = ID;
   }
 
@@ -30,7 +30,7 @@ public class TurtleData {
   }
 
   public double getTurtleHeading(){
-    return this.headingDirection;
+    return this.headingDirection.get();
   }
 
   public String getTurtleID(){
@@ -58,7 +58,7 @@ public class TurtleData {
 
   public void rotateTurtleHeading(double angleAmount){
 //    System.out.println(this.yCoord);
-    this.headingDirection += angleAmount;
+    this.headingDirection.set(headingDirection.get() + angleAmount);
   }
 
 }
