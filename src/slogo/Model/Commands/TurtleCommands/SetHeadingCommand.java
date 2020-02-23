@@ -1,6 +1,7 @@
 package slogo.Model.Commands.TurtleCommands;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.min;
 
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
@@ -16,12 +17,13 @@ public class SetHeadingCommand extends Command {
   private double returnArgValue;
   private double originalTurtleDirection;
   private double newTurtleDirection;
+  private static final int fullRevolution = 360;
 
   public SetHeadingCommand(TurtleData turtle, double degreeAngle) {
     turtleObject = turtle;
     originalTurtleDirection = turtle.getTurtleHeading();
     newTurtleDirection = degreeAngle;
-    returnArgValue = abs(newTurtleDirection - originalTurtleDirection);
+    returnArgValue = min(abs(newTurtleDirection - originalTurtleDirection), fullRevolution - abs(newTurtleDirection - originalTurtleDirection));
 
   }
 
@@ -30,10 +32,10 @@ public class SetHeadingCommand extends Command {
    */
   @Override
   public void execute() {
-//    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
+    //System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     turtleObject.setTurtleDirection(newTurtleDirection);
-//    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
-//    System.out.println("turtle X " + turtleObject.getTurtleX());
+    //System.out.println("turtle heading " + turtleObject.getTurtleHeading());
+    //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }

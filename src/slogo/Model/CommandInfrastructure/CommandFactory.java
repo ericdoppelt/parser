@@ -14,6 +14,7 @@ import slogo.Model.Commands.TurtleCommands.BackCommand;
 import slogo.Model.Commands.TurtleCommands.ForwardCommand;
 import slogo.Model.Commands.TurtleCommands.LeftCommand;
 import slogo.Model.Commands.TurtleCommands.RightCommand;
+import slogo.Model.Commands.TurtleCommands.SetHeadingCommand;
 import slogo.Model.TurtleData;
 
 public class CommandFactory {
@@ -68,6 +69,7 @@ public class CommandFactory {
         entry("Backward", new Pair<>(new BackCommand(targetTurtle, parameterOne), oneParameterNeeded)),
         entry("Left", new Pair<>(new LeftCommand(targetTurtle, parameterOne), oneParameterNeeded)),
         entry("Right", new Pair<>(new RightCommand(targetTurtle, parameterOne), oneParameterNeeded)),
+        entry("SetHeading", new Pair<>(new SetHeadingCommand(targetTurtle, parameterOne), oneParameterNeeded)),
         //Math Operations
         entry("Sum", new Pair<>(new SumCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("Difference", new Pair<>(new DifferenceCommand(parameterOne, parameterTwo), twoParametersNeeded)),
