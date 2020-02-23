@@ -2,7 +2,6 @@ package slogo;
 
 
 import java.util.Arrays;
-import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
 
 public class Main {
@@ -15,10 +14,10 @@ public class Main {
 //      TurtleData turtle1 = new TurtleData(50, 50, 0);
 //      RightCommand command1 = new RightCommand(turtle1, 50);
 //      command1.execute();
-    ModelDatabase m = new ModelDatabase();
+    //ModelDatabase m = new ModelDatabase();
     ModelParser modelParser = new ModelParser("English");
 //    String userInput = "fd sum 90 sum 50 fd 90 sum 70 - 80 50";
-    String userInput = "towards 0 50";
+    String userInput = "lt 50";
     modelParser.parseText(Arrays.asList(userInput.split(WHITESPACE)));
 
 

@@ -25,8 +25,8 @@ public class LeftCommand extends Command {
    */
   @Override
   public void execute() {
-
     turtleObject.rotateTurtleHeading(angleChangeCCW);
+    System.out.println(turtleObject.getTurtleHeading());
 //    System.out.println(turtleObject.getTurtleHeading());
   }
 

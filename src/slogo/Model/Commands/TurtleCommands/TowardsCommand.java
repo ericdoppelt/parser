@@ -28,7 +28,7 @@ public class TowardsCommand extends Command {
     double differenceX = towardsX - turtle.getTurtleX();
     double differenceY = towardsY - turtle.getTurtleY();
     double towardsAngle = Math.toDegrees(Math.atan(differenceY/differenceX));
-    System.out.println("a " + towardsAngle);
+//    System.out.println("a " + towardsAngle);
 
 
     if(differenceX < zero){
