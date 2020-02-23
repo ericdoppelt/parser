@@ -26,6 +26,8 @@ public class SumCommand extends Command {
   @Override
   public void execute() {
     sumResult = firstTerm + secondTerm;
+//    System.out.println("1 " + this.sumResult);
+//    System.out.println("2 " + this.secondTerm);
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
@@ -33,6 +35,7 @@ public class SumCommand extends Command {
 
   @Override
   public Integer returnArgValue() {
+    //System.out.println("return " + this.sumResult);
     return (int) this.sumResult;
   }
 

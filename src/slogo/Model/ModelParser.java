@@ -13,7 +13,8 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-import slogo.Model.Commands.CommandProducer;
+import slogo.Model.CommandInfrastructure.CommandFactory;
+import slogo.Model.CommandInfrastructure.CommandProducer;
 
 public class ModelParser {
 
@@ -39,6 +40,7 @@ public class ModelParser {
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
   private TurtleData turtle = new TurtleData("yeet",50,50,0);
+  private int argumentThreshold;
 
   public ModelParser(String language){
     mySymbols = new ArrayList<>();
@@ -113,16 +115,19 @@ public class ModelParser {
 //          case Comment:
 //          case List:
 //        }
-
+        CommandProducer commandProducer = new CommandProducer(turtle);
         if(this.getSymbol(line).equals("Constant")){
           argumentStack.push(Integer.parseInt(line));
         }
         else {
           commandStack.push(this.getSymbol(line));
+          CommandFactory parameterGetter = new CommandFactory(commandStack.peek(), turtle);
+          argumentThreshold = argumentStack.size() + parameterGetter.getAmountOfParametersNeeded();
+
         }
-        //System.out.println(commandStack);
-        //System.out.println(argumentStack);
-        new CommandProducer(commandStack, argumentStack, turtle);
+        System.out.println(commandStack);
+        System.out.println(argumentStack);
+        commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }
     }
 

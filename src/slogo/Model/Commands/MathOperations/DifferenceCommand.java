@@ -25,7 +25,7 @@ public class DifferenceCommand extends Command {
    */
   @Override
   public void execute() {
-    differenceResult = firstTerm - secondTerm;
+    differenceResult = secondTerm - firstTerm;
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
