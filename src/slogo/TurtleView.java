@@ -15,7 +15,7 @@ public class TurtleView {
     private Circle myTurtle;
 
     public TurtleView(TurtleData turtle){
-        myTurtle = new Circle(5);
+        myTurtle = new Circle(10);
         myTurtle.centerXProperty().bind(turtle.getTurtleXProperty());
         myTurtle.centerYProperty().bind(turtle.getTurtleYProperty());
     }
@@ -24,8 +24,4 @@ public class TurtleView {
         return myTurtle;
     }
 
-    public void printXY(){
-        System.out.println(myTurtle.getCenterX());
-        System.out.println(myTurtle.getCenterY());
-    }
 }
