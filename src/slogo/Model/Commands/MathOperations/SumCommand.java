@@ -34,9 +34,9 @@ public class SumCommand extends Command {
   }
 
   @Override
-  public Integer returnArgValue() {
+  public Double returnArgValue() {
     //System.out.println("return " + this.returnArgValue);
-    return (int) this.returnArgValue;
+    return this.returnArgValue;
   }
 
 }

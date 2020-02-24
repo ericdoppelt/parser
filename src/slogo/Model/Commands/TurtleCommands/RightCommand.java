@@ -35,8 +35,8 @@ public class RightCommand extends Command {
   }
 
   @Override
-  public Integer returnArgValue() {
-    return (int) this.returnArgValue;
+  public Double returnArgValue() {
+    return this.returnArgValue;
   }
 
 }

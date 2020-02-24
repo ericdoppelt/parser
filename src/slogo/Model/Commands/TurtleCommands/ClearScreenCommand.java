@@ -8,21 +8,20 @@ import slogo.Model.TurtleData;
  *
  * @author Frank Tang
  */
-public class SetPositionCommand extends Command {
+public class ClearScreenCommand extends Command {
   //moves turtle to an absolute screen position, where (0, 0) is the center of the screen
   //returns the distance turtle moved
 
   private TurtleData turtleObject;
   private double returnArgValue;
-  private double newX;
-  private double newY;
+  private static final double zeroX = 0;
+  private static final double zeroY = 0;
+  //Add clear Screen Boolean
 
-  public SetPositionCommand(TurtleData turtle, double inputX, double inputY) {
+  public ClearScreenCommand(TurtleData turtle) {
     turtleObject = turtle;
-    newX = inputX;
-    newY = inputY;
-    double differenceX = newX - turtle.getTurtleX();
-    double differenceY = newY - turtle.getTurtleY();
+    double differenceX = zeroX - turtle.getTurtleX();
+    double differenceY = zeroY - turtle.getTurtleY();
 
     returnArgValue = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
 
@@ -35,8 +34,8 @@ public class SetPositionCommand extends Command {
   public void execute() {
     System.out.println("turtleX before " + turtleObject.getTurtleX());
     System.out.println("turtleY before " + turtleObject.getTurtleY());
-    turtleObject.setXCoord(newX);
-    turtleObject.setYCoord(newY);
+    turtleObject.setXCoord(zeroX);
+    turtleObject.setYCoord(zeroY);
     System.out.println("turtleX after " + turtleObject.getTurtleX());
     System.out.println("turtleY after " + turtleObject.getTurtleY());
     System.out.println("return " + returnArgValue);
@@ -47,7 +46,6 @@ public class SetPositionCommand extends Command {
 
   @Override
   public Double returnArgValue() {
-
     return this.returnArgValue;
   }
 }

@@ -1,5 +1,6 @@
 package slogo.Model;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -12,6 +13,8 @@ public class TurtleData {
   private SimpleDoubleProperty xCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty yCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty headingDirection = new SimpleDoubleProperty();
+  private SimpleBooleanProperty penStatus = new SimpleBooleanProperty();
+  private SimpleBooleanProperty turtleVisibility = new SimpleBooleanProperty();
   private String turtleID;
 
   private static final int fullRevolution = 360;
@@ -95,6 +98,16 @@ public class TurtleData {
   public void setYCoord(double newY){
 //    System.out.println(this.yCoord);
     this.yCoord.set(newY);
+  }
+
+  public void setPenStatus(boolean isPenUp){
+//    System.out.println(this.yCoord);
+    this.penStatus.set(isPenUp);
+  }
+
+  public void setTurtleVisibility(boolean isTurtleVisible){
+//    System.out.println(this.yCoord);
+    this.turtleVisibility.set(isTurtleVisible);
   }
 
   public void rotateTurtleHeading(double angleAmount){
