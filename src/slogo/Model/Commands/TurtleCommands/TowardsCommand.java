@@ -61,9 +61,9 @@ public class TowardsCommand extends Command {
   }
 
   @Override
-  public Integer returnArgValue() {
+  public Double returnArgValue() {
 
-    return (int) this.returnArgValue;
+    return this.returnArgValue;
   }
 
   private void constrainAngle(){

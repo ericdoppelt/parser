@@ -37,8 +37,8 @@ public class BackCommand extends Command {
   }
 
   @Override
-  public Integer returnArgValue() {
-    return (int) this.originalArgValue;
+  public Double returnArgValue() {
+    return this.originalArgValue;
   }
 
 }
