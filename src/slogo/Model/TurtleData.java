@@ -13,7 +13,7 @@ public class TurtleData {
   private SimpleDoubleProperty xCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty yCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty headingDirection = new SimpleDoubleProperty();
-  private SimpleBooleanProperty penStatus = new SimpleBooleanProperty();
+  private SimpleBooleanProperty penDown = new SimpleBooleanProperty();
   private SimpleBooleanProperty turtleVisibility = new SimpleBooleanProperty();
   private String turtleID;
 
@@ -100,9 +100,9 @@ public class TurtleData {
     this.yCoord.set(newY);
   }
 
-  public void setPenStatus(boolean isPenUp){
+  public void setPenStatus(boolean isPenDown){
 //    System.out.println(this.yCoord);
-    this.penStatus.set(isPenUp);
+    this.penDown.set(isPenDown);
   }
 
   public void setTurtleVisibility(boolean isTurtleVisible){
@@ -124,6 +124,30 @@ public class TurtleData {
   public void setTurtleDirection(double angle){
 //    System.out.println(this.yCoord);
     this.headingDirection.set(angle);
+  }
+
+  public int getTurtleVisibility(){
+//    System.out.println(this.yCoord);
+    if(this.turtleVisibility.get()){
+      int turtleIsVisible = 1;
+      return turtleIsVisible;
+    }
+    else{
+      int turtleIsNotVisible = 0;
+      return turtleIsNotVisible;
+    }
+  }
+
+  public int getPenStatus(){
+//    System.out.println(this.yCoord);
+    if(this.penDown.get()){
+      int penDown = 1;
+      return penDown;
+    }
+    else{
+      int penUp = 0;
+      return penUp;
+    }
   }
 
 }

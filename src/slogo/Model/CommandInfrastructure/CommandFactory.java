@@ -4,34 +4,10 @@ import static java.util.Map.entry;
 
 import java.util.Map;
 import javafx.util.Pair;
-import slogo.Model.Commands.Command;
-import slogo.Model.Commands.MathOperations.ArcTangentCommand;
-import slogo.Model.Commands.MathOperations.CosineCommand;
-import slogo.Model.Commands.MathOperations.DifferenceCommand;
-import slogo.Model.Commands.MathOperations.MinusCommand;
-import slogo.Model.Commands.MathOperations.NaturalLogCommand;
-import slogo.Model.Commands.MathOperations.PiCommand;
-import slogo.Model.Commands.MathOperations.PowerCommand;
-import slogo.Model.Commands.MathOperations.ProductCommand;
-import slogo.Model.Commands.MathOperations.QuotientCommand;
-import slogo.Model.Commands.MathOperations.RandomCommand;
-import slogo.Model.Commands.MathOperations.RemainderCommand;
-import slogo.Model.Commands.MathOperations.SineCommand;
-import slogo.Model.Commands.MathOperations.SumCommand;
-import slogo.Model.Commands.MathOperations.TangentCommand;
-import slogo.Model.Commands.TurtleCommands.BackCommand;
-import slogo.Model.Commands.TurtleCommands.ClearScreenCommand;
-import slogo.Model.Commands.TurtleCommands.ForwardCommand;
-import slogo.Model.Commands.TurtleCommands.HideTurtleCommand;
-import slogo.Model.Commands.TurtleCommands.HomeCommand;
-import slogo.Model.Commands.TurtleCommands.LeftCommand;
-import slogo.Model.Commands.TurtleCommands.PenDownCommand;
-import slogo.Model.Commands.TurtleCommands.PenUpCommand;
-import slogo.Model.Commands.TurtleCommands.RightCommand;
-import slogo.Model.Commands.TurtleCommands.SetHeadingCommand;
-import slogo.Model.Commands.TurtleCommands.SetPositionCommand;
-import slogo.Model.Commands.TurtleCommands.ShowTurtleCommand;
-import slogo.Model.Commands.TurtleCommands.TowardsCommand;
+import slogo.Model.Commands.*;
+import slogo.Model.Commands.TurtleCommands.*;
+import slogo.Model.Commands.MathOperations.*;
+import slogo.Model.Commands.TurtleQueries.*;
 import slogo.Model.TurtleData;
 
 public class CommandFactory {
@@ -98,6 +74,12 @@ public class CommandFactory {
         entry("Home", new Pair<>(new HomeCommand(targetTurtle), zeroParameterNeeded)),
         entry("ClearScreen", new Pair<>(new ClearScreenCommand(targetTurtle), zeroParameterNeeded)),
         entry("Pi", new Pair<>(new PiCommand(), zeroParameterNeeded)),
+        entry("XCoordinate", new Pair<>(new XCoordinateCommand(targetTurtle), zeroParameterNeeded)),
+        entry("YCoordinate", new Pair<>(new YCoordinateCommand(targetTurtle), zeroParameterNeeded)),
+        entry("Heading", new Pair<>(new HeadingCommand(targetTurtle), zeroParameterNeeded)),
+        entry("IsShowing", new Pair<>(new IsShowingCommand(targetTurtle), zeroParameterNeeded)),
+        entry("IsPenDown", new Pair<>(new IsPenDownCommand(targetTurtle), zeroParameterNeeded)),
+
         //One Parameter Commands
         entry("Forward", new Pair<>(new ForwardCommand(targetTurtle, parameterOne), oneParameterNeeded)),
         entry("Backward", new Pair<>(new BackCommand(targetTurtle, parameterOne), oneParameterNeeded)),
