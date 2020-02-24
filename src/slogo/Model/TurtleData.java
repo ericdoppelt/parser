@@ -87,6 +87,16 @@ public class TurtleData {
     this.yCoord.set(yCoord.get() + distance);
   }
 
+  public void setXCoord(double newX){
+    //System.out.println(this.xCoord);
+    this.xCoord.set(newX);
+  }
+
+  public void setYCoord(double newY){
+//    System.out.println(this.yCoord);
+    this.yCoord.set(newY);
+  }
+
   public void rotateTurtleHeading(double angleAmount){
 //    System.out.println(this.yCoord);
     this.headingDirection.set(this.headingDirection.get() + angleAmount);
