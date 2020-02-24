@@ -24,13 +24,13 @@ public class tester extends Application {
         ModelParser modelParser = new ModelParser("English");
         TurtleView myTurtle = new TurtleView(modelParser.getMyTurtle());
         CommandBox myCommandLine = new CommandBox(modelParser, myTurtle);
-
+        InputPanel myButtons = new InputPanel();
         BorderPane mypane = new BorderPane();
 
         //Pane myGroup = new Pane();
         //myGroup.setPrefSize(200,200);
         //myGroup.getChildren().addAll(myTurtle.getTurtle());
-
+        mypane.setTop(myButtons.getInputPanel());
         mypane.setBottom(myCommandLine.getCommandLine());
         mypane.setCenter(myTurtle.getTurtle());
 
