@@ -35,7 +35,7 @@ public class tester extends Application {
         mypane.setCenter(myTurtle.getTurtle());
 
 
-        Scene myScene = new Scene(mypane, 500,500);
+        Scene myScene = new Scene(mypane, 600,600);
 
         primaryStage.setScene(myScene);
         primaryStage.show();
