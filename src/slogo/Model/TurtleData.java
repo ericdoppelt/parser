@@ -1,5 +1,6 @@
 package slogo.Model;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -12,6 +13,8 @@ public class TurtleData {
   private SimpleDoubleProperty xCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty yCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty headingDirection = new SimpleDoubleProperty();
+  private SimpleBooleanProperty penDown = new SimpleBooleanProperty();
+  private SimpleBooleanProperty turtleVisibility = new SimpleBooleanProperty();
   private String turtleID;
 
   private static final int fullRevolution = 360;
@@ -87,6 +90,26 @@ public class TurtleData {
     this.yCoord.set(yCoord.get() + distance);
   }
 
+  public void setXCoord(double newX){
+    //System.out.println(this.xCoord);
+    this.xCoord.set(newX);
+  }
+
+  public void setYCoord(double newY){
+//    System.out.println(this.yCoord);
+    this.yCoord.set(newY);
+  }
+
+  public void setPenStatus(boolean isPenDown){
+//    System.out.println(this.yCoord);
+    this.penDown.set(isPenDown);
+  }
+
+  public void setTurtleVisibility(boolean isTurtleVisible){
+//    System.out.println(this.yCoord);
+    this.turtleVisibility.set(isTurtleVisible);
+  }
+
   public void rotateTurtleHeading(double angleAmount){
 //    System.out.println(this.yCoord);
     this.headingDirection.set(this.headingDirection.get() + angleAmount);
@@ -101,6 +124,30 @@ public class TurtleData {
   public void setTurtleDirection(double angle){
 //    System.out.println(this.yCoord);
     this.headingDirection.set(angle);
+  }
+
+  public int getTurtleVisibility(){
+//    System.out.println(this.yCoord);
+    if(this.turtleVisibility.get()){
+      int turtleIsVisible = 1;
+      return turtleIsVisible;
+    }
+    else{
+      int turtleIsNotVisible = 0;
+      return turtleIsNotVisible;
+    }
+  }
+
+  public int getPenStatus(){
+//    System.out.println(this.yCoord);
+    if(this.penDown.get()){
+      int penDown = 1;
+      return penDown;
+    }
+    else{
+      int penUp = 0;
+      return penUp;
+    }
   }
 
 }
