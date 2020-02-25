@@ -12,7 +12,6 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -37,9 +36,17 @@ public class InputPanel {
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
     private static final String ACCEPTABLE_FILE_EXTENSION = "*.png";
+    private static final String TYPE_OF_FILE_EXTENSION = "PNG";
+    private static final String INITIAL_FILE_DIRECTORY = "user.dir";
     private final FileChooser FILE_CHOOSER = createFileChooser(ACCEPTABLE_FILE_EXTENSION);
 
-    private ImageView myTurtleImageView;
+    private static final String DEFAULT_TURTLE_IMAGE = "turtleImage.png";
+
+    private ColorPicker myBackGroundPicker;
+    private ColorPicker myPenPicker;
+
+    private Image myTurtleImage;
+
 
     HBox allButtons;
 
@@ -53,33 +60,66 @@ public class InputPanel {
     }
 
     private void initButtons() {
+        initValues();
         createColorPickers();
         createLanguageButton();
         createTurtleButton();
     }
 
+    private void initValues() {
+        myCurrentLanguage = DEFAULT_LANGUAGE;
+        myCurrentBackground = DEFAULT_BACKGROUND_COLOR;
+        myCurrentPen = DEFAULT_PEN_COLOR;
+        myTurtleImage = new Image(this.getClass().getClassLoader().getResourceAsStream("turtleImages/turtleImage.png"));
+    }
     private void createLanguageButton() {
-        VBox languageBox = new VBox();
-        languageBox.setAlignment(Pos.CENTER);
 
         Label addedLabel = new Label(myResourceBundle.getString("setLanguage"));
         ComboBox languageButton = new ComboBox(allLanguages);
         languageButton.getSelectionModel().select(DEFAULT_LANGUAGE);
-        languageButton.setOnAction(new EventHandler<ActionEvent>() {
-            //TODO: Implement functionality changing the language
-            @Override
-            public void handle(ActionEvent event) {
-                myCurrentLanguage = (String)languageButton.getValue();
-            }
-        });
+        languageButton.setOnAction(event -> updateLanguage((String)languageButton.getValue()));
+        addVBox(addedLabel, languageButton);
+    }
 
-        languageBox.getChildren().addAll(addedLabel, languageButton);
-        allButtons.getChildren().add(languageBox);
+    private void updateLanguage(String newLanguage) {
+        myCurrentLanguage = newLanguage;
+        System.out.println(myCurrentLanguage);
+        System.out.println(myCurrentBackground);
+        System.out.println(myCurrentPen);
+        System.out.println(myTurtleImage);
+    }
+
+    private void createColorPickers() {
+        myCurrentBackground = DEFAULT_BACKGROUND_COLOR;
+        myBackGroundPicker = createColorPicker(DEFAULT_BACKGROUND_COLOR);
+        myBackGroundPicker.setOnAction(event -> myCurrentBackground = myBackGroundPicker.getValue());
+        createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
+
+        myCurrentPen = DEFAULT_PEN_COLOR;
+        myPenPicker   = createColorPicker(DEFAULT_PEN_COLOR);
+        myPenPicker.setOnAction(event -> myCurrentPen = myPenPicker.getValue());
+        createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
+    }
+
+    //TODO: implement action
+    private void createColorBox(String text, ColorPicker picker) {
+        Label addedLabel = new Label(text);
+        addVBox(addedLabel, picker);
+    }
+
+    private ColorPicker createColorPicker(Color defaultColor) {
+        ColorPicker addedColorPicker = new ColorPicker(defaultColor);
+        return addedColorPicker;
+    }
+
+    private void updateColor(Color instanceColor, Color newColor) {
+        instanceColor = newColor;
+        System.out.println(newColor);
+        System.out.println(instanceColor);
+        System.out.println(myCurrentBackground);
     }
 
     private void createTurtleButton() {
-        VBox turtleBox = new VBox();
-        turtleBox.setAlignment(Pos.CENTER);
 
         Label turtleLabel = new Label(myResourceBundle.getString("setTurtle"));
         Button turtleButton = new Button(myResourceBundle.getString("loadTurtleImage"));
@@ -89,34 +129,23 @@ public class InputPanel {
                 inputFile();
             }
         });
-        turtleBox.getChildren().addAll(turtleLabel, turtleButton);
-        allButtons.getChildren().add(turtleBox);
-    }
-
-    private void createColorPickers() {
-        allButtons.getChildren().add(createColorBox(myResourceBundle.getString("setBackground"), DEFAULT_BACKGROUND_COLOR));
-        allButtons.getChildren().add(createColorBox(myResourceBundle.getString("setPen"), DEFAULT_PEN_COLOR));
-    }
-
-    //TODO: implement action
-    private VBox createColorBox(String text, Color defaultColor) {
-        VBox returnedBox = new VBox();
-        returnedBox.setAlignment(Pos.CENTER);
-        Label addedLabel = new Label(text);
-        ColorPicker addedColorPicker = new ColorPicker(defaultColor);
-
-        addedColorPicker.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-        returnedBox.getChildren().addAll(addedLabel, addedColorPicker);
-        return returnedBox;
+        addVBox(turtleLabel, turtleButton);
     }
 
     private FileChooser createFileChooser(String extension) {
         FileChooser returnedChooser = new FileChooser();
         returnedChooser.setTitle(myResourceBundle.getString("turtleImageChooser"));
-        returnedChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter("PNG", extension));
-        returnedChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+        returnedChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(TYPE_OF_FILE_EXTENSION, extension));
+        returnedChooser.setInitialDirectory(new File(System.getProperty(INITIAL_FILE_DIRECTORY)));
         return returnedChooser;
+    }
+
+    private VBox addVBox(Label label, Node input) {
+        VBox returnedBox = new VBox();
+        returnedBox.setAlignment(Pos.CENTER);
+        returnedBox.getChildren().addAll(label, input);
+        allButtons.getChildren().add(returnedBox);
+        return returnedBox;
     }
 
     private void inputFile() {
@@ -125,7 +154,22 @@ public class InputPanel {
         if (turtleFile == null) {
             return;
         }
-        Image turtleImage = new Image(turtleFile.toURI().toString());
-        myTurtleImageView = new ImageView(turtleImage);
+        myTurtleImage = new Image(turtleFile.toURI().toString());
+    }
+
+    public Color getBackgroundColor() {
+        return myCurrentBackground;
+    }
+
+    public Color getPenColor()  {
+        return myCurrentPen;
+    }
+
+    public String getLanguage() {
+        return myCurrentLanguage;
+    }
+
+    public Image getTurtleImage() {
+        return myTurtleImage;
     }
 }
