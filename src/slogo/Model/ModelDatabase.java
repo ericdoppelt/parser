@@ -1,15 +1,20 @@
 package slogo.Model;
 
 import javafx.application.Platform;
+import javafx.beans.binding.ListBinding;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ModelDatabase {
 
-  private List<TurtleData> turtleList = new ArrayList<>();
+  private SimpleObjectProperty<List<TurtleData>> turtleListProperty = new SimpleObjectProperty<>(FXCollections.observableArrayList());;
   private SimpleStringProperty commandProperty;
 
   // regular expression representing any whitespace characters (space, tab, or newline)
@@ -63,13 +68,13 @@ public class ModelDatabase {
 
     public ModelDatabase(){
       TurtleData originTurtle = new TurtleData("1",0,0,0);
-      turtleList.add(originTurtle);
+      turtleListProperty.getValue().add(originTurtle);
     }
 
-    public List<TurtleData> getTurtleList(){return turtleList;};
+    public List<TurtleData> getTurtleListProperty(){return turtleListProperty.get();};
 
     public TurtleData getTurtle(String id){
-      for(TurtleData turtle: turtleList){
+      for(TurtleData turtle: turtleListProperty.get()){
         if (turtle.getTurtleID().equals(id)){
           return turtle;
         }
@@ -96,7 +101,7 @@ public class ModelDatabase {
 
     public void makeNewTurtle(String ID, double initX, double initY, double initHeading){
       TurtleData newTurtle = new TurtleData(ID, initX, initY, initHeading);
-      turtleList.add(newTurtle);
+      turtleListProperty.getValue().add(newTurtle);
     }
 
 }
