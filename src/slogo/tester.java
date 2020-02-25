@@ -45,7 +45,7 @@ public class tester extends Application {
         mypane.setBottom(myCommandLine.getCommandLine());
         mypane.setCenter(p);
 
-        Scene myScene = new Scene(mypane, 500,500);
+        Scene myScene = new Scene(mypane, 600,600);
 
         primaryStage.setScene(myScene);
         primaryStage.show();
