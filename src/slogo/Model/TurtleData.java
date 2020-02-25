@@ -3,8 +3,10 @@ package slogo.Model;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,8 +22,8 @@ public class TurtleData {
   private static final int fullRevolution = 360;
   private static final int zeroAngle = 0;
   private List<Collection> historyList;
-  private ObservableList<List<Double>> coordList;
-  private List<Double> coord;
+  private ObservableList<List<Double>> coordList = FXCollections.observableArrayList();
+  private List<Double> coord = new ArrayList<>();
   private SimpleObjectProperty<ObservableList<List<Double>>> coordHistory;
 
   public TurtleData(String ID, double initX, double initY, double initHeading){
@@ -30,10 +32,9 @@ public class TurtleData {
     headingDirection.set(initHeading);
     turtleID = ID;
 
-//    coord.add(initX);
-//    coord.add(initY);
-//    coordList.add(coord);
-//    coordHistory.set(coordList);
+    coord.add(initX);
+    coord.add(initY);
+    coordList.add(coord);
   }
 
   public double getTurtleX(){
@@ -50,6 +51,14 @@ public class TurtleData {
 
   public SimpleDoubleProperty getTurtleYProperty(){
     return this.yCoord;
+  }
+
+  public SimpleBooleanProperty getPenDownProperty(){
+    return this.penDown;
+  }
+
+  public SimpleDoubleProperty directionProperty() {
+    return headingDirection;
   }
 
   public double getTurtleHeading(){
@@ -70,14 +79,14 @@ public class TurtleData {
   }
 
   public void addCoord(double x, double y){
+    coord = new ArrayList<>();
     coord.add(x);
     coord.add(y);
     coordList.add(coord);
-    coordHistory.set(coordList);
   }
 
-  public SimpleObjectProperty<ObservableList<List<Double>>> getCoordHistory(){
-    return coordHistory;
+  public ObservableList<List<Double>> getCoordHistory(){
+    return coordList;
   }
 
   public void moveXCoord(double distance){

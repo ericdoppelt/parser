@@ -55,6 +55,8 @@ public class TowardsCommand extends Command {
     System.out.println("return " + returnArgValue);
     //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
+    // TODO THIS IS TESTER CODE
+    turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
 
   }
 
