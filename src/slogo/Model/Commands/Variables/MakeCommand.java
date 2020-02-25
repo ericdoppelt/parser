@@ -1,18 +1,16 @@
 package slogo.Model.Commands.Variables;
 
 import slogo.Model.Commands.Command;
-import slogo.Model.variableData;
-
-import java.util.HashMap;
+import slogo.Model.VariableData;
 import java.util.Map;
 
-public class makeCommand extends Command {
+public class MakeCommand extends Command {
 
     private Map<String, Integer> variableMap;
     private String variableName;
     private Integer variableValue;
 
-    public makeCommand(String name, Integer value, variableData oldMap){
+    public MakeCommand(String name, Integer value, VariableData oldMap){
         variableName = name;
         variableValue = value;
         variableMap = oldMap.getVariableMap();

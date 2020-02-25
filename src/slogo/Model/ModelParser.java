@@ -42,7 +42,7 @@ public class ModelParser {
   private static final String RESOURCES_PACKAGE = "resources/languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
-  private TurtleData turtle = new TurtleData("yeet",0,0,45);
+  private TurtleData turtle;
   private int argumentThreshold;
 
   public ModelParser(String language){
@@ -95,7 +95,7 @@ public class ModelParser {
       System.out.println("ERROR: Unable to read input file " + e.getMessage());
 
       //potential error pop-up code
-//      String errorMessage = "ERROR: Unable to read input file " + e.getMessage();
+//      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
 //      Alert alert = new Alert(Alert.AlertType.ERROR);
 //      alert.setTitle("Error");
 //      alert.setHeaderText(errorMessage);
