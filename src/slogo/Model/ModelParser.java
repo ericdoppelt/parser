@@ -13,6 +13,9 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
+
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import slogo.Model.CommandInfrastructure.CommandFactory;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 
@@ -90,6 +93,13 @@ public class ModelParser {
     catch (URISyntaxException | IOException e) {
       // NOT ideal way to handle exception, but this is just a simple test program
       System.out.println("ERROR: Unable to read input file " + e.getMessage());
+
+      //potential error pop-up code
+//      String errorMessage = "ERROR: Unable to read input file " + e.getMessage();
+//      Alert alert = new Alert(Alert.AlertType.ERROR);
+//      alert.setTitle("Error");
+//      alert.setHeaderText(errorMessage);
+//      Platform.runLater(alert::showAndWait);
       return "";
     }
   }
