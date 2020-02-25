@@ -3,10 +3,10 @@ package slogo.Model;
 import java.util.HashMap;
 import java.util.Map;
 
-public class variableData {
+public class VariableData {
     private Map<String, Integer> variableMap;
 
-    public variableData(){
+    public VariableData(){
         variableMap = new HashMap<>();
     }
 
