@@ -1,18 +1,15 @@
 package slogo;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
-
-import javax.swing.border.Border;
-import java.awt.*;
+import slogo.View.CommandBox;
+import slogo.View.InfoPanel;
+import slogo.View.InputPanel;
+import slogo.View.TurtleView;
 
 /**
  * Tester class
@@ -26,14 +23,17 @@ public class tester extends Application {
         CommandBox myCommandLine = new CommandBox(modelParser, myTurtle);
         InputPanel myButtons = new InputPanel();
         BorderPane mypane = new BorderPane();
+        InfoPanel myInfo = new InfoPanel();
 
         //Pane myGroup = new Pane();
         //myGroup.setPrefSize(200,200);
         //myGroup.getChildren().addAll(myTurtle.getTurtle());
-        mypane.setTop(myButtons.getInputPanel());
-        mypane.setBottom(myCommandLine.getCommandLine());
-        mypane.setCenter(myTurtle.getTurtle());
+        VBox commandAndInput = new VBox();
+        commandAndInput.getChildren().addAll(myButtons.getInputPanel(), myCommandLine.getCommandLine());
 
+        mypane.setBottom(commandAndInput);
+        mypane.setCenter(myTurtle.getTurtle());
+        mypane.setRight(myInfo.getInfoPanel());
 
         Scene myScene = new Scene(mypane, 600,600);
 

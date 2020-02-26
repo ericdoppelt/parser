@@ -1,4 +1,4 @@
-package slogo;
+package slogo.View;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -24,39 +25,55 @@ import java.util.ResourceBundle;
 
 public class InputPanel {
 
-    private static final Color DEFAULT_BACKGROUND_COLOR = Color.CORAL;
-    private Color myCurrentBackground;
+    private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
+    private static final Color DEFAULT_BACKGROUND_COLOR = Color.CORAL;
     private static final Color DEFAULT_PEN_COLOR = Color.PURPLE;
-    private Color myCurrentPen;
 
     private static final ObservableList allLanguages = FXCollections.observableArrayList("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
     private static final String DEFAULT_LANGUAGE = "English";
-    private String myCurrentLanguage;
-    private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
     private static final String ACCEPTABLE_FILE_EXTENSION = "*.png";
     private static final String TYPE_OF_FILE_EXTENSION = "PNG";
     private static final String INITIAL_FILE_DIRECTORY = "user.dir";
     private final FileChooser FILE_CHOOSER = createFileChooser(ACCEPTABLE_FILE_EXTENSION);
 
-    private static final String DEFAULT_TURTLE_IMAGE = "turtleImage.png";
+    private static final String DEFAULT_TURTLE_IMAGE = "turtleImages/turtleImage.png";
 
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
 
+    private String myCurrentLanguage;
+    private Color myCurrentPen;
+    private Color myCurrentBackground;
     private Image myTurtleImage;
 
-
-    HBox allButtons;
+    HBox myButtons;
 
     public InputPanel() {
-        allButtons = new HBox();
+        myButtons = new HBox();
         initButtons();
+        formatButtons();
     }
 
     public Node getInputPanel() {
-        return allButtons;
+        return myButtons;
+    }
+
+    public Color getBackgroundColor() {
+        return myCurrentBackground;
+    }
+
+    public Color getPenColor()  {
+        return myCurrentPen;
+    }
+
+    public String getLanguage() {
+        return myCurrentLanguage;
+    }
+
+    public Image getTurtleImage() {
+        return myTurtleImage;
     }
 
     private void initButtons() {
@@ -66,11 +83,12 @@ public class InputPanel {
         createTurtleButton();
     }
 
+
     private void initValues() {
         myCurrentLanguage = DEFAULT_LANGUAGE;
         myCurrentBackground = DEFAULT_BACKGROUND_COLOR;
         myCurrentPen = DEFAULT_PEN_COLOR;
-        myTurtleImage = new Image(this.getClass().getClassLoader().getResourceAsStream("turtleImages/turtleImage.png"));
+        myTurtleImage = new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE));
     }
     private void createLanguageButton() {
 
@@ -83,10 +101,6 @@ public class InputPanel {
 
     private void updateLanguage(String newLanguage) {
         myCurrentLanguage = newLanguage;
-        System.out.println(myCurrentLanguage);
-        System.out.println(myCurrentBackground);
-        System.out.println(myCurrentPen);
-        System.out.println(myTurtleImage);
     }
 
     private void createColorPickers() {
@@ -110,13 +124,6 @@ public class InputPanel {
     private ColorPicker createColorPicker(Color defaultColor) {
         ColorPicker addedColorPicker = new ColorPicker(defaultColor);
         return addedColorPicker;
-    }
-
-    private void updateColor(Color instanceColor, Color newColor) {
-        instanceColor = newColor;
-        System.out.println(newColor);
-        System.out.println(instanceColor);
-        System.out.println(myCurrentBackground);
     }
 
     private void createTurtleButton() {
@@ -144,7 +151,7 @@ public class InputPanel {
         VBox returnedBox = new VBox();
         returnedBox.setAlignment(Pos.CENTER);
         returnedBox.getChildren().addAll(label, input);
-        allButtons.getChildren().add(returnedBox);
+        myButtons.getChildren().add(returnedBox);
         return returnedBox;
     }
 
@@ -157,19 +164,9 @@ public class InputPanel {
         myTurtleImage = new Image(turtleFile.toURI().toString());
     }
 
-    public Color getBackgroundColor() {
-        return myCurrentBackground;
-    }
-
-    public Color getPenColor()  {
-        return myCurrentPen;
-    }
-
-    public String getLanguage() {
-        return myCurrentLanguage;
-    }
-
-    public Image getTurtleImage() {
-        return myTurtleImage;
+    private void formatButtons() {
+        for (Node button : myButtons.getChildren()) {
+            myButtons.setHgrow(button, Priority.ALWAYS);
+        }
     }
 }

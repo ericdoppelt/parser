@@ -1,4 +1,4 @@
-package slogo;
+package slogo.View;
 
 
 import javafx.beans.value.ChangeListener;
