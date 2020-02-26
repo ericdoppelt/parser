@@ -29,7 +29,7 @@ public class InputView {
 
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
-    private static final Color DEFAULT_BACKGROUND_COLOR = Color.CORAL;
+    private static final Color DEFAULT_BACKGROUND_COLOR = Color.ANTIQUEWHITE;
     private static final Color DEFAULT_PEN_COLOR = Color.web("0xcc8099ff");
 
     private static final ObservableList allLanguages = FXCollections.observableArrayList("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
@@ -85,9 +85,14 @@ public class InputView {
 
     private void initValues() {
         myCurrentLanguage = DEFAULT_LANGUAGE;
+        //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
+        try {
+            myTurtleImage = new SimpleObjectProperty<>(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+        } catch (Exception e) {
 
-        myTurtleImage = new SimpleObjectProperty<>(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+        }
     }
+
     private void createLanguageButton() {
 
         Label addedLabel = new Label(myResourceBundle.getString("setLanguage"));
@@ -105,11 +110,10 @@ public class InputView {
         myBackGroundPicker = createColorPicker(DEFAULT_BACKGROUND_COLOR);
         createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
 
-        myPenPicker   = createColorPicker(DEFAULT_PEN_COLOR);
+        myPenPicker = createColorPicker(DEFAULT_PEN_COLOR);
         createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
     }
 
-    //TODO: implement action
     private void createColorBox(String text, ColorPicker picker) {
         Label addedLabel = new Label(text);
         addVBox(addedLabel, picker);
@@ -151,7 +155,7 @@ public class InputView {
 
     private void inputFile() {
         File turtleFile = FILE_CHOOSER.showOpenDialog(new Stage());
-        //TODO: Handle this error
+        //TODO: Handle this error if the Turtle File selected is null
         if (turtleFile == null) {
             return;
         }
