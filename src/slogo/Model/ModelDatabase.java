@@ -104,4 +104,6 @@ public class ModelDatabase {
       turtleListProperty.getValue().add(newTurtle);
     }
 
+    //Todo Remove this testerMethod
+
 }
