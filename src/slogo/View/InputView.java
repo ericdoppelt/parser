@@ -1,7 +1,6 @@
 package slogo.View;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,7 +44,7 @@ public class InputView {
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
     private ObjectProperty<Image> myTurtleImage;
-    private String myCurrentLanguage;
+    private StringProperty myCurrentLanguage;
 
     HBox myButtons;
 
@@ -59,15 +58,17 @@ public class InputView {
         return myButtons;
     }
 
-    public ColorPicker getBackgroundColor() {
-        return myBackGroundPicker;
+    public Color getBackgroundColorValue() {
+        return myBackGroundPicker.getValue();
     }
 
-    public ColorPicker getPenColor()  {
-        return myPenPicker;
+    public Property getBackgroundProperty() {
+        return myBackGroundPicker.valueProperty();
     }
 
-    public String getLanguage() {
+    public Property<Color> getPenPropertyColor()  { return myPenPicker.valueProperty(); }
+
+    public StringProperty getLanguage() {
         return myCurrentLanguage;
     }
 
@@ -84,7 +85,7 @@ public class InputView {
 
 
     private void initValues() {
-        myCurrentLanguage = DEFAULT_LANGUAGE;
+        myCurrentLanguage = new SimpleStringProperty(DEFAULT_LANGUAGE);
         //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
         try {
             myTurtleImage = new SimpleObjectProperty<>(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
@@ -103,7 +104,7 @@ public class InputView {
     }
 
     private void updateLanguage(String newLanguage) {
-        myCurrentLanguage = newLanguage;
+        myCurrentLanguage.setValue(newLanguage);
     }
 
     private void createColorPickers() {

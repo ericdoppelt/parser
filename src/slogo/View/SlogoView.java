@@ -6,6 +6,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import slogo.Model.ModelParser;
 
@@ -16,6 +17,8 @@ public class SlogoView extends Application {
     private static final int SCENE_HEIGHT = 600;
 
     private static final String MODELPARSER_LANGUAGE = "English";
+
+    private static final String STYLESHEET_FILE = "default.css";
 
     private BorderPane myBorderPane;
     private ModelParser myModelParser;
@@ -50,6 +53,8 @@ public class SlogoView extends Application {
 
         VBox commandAndInput = new VBox();
         commandAndInput.getChildren().addAll(myInputView.getInputPanel(), myCommandLine.getCommandLine());
+        BackgroundFill commandBackground = new BackgroundFill(Color.AZURE, CornerRadii.EMPTY, Insets.EMPTY);
+        commandAndInput.setBackground(new Background(commandBackground));
 
         myBorderPane = new BorderPane();
         myBorderPane.setBottom(commandAndInput);
@@ -59,6 +64,8 @@ public class SlogoView extends Application {
 
     private void initStage(Stage primaryStage) {
         Scene myScene = new Scene(myBorderPane, SCENE_WIDTH,SCENE_HEIGHT);
+        myScene.getStylesheets()
+                .add(getClass().getResource("/" + STYLESHEET_FILE).toExternalForm());
         primaryStage.setScene(myScene);
         primaryStage.show();
     }
@@ -72,16 +79,15 @@ public class SlogoView extends Application {
     // Inspiration from https://stackoverflow.com/questions/33999728/binding-colorpicker-in-javafx-to-label-background-property
     // TODO: once we understand bindings better, refactor
     private void createBindableBackground() {
-        ObjectProperty<Background> backgroundProperty = myBackgroundPane.backgroundProperty();
-        backgroundProperty.bind(Bindings.createObjectBinding(() -> {
-            BackgroundFill fill = new BackgroundFill(myInputView.getBackgroundColor().getValue(), CornerRadii.EMPTY, Insets.EMPTY);
+        myBackgroundPane.backgroundProperty().bind(Bindings.createObjectBinding(() -> {
+            BackgroundFill fill = new BackgroundFill(myInputView.getBackgroundColorValue(), CornerRadii.EMPTY, Insets.EMPTY);
             return new Background(fill);
-        }, myInputView.getBackgroundColor().valueProperty()));
+        }, myInputView.getBackgroundProperty()));
     }
 
 
     private void createBindablePen() {
-        myTurtleView.getPenColorProperty().bind(myInputView.getPenColor().valueProperty());
+        myTurtleView.getPenColorProperty().bind(myInputView.getPenPropertyColor());
         myTurtleView.getPenColorProperty().getValue();
     }
 
