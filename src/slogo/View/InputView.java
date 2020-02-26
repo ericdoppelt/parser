@@ -28,7 +28,7 @@ public class InputView {
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.CORAL;
-    private static final Color DEFAULT_PEN_COLOR = Color.PURPLE;
+    private static final Color DEFAULT_PEN_COLOR = Color.web("0xcc8099ff");
 
     private static final ObservableList allLanguages = FXCollections.observableArrayList("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
     private static final String DEFAULT_LANGUAGE = "English";

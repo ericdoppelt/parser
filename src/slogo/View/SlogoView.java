@@ -28,8 +28,8 @@ public class SlogoView extends Application {
     public void start(Stage primaryStage) throws Exception {
         initModel();
         initView();
-        bindProperties();
         initStage(primaryStage);
+        bindProperties();
     }
 
     private void initModel() {
@@ -75,8 +75,10 @@ public class SlogoView extends Application {
 
 
     private void createBindablePen() {
-
-        Bindings.bindBidirectional(myTurtleView.getColorProperty(), myInputView.getPenColor().valueProperty());
+        System.out.println(myTurtleView.getPenColorProperty());
+        myTurtleView.getPenColorProperty().bind(myInputView.getPenColor().valueProperty());
+        myTurtleView.getPenColorProperty().getValue();
+        System.out.println(myTurtleView.getPenColorProperty());
     }
 }
 
