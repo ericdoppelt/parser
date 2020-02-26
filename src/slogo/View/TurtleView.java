@@ -42,8 +42,7 @@ public class TurtleView {
 
     private double heightOffset;
     private double widthOffset;
-    private ObjectProperty<Color> penColor;
-    private final Color DEFAULT_PEN_COLOR = Color.TURQUOISE;
+    private ObjectProperty<Color> penColor= new SimpleObjectProperty<>(Color.BLACK);;
     private double lineWidth = 2.0;
 
     /**
@@ -53,21 +52,10 @@ public class TurtleView {
      */
     public TurtleView(TurtleData turtle, Pane pane){
         myBackground = pane;
-        System.out.println(turtle.getTurtleX());
         setUpTurtle(turtle, pane);
         previousPosition = setUpInitialPosition();
         bindPositions(turtle.getCoordHistory());
         bindProperties(turtle);
-
-        penColor = new SimpleObjectProperty<Color>(DEFAULT_PEN_COLOR);
-        penColor.addListener(new ChangeListener<Color>() {
-            @Override
-            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
-                System.out.println("CHANGE");
-                System.out.println(oldValue);
-                System.out.println(newValue);
-            }
-        });
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
@@ -102,11 +90,8 @@ public class TurtleView {
 
     private void addPath(Line newPath){
         newPath.setStroke(penColor.getValue());
-        System.out.println(penColor.getValue());
-
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
-        System.out.println(penColor.getValue());
     }
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
