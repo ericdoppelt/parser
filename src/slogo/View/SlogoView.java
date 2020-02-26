@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
 
 
@@ -18,6 +19,7 @@ public class SlogoView extends Application {
     private static final String MODELPARSER_LANGUAGE = "English";
 
     private BorderPane myBorderPane;
+    private ModelDatabase myModelDatabse;
     private ModelParser myModelParser;
     private InputView myInputView;
     private Pane myBackgroundPane;
@@ -38,12 +40,12 @@ public class SlogoView extends Application {
     }
 
     private void initModel() {
-        myModelParser = new ModelParser(MODELPARSER_LANGUAGE);
+        myModelDatabse = new ModelDatabase();
     }
 
     private void initView() {
         myBackgroundPane = new Pane();
-        myTurtleView = new TurtleView(myModelParser.getMyTurtle(), myBackgroundPane);
+        myTurtleView = new TurtleView(myModelDatabse.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
         InfoView myInfo = new InfoView();
