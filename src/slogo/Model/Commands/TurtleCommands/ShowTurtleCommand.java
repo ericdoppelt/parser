@@ -26,7 +26,7 @@ public class ShowTurtleCommand extends Command {
    */
   @Override
   public void execute() {
-    turtleObject.setPenStatus(isTurtleVisible);
+    turtleObject.setTurtleVisibility(isTurtleVisible);
     System.out.println("return " + returnArgValue);
     //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());

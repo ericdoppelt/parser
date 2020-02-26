@@ -16,7 +16,7 @@ public class TurtleData {
   private SimpleDoubleProperty yCoord = new SimpleDoubleProperty();
   private SimpleDoubleProperty headingDirection = new SimpleDoubleProperty();
   private SimpleBooleanProperty penDown = new SimpleBooleanProperty();
-  private SimpleBooleanProperty turtleVisibility = new SimpleBooleanProperty();
+  private SimpleBooleanProperty turtleVisibility = new SimpleBooleanProperty(true);
   private String turtleID;
 
   private static final int fullRevolution = 360;
@@ -59,6 +59,10 @@ public class TurtleData {
 
   public SimpleDoubleProperty directionProperty() {
     return headingDirection;
+  }
+
+  public SimpleBooleanProperty turtleVisibility() {
+    return turtleVisibility;
   }
 
   public double getTurtleHeading(){
