@@ -1,5 +1,7 @@
 package slogo.View;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,13 +40,12 @@ public class InputView {
     private static final String INITIAL_FILE_DIRECTORY = "user.dir";
     private final FileChooser FILE_CHOOSER = createFileChooser(ACCEPTABLE_FILE_EXTENSION);
 
-    private static final String DEFAULT_TURTLE_IMAGE = "turtleImages/turtleImage.png";
+    private static final String DEFAULT_TURTLE_IMAGE = "turtleImages/perfectTurtle.png";
 
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
-
+    private ObjectProperty<Image> myTurtleImage;
     private String myCurrentLanguage;
-    private Image myTurtleImage;
 
     HBox myButtons;
 
@@ -70,7 +71,7 @@ public class InputView {
         return myCurrentLanguage;
     }
 
-    public Image getTurtleImage() {
+    public ObjectProperty<Image> getTurtleImage() {
         return myTurtleImage;
     }
 
@@ -85,7 +86,7 @@ public class InputView {
     private void initValues() {
         myCurrentLanguage = DEFAULT_LANGUAGE;
 
-        myTurtleImage = new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE));
+        myTurtleImage = new SimpleObjectProperty<>(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
     }
     private void createLanguageButton() {
 
@@ -154,7 +155,7 @@ public class InputView {
         if (turtleFile == null) {
             return;
         }
-        myTurtleImage = new Image(turtleFile.toURI().toString());
+        myTurtleImage.setValue(new Image(turtleFile.toURI().toString()));
     }
 
     private void formatButtons() {

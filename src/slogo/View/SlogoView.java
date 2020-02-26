@@ -61,6 +61,7 @@ public class SlogoView extends Application {
     private void bindProperties() {
         createBindableBackground();
         createBindablePen();
+        createBindableImage();
     }
 
     // Inspiration from https://stackoverflow.com/questions/33999728/binding-colorpicker-in-javafx-to-label-background-property
@@ -75,10 +76,12 @@ public class SlogoView extends Application {
 
 
     private void createBindablePen() {
-        System.out.println(myTurtleView.getPenColorProperty());
         myTurtleView.getPenColorProperty().bind(myInputView.getPenColor().valueProperty());
         myTurtleView.getPenColorProperty().getValue();
-        System.out.println(myTurtleView.getPenColorProperty());
+    }
+
+    private void createBindableImage() {
+        myTurtleView.getImageProperty().bind(myInputView.getTurtleImage());
     }
 }
 
