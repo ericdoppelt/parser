@@ -15,11 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class TurtleView {
     public static final int Y_COORDINATE = 1;
     public static final double ANGLE_OFFSET = 90.0;
 
-    private static final String DEFAULT_IMAGE_PATH = "resources/languages/perfectTurtle.png";
+    private static final String DEFAULT_IMAGE_PATH = "perfectTurtle.png";
 
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
@@ -102,10 +101,9 @@ public class TurtleView {
     }
 
     private void addPath(Line newPath){
-        System.out.println("FILLCOLOR" + penColor.getValue());
-        newPath.setFill((Paint)penColor.getValue());
+        newPath.setStroke(penColor.getValue());
         System.out.println(penColor.getValue());
-        
+
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
         System.out.println(penColor.getValue());
@@ -142,10 +140,9 @@ public class TurtleView {
 
     /**
      * Method that allows setting a new image for the turtle
-     * @param newImage: New Image File to be used to replace default turtle image
      */
-    public void setNewImage(File newImage){
-        turtleView.setImage(getImage(newImage.toURI().toString()));
+    public ObjectProperty<Image> getImageProperty(){
+        return turtleView.imageProperty();
     }
 
     /**
