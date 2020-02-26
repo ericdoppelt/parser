@@ -17,9 +17,12 @@ public class CommandProducer {
   private static final int zeroParametersNeeded = 0;
   private static final int oneParametersNeeded = 1;
   private static final int twoParametersNeeded = 2;
+  private static final int controlParametersNeeded = 2;
 
-  public CommandProducer(TurtleData turtleObject){
+
+  public CommandProducer(TurtleData turtleObject, CommandFactory factory){
     turtle = turtleObject;
+    commandFactory = factory;
   }
 
   /**
@@ -31,31 +34,32 @@ public class CommandProducer {
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
       System.out.println("BeforeA" + argStack);
       System.out.println("BeforeC" + commStack);
-      commandFactory = new CommandFactory(commStack.pop().toString(), turtle);
-      double parametersNeeded = commandFactory.getAmountOfParametersNeeded();
+      double parametersNeeded = commandFactory.getAmountOfParametersNeeded(commStack.peek().toString());
       Command newCommand = null;
       if(parametersNeeded == zeroParametersNeeded){
-        newCommand = commandFactory.makeZeroParameterCommand();
+        newCommand = commandFactory.makeZeroParameterCommand(commStack.pop().toString());
       }
       else if(parametersNeeded == oneParametersNeeded) {
         Integer firstParameter = Integer.parseInt(argStack.pop().toString());
-        newCommand = commandFactory.makeOneParameterCommand(firstParameter);
+        newCommand = commandFactory.makeOneParameterCommand(commStack.pop().toString(), firstParameter);
       }
       else if (parametersNeeded == twoParametersNeeded){
         Integer secondParameter = Integer.parseInt(argStack.pop().toString()); //must be in this order because the second parameter is popped off first
         Integer firstParameter = Integer.parseInt(argStack.pop().toString());
-        newCommand = commandFactory.makeTwoParameterCommand(firstParameter, secondParameter);
+        newCommand = commandFactory.makeTwoParameterCommand(commStack.pop().toString(), firstParameter, secondParameter);
       }
-      new CommandExecuter(newCommand);
+//      Number returnValue =
+      newCommand.execute(); //change values to return a value
       argumentRunningTotal--;
 
       if(commStack.size() == 0){
         break;
       }
       //CommandFactory nextCommandFactory = new CommandFactory(commStack.peek().toString(), turtle);
-      if(argStack.size() <= argumentRunningTotal){
+      else if(argStack.size() <= argumentRunningTotal){
         //System.out.println("return" + newCommand.returnArgValue());
         argStack.push(newCommand.returnArgValue());
+//        argStack.push(returnValue);
       }
       System.out.println("AfterA" + argStack);
       System.out.println("AfterC" + commStack);
