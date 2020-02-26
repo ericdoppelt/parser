@@ -17,8 +17,8 @@ public class Main {
     //ModelDatabase m = new ModelDatabase();
     ModelParser modelParser = new ModelParser("English");
 //    String userInput = "fd sum 90 sum 50 fd 90 sum 70 - 80 50";
-    String userInput = "Towards 50 40";
-    modelParser.parseText(Arrays.asList(userInput.split(WHITESPACE)));
+    String userInput = "fd 50 repeat 5 [ fd 50 fd 50 ] repeat 5 [ fd 50 fd 50 ]";
+    modelParser.initializeNewParserText(Arrays.asList(userInput.split(WHITESPACE)));
 
 
 

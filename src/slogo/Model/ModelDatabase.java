@@ -1,16 +1,11 @@
 package slogo.Model;
 
+import java.util.List;
 import javafx.application.Platform;
-import javafx.beans.binding.ListBinding;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ModelDatabase {
 
@@ -19,46 +14,6 @@ public class ModelDatabase {
 
   // regular expression representing any whitespace characters (space, tab, or newline)
   private String language;
-
-  // some examples to test for matching
-//  private List<String> examples = List.of(
-//      "",
-//      "# foo",
-//      "foo #",
-//      "#",
-//      "fd",
-//      "FD",
-//      "forwardd",
-//      "equalp",
-//      "equal?",
-//      "equal??",
-//      "+",
-//      "SuM",
-//      "-",
-//      "*",
-//      "/",
-//      "%",
-//      "~",
-//      "+not",
-//      "not+",
-//      "++",
-//      "+*+",
-//      "or",
-//      "FOR",
-//      "allOrNothing",
-//      "all_or_nothing",
-//      "allOr_nothing?",
-//      "allOr?nothing_",
-//      ":allornothing",
-//      "PI",
-//      "90",
-//      "9.09",
-//      "9.0.0",
-//      "[",
-//      "]",
-//      "(",
-//      ")"
-//  );
 
   /**
    * Main Database for instantiating turtles and parsing data
