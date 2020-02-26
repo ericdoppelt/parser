@@ -19,13 +19,13 @@ import java.util.List;
 
 public class InfoView {
 
-    private Map<String, Integer> temporaryVars = getTempVars();
-    private VBox myVarsLabels;
+    private Map<String, Integer> myVariables = getTempVars();
+    private VBox myVariableLabels;
 
-    private List<String> temporaryHistory = getTempHistory();
+    private List<String> myHistory = getTempHistory();
     private VBox myHistoryLabels;
 
-    private Map<String, String> temporaryCommands;
+    private Map<String, String> myCommands;
     private VBox myCommandsLabels;
 
     private VBox infoPanel;
@@ -68,7 +68,7 @@ public class InfoView {
         commandToggle.setOnAction(event -> {
         });
         variableToggle.setOnAction(event -> {
-            information.setContent(myVarsLabels);
+            information.setContent(myVariableLabels);
         });
     }
 
@@ -127,7 +127,7 @@ public class InfoView {
 
     private void setHistoryInfo() {
         myHistoryLabels = new VBox();
-        for (String s : temporaryHistory) {
+        for (String s : myHistory) {
             HBox labelWrapper = new HBox();
             Label tempInfo = new Label();
             tempInfo.setText(s);
@@ -139,14 +139,14 @@ public class InfoView {
     }
 
     private void setVariableInfo() {
-        myVarsLabels = new VBox();
-        for (String s : temporaryVars.keySet()) {
+        myVariableLabels = new VBox();
+        for (String s : myVariables.keySet()) {
             HBox labelWrapper = new HBox();
             Label tempInfo = new Label();
-            tempInfo.setText(s + ": " + temporaryVars.get(s));
+            tempInfo.setText(s + ": " + myVariables.get(s));
             labelWrapper.getChildren().add(tempInfo);
             labelWrapper.setHgrow(tempInfo, Priority.ALWAYS);
-            myVarsLabels.getChildren().add(labelWrapper);
+            myVariableLabels.getChildren().add(labelWrapper);
         }
     }
 
