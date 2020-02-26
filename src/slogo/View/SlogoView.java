@@ -12,6 +12,11 @@ import slogo.Model.ModelParser;
 
 public class SlogoView extends Application {
 
+    private static final int SCENE_WIDTH = 1000;
+    private static final int SCENE_HEIGHT = 600;
+
+    private static final String MODELPARSER_LANGUAGE = "English";
+
     private BorderPane myBorderPane;
     private ModelParser myModelParser;
     private InputView myInputView;
@@ -33,7 +38,7 @@ public class SlogoView extends Application {
     }
 
     private void initModel() {
-        myModelParser = new ModelParser("English");
+        myModelParser = new ModelParser(MODELPARSER_LANGUAGE);
     }
 
     private void initView() {
@@ -53,7 +58,7 @@ public class SlogoView extends Application {
     }
 
     private void initStage(Stage primaryStage) {
-        Scene myScene = new Scene(myBorderPane, 600,600);
+        Scene myScene = new Scene(myBorderPane, SCENE_WIDTH,SCENE_HEIGHT);
         primaryStage.setScene(myScene);
         primaryStage.show();
     }
