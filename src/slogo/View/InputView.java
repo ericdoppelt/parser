@@ -1,6 +1,9 @@
 package slogo.View;
 
 import javafx.beans.property.*;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,10 +11,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -21,10 +21,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 
 public class InputView {
+
 
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
@@ -84,13 +87,19 @@ public class InputView {
     }
 
 
-    private void initValues() {
+    private void initValues() throws TurtleException {
         myCurrentLanguage = new SimpleStringProperty(DEFAULT_LANGUAGE);
+        myTurtleImage = new SimpleObjectProperty<>();
         //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
         try {
-            myTurtleImage = new SimpleObjectProperty<>(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+            myTurtleImage.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
         } catch (Exception e) {
-
+            String errorMessage = "INVALID TURTLE";
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(errorMessage);
+            Platform.runLater(alert::showAndWait);
+            inputFile();
         }
     }
 

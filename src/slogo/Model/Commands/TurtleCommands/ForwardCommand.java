@@ -43,8 +43,8 @@ public class ForwardCommand extends Command {
 
     // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
-    //System.out.println("turtle X " + turtleObject.getTurtleX());
-    //System.out.println("turtle Y " + turtleObject.getTurtleY());
+    System.out.println("turtle X " + turtleObject.getTurtleX());
+    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }
 

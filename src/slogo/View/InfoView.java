@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -13,13 +14,23 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.List;
 
 public class InfoView {
 
+    private Map<String, Integer> temporaryVars = getTempVars();
+    private VBox myVarsLabels;
+
+    private List<String> temporaryHistory = getTempHistory();
+    private VBox myHistoryLabels;
+
+    private Map<String, String> temporaryCommands;
+    private VBox myCommandsLabels;
+
     private VBox infoPanel;
     private HBox buttons;
-    private Pane information;
+    private ScrollPane information;
 
     private final ToggleGroup myGroup = new ToggleGroup();
 
@@ -31,13 +42,14 @@ public class InfoView {
     private ToggleButton variableToggle;
 
     private Button myHelpButton;
-    private final String HELP_IMAGE_PATH = "helpImages/infoGraphic.png";
+    private final String HELP_IMAGE_PATH = "infoGraphic.png";
 
     public InfoView() {
         infoPanel = new VBox();
         buttons = new HBox();
-        information = new Pane();
+        information = new ScrollPane();
         information.setBackground(new Background(new BackgroundFill(Color.CORAL, CornerRadii.EMPTY, Insets.EMPTY)));
+        infoPanel.getChildren().addAll(buttons, information);
         infoPanel.setVgrow(information, Priority.ALWAYS);
 
         initToggleButton();
@@ -47,22 +59,16 @@ public class InfoView {
         initHelpButton();
         setActions();
         buttons.getChildren().addAll(historyToggle, commandToggle, variableToggle, myHelpButton);
-        infoPanel.getChildren().add(buttons);
-        infoPanel.getChildren().add(information);
     }
 
     private void setActions() {
         historyToggle.setOnAction(event -> {
-            information.getChildren().clear();
-            information.getChildren().add(new Label("History"));
+            information.setContent(myHistoryLabels);
         });
         commandToggle.setOnAction(event -> {
-            information.getChildren().clear();
-            information.getChildren().add(new Label("Command"));
         });
         variableToggle.setOnAction(event -> {
-            information.getChildren().clear();
-            information.getChildren().add(new Label("Variable"));
+            information.setContent(myVarsLabels);
         });
     }
 
@@ -82,7 +88,6 @@ public class InfoView {
                 System.out.println("Bad Error!");
             }
         });
-
         myHelpButton.setPadding(new Insets(0));
     }
 
@@ -99,22 +104,53 @@ public class InfoView {
         return tempToggle;
     }
 
-    private void setHistoryInfo() {
-        Label history = new Label("History");
-        historyToggle.setUserData(history);
-    }
-
-    private void setCommandInfo() {
-        Label command = new Label("Commands");
-        commandToggle.setUserData(command);
-    }
-
-    private void setVariableInfo() {
-        Label variable = new Label("Variables");
-        variableToggle.setUserData(variable);
-    }
 
     public VBox getInfoPanel() {
         return infoPanel;
+    }
+
+    private Map getTempVars() {
+        Map temp = new HashMap();
+        for (int i = 0; i < 100; i++) {
+            temp.put("same" + i, i);
+        }
+        return temp;
+    }
+
+    private List getTempHistory() {
+        List tempHist = new ArrayList();
+        for (int i = 0; i < 100; i++) {
+            tempHist.add("fd 50");
+        }
+        return tempHist;
+    }
+
+    private void setHistoryInfo() {
+        myHistoryLabels = new VBox();
+        for (String s : temporaryHistory) {
+            HBox labelWrapper = new HBox();
+            Label tempInfo = new Label();
+            tempInfo.setText(s);
+            labelWrapper.getChildren().add(tempInfo);
+            labelWrapper.setHgrow(tempInfo, Priority.ALWAYS);
+            myHistoryLabels.getChildren().add(labelWrapper);
+        }
+        historyToggle.setUserData(myHistoryLabels);
+    }
+
+    private void setVariableInfo() {
+        myVarsLabels = new VBox();
+        for (String s : temporaryVars.keySet()) {
+            HBox labelWrapper = new HBox();
+            Label tempInfo = new Label();
+            tempInfo.setText(s + ": " + temporaryVars.get(s));
+            labelWrapper.getChildren().add(tempInfo);
+            labelWrapper.setHgrow(tempInfo, Priority.ALWAYS);
+            myVarsLabels.getChildren().add(labelWrapper);
+        }
+    }
+
+    private void setCommandInfo() {
+
     }
 }

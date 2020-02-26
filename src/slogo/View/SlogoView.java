@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import slogo.Model.CommandInfrastructure.CommandDatabase;
+import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
 
 
@@ -21,6 +23,8 @@ public class SlogoView extends Application {
     private static final String STYLESHEET_FILE = "default.css";
 
     private BorderPane myBorderPane;
+    private ModelDatabase myModelDatabse;
+    private CommandDatabase myCommandDatabase;
     private ModelParser myModelParser;
     private InputView myInputView;
     private Pane myBackgroundPane;
@@ -41,12 +45,14 @@ public class SlogoView extends Application {
     }
 
     private void initModel() {
-        myModelParser = new ModelParser(MODELPARSER_LANGUAGE);
+        myModelDatabse = new ModelDatabase();
+        myCommandDatabase = new CommandDatabase(myModelDatabse.getMyTurtle());
+        myModelParser = new ModelParser(MODELPARSER_LANGUAGE,myCommandDatabase);
     }
 
     private void initView() {
         myBackgroundPane = new Pane();
-        myTurtleView = new TurtleView(myModelParser.getMyTurtle(), myBackgroundPane);
+        myTurtleView = new TurtleView(myModelDatabse.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
         InfoView myInfo = new InfoView();
