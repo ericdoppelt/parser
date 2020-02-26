@@ -1,22 +1,24 @@
-package slogo;
+package slogo.View;
 
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class TurtleView {
     public static final int Y_COORDINATE = 1;
     public static final double ANGLE_OFFSET = 90.0;
 
-    private static final String DEFAULT_IMAGE_PATH = "resources/languages/perfectTurtle.png";
+    private static final String DEFAULT_IMAGE_PATH = "perfectTurtle.png";
 
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
@@ -40,7 +42,8 @@ public class TurtleView {
 
     private double heightOffset;
     private double widthOffset;
-    private ColorPicker penColor = new ColorPicker(Color.BLACK);
+    private ObjectProperty<Color> penColor;
+    private final Color DEFAULT_PEN_COLOR = Color.TURQUOISE;
     private double lineWidth = 2.0;
 
     /**
@@ -55,13 +58,23 @@ public class TurtleView {
         previousPosition = setUpInitialPosition();
         bindPositions(turtle.getCoordHistory());
         bindProperties(turtle);
+
+        penColor = new SimpleObjectProperty<Color>(DEFAULT_PEN_COLOR);
+        penColor.addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                System.out.println("CHANGE");
+                System.out.println(oldValue);
+                System.out.println(newValue);
+            }
+        });
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
         turtleView.xProperty().bind(turtle.getTurtleXProperty());
         turtleView.yProperty().bind(turtle.getTurtleYProperty());
-        turtleView.setRotate(turtle.getTurtleHeading()+ ANGLE_OFFSET);
+        turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         pane.getChildren().add(turtleView);
     }
 
@@ -88,9 +101,12 @@ public class TurtleView {
     }
 
     private void addPath(Line newPath){
-        newPath.setFill(penColor.getValue());
+        newPath.setStroke(penColor.getValue());
+        System.out.println(penColor.getValue());
+
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
+        System.out.println(penColor.getValue());
     }
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
@@ -124,18 +140,17 @@ public class TurtleView {
 
     /**
      * Method that allows setting a new image for the turtle
-     * @param newImage: New Image File to be used to replace default turtle image
      */
-    public void setNewImage(File newImage){
-        turtleView.setImage(getImage(newImage.toURI().toString()));
+    public ObjectProperty<Image> getImageProperty(){
+        return turtleView.imageProperty();
     }
 
     /**
      * Turtle Method returns Color property to bind for automatic Pen Color changing
      * @return Color Property
      */
-    public ObjectProperty<Color> getColorProperty(){
-        return penColor.valueProperty();
+    public ObjectProperty<Color> getPenColorProperty(){
+        return penColor;
     }
 
 }

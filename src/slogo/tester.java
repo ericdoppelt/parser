@@ -19,14 +19,7 @@ public class tester extends Application {
     public void start(Stage primaryStage) {
       ModelDatabase modelDatabase = new ModelDatabase();
        // ModelParser modelParser = new ModelParser("English");
-//<<<<<<< HEAD
-        BorderPane mypane = new BorderPane();
 
-        Pane p = new Pane();
-        TurtleView myTurtle = new TurtleView(modelDatabase.getMyTurtle(), p);
-        CommandBox myCommandLine = new CommandBox(modelDatabase.getModelParser(), myTurtle);
-
-//=======
         //TurtleView myTurtle = new TurtleView(modelParser.getMyTurtle());
         //CommandBox myCommandLine = new CommandBox(modelParser, myTurtle);
         //InputPanel myButtons = new InputPanel();
@@ -36,7 +29,6 @@ public class tester extends Application {
         //myGroup.setPrefSize(200,200);
         //myGroup.getChildren().addAll(myTurtle.getTurtle());
         //mypane.setTop(myButtons.getInputPanel());
-//>>>>>>> ff0c82ab7f71e2ba64d802656783701885bee85b
         mypane.setBottom(myCommandLine.getCommandLine());
         mypane.setCenter(p);
 
