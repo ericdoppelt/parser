@@ -26,17 +26,17 @@ public class RightCommand extends Command {
   @Override
   public void execute() {
 
-//    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
+    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     turtleObject.rotateTurtleHeading(angleChangeCC);
-//    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
+    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }
 
   @Override
-  public Integer returnArgValue() {
-    return (int) this.returnArgValue;
+  public Double returnArgValue() {
+    return this.returnArgValue;
   }
 
 }

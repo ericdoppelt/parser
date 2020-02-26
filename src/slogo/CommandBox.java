@@ -87,12 +87,11 @@ public class CommandBox {
      * Methods created to deal with button actions.
      */
     private void retrieveText(){
-        // TODO add mechanism to deal with parser call\
         if(myCommands == null) myCommands = new ArrayList<>();
         myCurrentCommand = myCommandField.getText();
         myCommands.add(myCurrentCommand);
         myCommandField.clear();
-        myParser.parseText(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
+        myParser.initializeNewParserTextandParse(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
     }
     private void clearText(){
         myCommandField.clear();

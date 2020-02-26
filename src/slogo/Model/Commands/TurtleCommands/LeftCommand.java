@@ -25,14 +25,14 @@ public class LeftCommand extends Command {
    */
   @Override
   public void execute() {
+    System.out.println(turtleObject.getTurtleHeading());
     turtleObject.rotateTurtleHeading(angleChangeCCW);
     System.out.println(turtleObject.getTurtleHeading());
-//    System.out.println(turtleObject.getTurtleHeading());
   }
 
   @Override
-  public Integer returnArgValue() {
-    return (int) this.returnArgValue;
+  public Double returnArgValue() {
+    return this.returnArgValue;
   }
 
 

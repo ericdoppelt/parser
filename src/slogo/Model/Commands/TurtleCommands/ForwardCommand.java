@@ -40,14 +40,17 @@ public class ForwardCommand extends Command {
 
     turtleObject.moveXCoord(distanceToTravel * distanceProportionX);
     turtleObject.moveYCoord(distanceToTravel * distanceProportionY);
-    //System.out.println("turtle X " + turtleObject.getTurtleX());
-    //System.out.println("turtle Y " + turtleObject.getTurtleY());
+
+    // TODO THIS IS TESTER CODE
+    turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
+    System.out.println("turtle X " + turtleObject.getTurtleX());
+    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }
 
   @Override
-  public Integer returnArgValue() {
-    return (int) this.returnArgValue;
+  public Double returnArgValue() {
+    return this.returnArgValue;
   }
 
 }

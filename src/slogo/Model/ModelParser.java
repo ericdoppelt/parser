@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-import slogo.Model.CommandInfrastructure.CommandFactory;
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 
 public class ModelParser {
@@ -39,18 +39,26 @@ public class ModelParser {
   private static final String RESOURCES_PACKAGE = "resources/languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
-  private TurtleData turtle = new TurtleData("yeet",0,0,45);
+  private CommandDatabase commandDatabase;
+  private CommandProducer commandProducer;
   private int argumentThreshold;
+  private List<String> linesArray;
+  private int currentLinesIndex;
 
-  public ModelParser(String language){
+
+  public ModelParser(String language, CommandDatabase commandData){
+    setUpModelParserLanguage(language);
+
+    commandDatabase = commandData;
+    commandData.addParser(this);
+    commandProducer = new CommandProducer(commandData);
+  }
+
+  public void setUpModelParserLanguage(String language){
     mySymbols = new ArrayList<>();
     addPatterns(language);
     addPatterns(REGEX_SYNTAX);
-//    commandFromController = inputString;
-  }
 
-  public TurtleData getMyTurtle(){
-    return turtle;
   }
 
 
@@ -90,6 +98,13 @@ public class ModelParser {
     catch (URISyntaxException | IOException e) {
       // NOT ideal way to handle exception, but this is just a simple test program
       System.out.println("ERROR: Unable to read input file " + e.getMessage());
+
+      //potential error pop-up code
+//      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
+//      Alert alert = new Alert(Alert.AlertType.ERROR);
+//      alert.setTitle("Error");
+//      alert.setHeaderText(errorMessage);
+//      Platform.runLater(alert::showAndWait);
       return "";
     }
   }
@@ -100,13 +115,20 @@ public class ModelParser {
     return regex.matcher(text).matches();
   }
 
+  public void initializeNewParserTextandParse (List<String> lines) {
+    linesArray = lines;
+    parseText(lines);
+  }
+
   // given some text, prints results of parsing it using the given language
   public void parseText (List<String> lines) {
     //System.out.println(lines);
     Stack<String> commandStack = new Stack<>();
     Stack<Integer> argumentStack = new Stack<>();
-    for (String line : lines) {
-      if (line.trim().length() > 0) {
+    for (int index = 0; index < lines.size(); index++) {
+      if (lines.get(index).trim().length() > 0) {
+        currentLinesIndex = index;
+//        System.out.println(currentLinesIndex);
         //enum stuff that will probably used for the final implementation
 //        System.out.print(this.getSymbol(line));
 //        symbolName = ParserEnum.valueOf(this.getSymbol(line));
@@ -119,15 +141,20 @@ public class ModelParser {
 //          case Comment:
 //          case List:
 //        }
-        CommandProducer commandProducer = new CommandProducer(turtle);
-        if(this.getSymbol(line).equals("Constant")){
-          argumentStack.push(Integer.parseInt(line));
-        }
-        else {
-          commandStack.push(this.getSymbol(line));
-          CommandFactory parameterGetter = new CommandFactory(commandStack.peek(), turtle);
-          argumentThreshold = argumentStack.size() + parameterGetter.getAmountOfParametersNeeded();
 
+        if(this.getSymbol(lines.get(index)).equals("Constant")){
+          argumentStack.push(Integer.parseInt(lines.get(index)));
+        }
+        else if(commandDatabase.isInCommandMap(this.getSymbol(lines.get(index)))) {
+          commandStack.push(this.getSymbol(lines.get(index)));
+          argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
+        }
+        else if(this.getSymbol(lines.get(index)).equals("ListStart")){
+          int listEnd = lines.subList(index,lines.size()).indexOf("]");
+          index = index + listEnd;
+//          System.out.println("lineend " + listEnd);
+//          System.out.println("test");
+          continue;
         }
         System.out.println("Before Parse: " + commandStack);
         System.out.println("Before Parse: " + argumentStack);
@@ -137,6 +164,15 @@ public class ModelParser {
       }
     }
 
+  }
+
+  public List<String> getLinesArray(){
+    System.out.println(linesArray);
+    return linesArray;
+  }
+
+  public int getCurrentLinesIndex(){
+    return currentLinesIndex;
   }
 
 }
