@@ -13,9 +13,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
 import slogo.Model.CommandInfrastructure.CommandFactory;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 
@@ -42,8 +39,13 @@ public class ModelParser {
   private static final String RESOURCES_PACKAGE = "resources/languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
-  private TurtleData turtle = new TurtleData("1",0,0,0);
+  private TurtleData turtle = new TurtleData("Happy", 0,0,50);
+  private CommandFactory commandFactory = new CommandFactory(this);
+  private CommandProducer commandProducer = new CommandProducer(turtle, commandFactory);
   private int argumentThreshold;
+  private List<String> linesArray;
+  private int currentLinesIndex;
+
 
   public ModelParser(String language){
     mySymbols = new ArrayList<>();
@@ -110,13 +112,20 @@ public class ModelParser {
     return regex.matcher(text).matches();
   }
 
+  public void initializeNewParserText (List<String> lines) {
+    linesArray = lines;
+    parseText(lines);
+  }
+
   // given some text, prints results of parsing it using the given language
   public void parseText (List<String> lines) {
     //System.out.println(lines);
     Stack<String> commandStack = new Stack<>();
     Stack<Integer> argumentStack = new Stack<>();
-    for (String line : lines) {
-      if (line.trim().length() > 0) {
+    for (int index = 0; index < lines.size(); index++) {
+      if (lines.get(index).trim().length() > 0) {
+        currentLinesIndex = index;
+//        System.out.println(currentLinesIndex);
         //enum stuff that will probably used for the final implementation
 //        System.out.print(this.getSymbol(line));
 //        symbolName = ParserEnum.valueOf(this.getSymbol(line));
@@ -129,15 +138,20 @@ public class ModelParser {
 //          case Comment:
 //          case List:
 //        }
-        CommandProducer commandProducer = new CommandProducer(turtle);
-        if(this.getSymbol(line).equals("Constant")){
-          argumentStack.push(Integer.parseInt(line));
-        }
-        else {
-          commandStack.push(this.getSymbol(line));
-          CommandFactory parameterGetter = new CommandFactory(commandStack.peek(), turtle);
-          argumentThreshold = argumentStack.size() + parameterGetter.getAmountOfParametersNeeded();
 
+        if(this.getSymbol(lines.get(index)).equals("Constant")){
+          argumentStack.push(Integer.parseInt(lines.get(index)));
+        }
+        else if(commandFactory.isInCommandMap(this.getSymbol(lines.get(index)))) {
+          commandStack.push(this.getSymbol(lines.get(index)));
+          argumentThreshold = argumentStack.size() + commandFactory.getAmountOfParametersNeeded(commandStack.peek());
+        }
+        else if(this.getSymbol(lines.get(index)).equals("ListStart")){
+          int listEnd = lines.subList(index,lines.size()).indexOf("]");
+          index = index + listEnd;
+//          System.out.println("lineend " + listEnd);
+//          System.out.println("test");
+          continue;
         }
         System.out.println("Before Parse: " + commandStack);
         System.out.println("Before Parse: " + argumentStack);
@@ -147,6 +161,18 @@ public class ModelParser {
       }
     }
 
+  }
+
+  public List<String> getLinesArray(){
+    return linesArray;
+  }
+
+  public int getCurrentLinesIndex(){
+    return currentLinesIndex;
+  }
+
+  public ModelParser getModelParser(){
+    return this;
   }
 
 }
