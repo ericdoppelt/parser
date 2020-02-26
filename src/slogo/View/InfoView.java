@@ -15,7 +15,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class InfoPanel {
+public class InfoView {
 
     private VBox infoPanel;
     private HBox buttons;
@@ -33,7 +33,7 @@ public class InfoPanel {
     private Button myHelpButton;
     private final String HELP_IMAGE_PATH = "helpImages/infoGraphic.png";
 
-    public InfoPanel() {
+    public InfoView() {
         infoPanel = new VBox();
         buttons = new HBox();
         information = new Pane();

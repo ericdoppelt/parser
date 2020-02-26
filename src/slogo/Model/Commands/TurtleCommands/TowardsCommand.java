@@ -55,13 +55,15 @@ public class TowardsCommand extends Command {
     System.out.println("return " + returnArgValue);
     //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
+    // TODO THIS IS TESTER CODE
+    turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
 
   }
 
   @Override
-  public Integer returnArgValue() {
+  public Double returnArgValue() {
 
-    return (int) this.returnArgValue;
+    return this.returnArgValue;
   }
 
   private void constrainAngle(){

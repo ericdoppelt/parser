@@ -1,11 +1,21 @@
 package slogo.Model;
 
+import javafx.application.Platform;
+import javafx.beans.binding.ListBinding;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ModelDatabase {
 
-  private List<TurtleData> turtleList = new ArrayList<>();
+  private SimpleObjectProperty<List<TurtleData>> turtleListProperty = new SimpleObjectProperty<>(FXCollections.observableArrayList());;
+  private SimpleStringProperty commandProperty;
 
   // regular expression representing any whitespace characters (space, tab, or newline)
   private String language;
@@ -58,8 +68,28 @@ public class ModelDatabase {
 
     public ModelDatabase(){
       TurtleData originTurtle = new TurtleData("1",0,0,0);
-      turtleList.add(originTurtle);
+      turtleListProperty.getValue().add(originTurtle);
     }
+
+    public List<TurtleData> getTurtleListProperty(){return turtleListProperty.get();};
+
+    public TurtleData getTurtle(String id){
+      for(TurtleData turtle: turtleListProperty.get()){
+        if (turtle.getTurtleID().equals(id)){
+          return turtle;
+        }
+      }
+      //eventually add error for no turtle existing
+      String errorMessage = "ERROR: Invalid Turtle ID";
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Error");
+      alert.setHeaderText(errorMessage);
+      Platform.runLater(alert::showAndWait);
+      return null;
+    }
+
+
+    public String getCommand(){return commandProperty.get();}
   // try against different kinds of inputs
 //      model.parseText(model, examples);
 //      String fileInput = model.readFileToString(
@@ -71,7 +101,9 @@ public class ModelDatabase {
 
     public void makeNewTurtle(String ID, double initX, double initY, double initHeading){
       TurtleData newTurtle = new TurtleData(ID, initX, initY, initHeading);
-      turtleList.add(newTurtle);
+      turtleListProperty.getValue().add(newTurtle);
     }
+
+    //Todo Remove this testerMethod
 
 }

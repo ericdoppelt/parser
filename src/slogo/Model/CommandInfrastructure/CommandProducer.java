@@ -14,6 +14,7 @@ public class CommandProducer {
   private CommandFactory commandFactory;
   private TurtleData turtle;
   private static int argumentRunningTotal;
+  private static final int zeroParametersNeeded = 0;
   private static final int oneParametersNeeded = 1;
   private static final int twoParametersNeeded = 2;
 
@@ -33,7 +34,10 @@ public class CommandProducer {
       commandFactory = new CommandFactory(commStack.pop().toString(), turtle);
       double parametersNeeded = commandFactory.getAmountOfParametersNeeded();
       Command newCommand = null;
-      if(parametersNeeded == oneParametersNeeded) {
+      if(parametersNeeded == zeroParametersNeeded){
+        newCommand = commandFactory.makeZeroParameterCommand();
+      }
+      else if(parametersNeeded == oneParametersNeeded) {
         Integer firstParameter = Integer.parseInt(argStack.pop().toString());
         newCommand = commandFactory.makeOneParameterCommand(firstParameter);
       }

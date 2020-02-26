@@ -30,13 +30,15 @@ public class BackCommand extends Command {
 
     turtleObject.moveXCoord(-distanceToTravel * distanceProportionX);
     turtleObject.moveYCoord(-distanceToTravel * distanceProportionY);
+    // TODO THIS IS TESTER CODE
+    turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
     System.out.println(turtleObject.getTurtleX());
     System.out.println(turtleObject.getTurtleY());
   }
 
   @Override
-  public Integer returnArgValue() {
-    return (int) this.originalArgValue;
+  public Double returnArgValue() {
+    return this.originalArgValue;
   }
 
 }

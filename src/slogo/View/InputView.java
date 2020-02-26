@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 
-public class InputPanel {
+public class InputView {
 
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
@@ -44,13 +44,11 @@ public class InputPanel {
     private ColorPicker myPenPicker;
 
     private String myCurrentLanguage;
-    private Color myCurrentPen;
-    private Color myCurrentBackground;
     private Image myTurtleImage;
 
     HBox myButtons;
 
-    public InputPanel() {
+    public InputView() {
         myButtons = new HBox();
         initButtons();
         formatButtons();
@@ -60,12 +58,12 @@ public class InputPanel {
         return myButtons;
     }
 
-    public Color getBackgroundColor() {
-        return myCurrentBackground;
+    public ColorPicker getBackgroundColor() {
+        return myBackGroundPicker;
     }
 
-    public Color getPenColor()  {
-        return myCurrentPen;
+    public ColorPicker getPenColor()  {
+        return myPenPicker;
     }
 
     public String getLanguage() {
@@ -86,8 +84,7 @@ public class InputPanel {
 
     private void initValues() {
         myCurrentLanguage = DEFAULT_LANGUAGE;
-        myCurrentBackground = DEFAULT_BACKGROUND_COLOR;
-        myCurrentPen = DEFAULT_PEN_COLOR;
+
         myTurtleImage = new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE));
     }
     private void createLanguageButton() {
@@ -104,14 +101,10 @@ public class InputPanel {
     }
 
     private void createColorPickers() {
-        myCurrentBackground = DEFAULT_BACKGROUND_COLOR;
         myBackGroundPicker = createColorPicker(DEFAULT_BACKGROUND_COLOR);
-        myBackGroundPicker.setOnAction(event -> myCurrentBackground = myBackGroundPicker.getValue());
         createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
 
-        myCurrentPen = DEFAULT_PEN_COLOR;
         myPenPicker   = createColorPicker(DEFAULT_PEN_COLOR);
-        myPenPicker.setOnAction(event -> myCurrentPen = myPenPicker.getValue());
         createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
     }
 
