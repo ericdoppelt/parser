@@ -43,7 +43,7 @@ import slogo.Model.Commands.TurtleQueries.YCoordinateCommand;
 import slogo.Model.ModelParser;
 import slogo.Model.TurtleData;
 
-public class CommandFactory {
+public class CommandDatabase {
 
   private String targetCommand;
   private static final Integer zeroParameterNeeded = 0;
@@ -56,12 +56,19 @@ public class CommandFactory {
   private List<String> commandSubArrayTwo;
   private Map<String, Pair<Command, Integer>> POSSIBLE_COMMANDS_MAP;
   private List<TurtleData> Turtle_List = new ArrayList<>();
-  private TurtleData targetTurtle = new TurtleData("ye", 0,0,0);
-  private ModelParser parser;
+  private TurtleData targetTurtle;
+  private ModelParser originParser;
 
-  public CommandFactory(ModelParser modelParser){
-    parser = modelParser;
+  public CommandDatabase(TurtleData turtle){
+    targetTurtle = turtle;
     updateCommandMap();
+  }
+
+  /**
+   * Prompt the user to make a bet from a menu of choices.
+   */
+  public void addParser (ModelParser parser) {
+    originParser = parser;
   }
 
   /**
@@ -96,7 +103,6 @@ public class CommandFactory {
    */
   public Command makeControlParameterCommand (String targetCommand, double value1) {
     parameterOne = value1;
-    System.out.println(parser.getCurrentLinesIndex());
     updateCommandMap();
     return POSSIBLE_COMMANDS_MAP.get(targetCommand).getKey();
   }
@@ -158,7 +164,7 @@ public class CommandFactory {
         entry("Power", new Pair<>(new PowerCommand(parameterOne, parameterTwo), twoParametersNeeded)),
 
         //Control Parameter Commands
-        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, parser), oneParameterNeeded))
+        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser), oneParameterNeeded))
 
     );
 

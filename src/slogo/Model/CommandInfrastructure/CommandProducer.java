@@ -2,6 +2,7 @@ package slogo.Model.CommandInfrastructure;
 
 import java.util.Stack;
 import slogo.Model.Commands.Command;
+
 import slogo.Model.TurtleData;
 
 public class CommandProducer {
@@ -11,7 +12,7 @@ public class CommandProducer {
    * @author Frank Tang
    */
 
-  private CommandFactory commandFactory;
+  private CommandDatabase commandDatabase;
   private TurtleData turtle;
   private static int argumentRunningTotal;
   private static final int zeroParametersNeeded = 0;
@@ -20,9 +21,8 @@ public class CommandProducer {
   private static final int controlParametersNeeded = 2;
 
 
-  public CommandProducer(TurtleData turtleObject, CommandFactory factory){
-    turtle = turtleObject;
-    commandFactory = factory;
+  public CommandProducer(CommandDatabase database){
+    commandDatabase = database;
   }
 
   /**
@@ -34,19 +34,19 @@ public class CommandProducer {
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
       System.out.println("BeforeA" + argStack);
       System.out.println("BeforeC" + commStack);
-      double parametersNeeded = commandFactory.getAmountOfParametersNeeded(commStack.peek().toString());
+      double parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek().toString());
       Command newCommand = null;
       if(parametersNeeded == zeroParametersNeeded){
-        newCommand = commandFactory.makeZeroParameterCommand(commStack.pop().toString());
+        newCommand = commandDatabase.makeZeroParameterCommand(commStack.pop().toString());
       }
       else if(parametersNeeded == oneParametersNeeded) {
         Integer firstParameter = Integer.parseInt(argStack.pop().toString());
-        newCommand = commandFactory.makeOneParameterCommand(commStack.pop().toString(), firstParameter);
+        newCommand = commandDatabase.makeOneParameterCommand(commStack.pop().toString(), firstParameter);
       }
       else if (parametersNeeded == twoParametersNeeded){
         Integer secondParameter = Integer.parseInt(argStack.pop().toString()); //must be in this order because the second parameter is popped off first
         Integer firstParameter = Integer.parseInt(argStack.pop().toString());
-        newCommand = commandFactory.makeTwoParameterCommand(commStack.pop().toString(), firstParameter, secondParameter);
+        newCommand = commandDatabase.makeTwoParameterCommand(commStack.pop().toString(), firstParameter, secondParameter);
       }
 //      Number returnValue =
       newCommand.execute(); //change values to return a value

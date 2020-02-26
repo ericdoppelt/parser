@@ -26,9 +26,9 @@ public class RightCommand extends Command {
   @Override
   public void execute() {
 
-//    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
+    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     turtleObject.rotateTurtleHeading(angleChangeCC);
-//    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
+    System.out.println("turtle heading " + turtleObject.getTurtleHeading());
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
