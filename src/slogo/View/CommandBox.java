@@ -1,4 +1,4 @@
-package slogo;
+package slogo.View;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import slogo.Model.ModelParser;
 
@@ -56,7 +57,9 @@ public class CommandBox {
         myCommandField = shortCommandField;
         stetUpButtons();
         setUpCommandLine();
+        formatButtons();
     }
+
     /**
      * Returns command line node to be displayed
      */
@@ -148,5 +151,11 @@ public class CommandBox {
         runButton = getButton(RUN, event -> retrieveText());
         clearButton = getButton(CLEAR, event -> clearText());
         expandButton = getButton(EXPAND, event -> resizeCommandField());
+    }
+
+    private void formatButtons() {
+        for (Node button : myCommandLine.getChildren()) {
+            myCommandLine.setHgrow(button, Priority.ALWAYS);
+        }
     }
 }

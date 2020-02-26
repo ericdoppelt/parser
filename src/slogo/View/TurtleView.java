@@ -1,10 +1,11 @@
-package slogo;
+package slogo.View;
 
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -40,7 +41,8 @@ public class TurtleView {
 
     private double heightOffset;
     private double widthOffset;
-    private ColorPicker penColor = new ColorPicker(Color.BLACK);
+    private ObjectProperty<Color> penColor;
+    private final Color DEFAULT_PEN_COLOR = Color.TURQUOISE;
     private double lineWidth = 2.0;
 
     /**
@@ -55,13 +57,15 @@ public class TurtleView {
         previousPosition = setUpInitialPosition();
         bindPositions(turtle.getCoordHistory());
         bindProperties(turtle);
+
+        penColor = new SimpleObjectProperty<Color>(this, "Color", DEFAULT_PEN_COLOR);
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
         turtleView.xProperty().bind(turtle.getTurtleXProperty());
         turtleView.yProperty().bind(turtle.getTurtleYProperty());
-        turtleView.setRotate(turtle.getTurtleHeading()+ ANGLE_OFFSET);
+        turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         pane.getChildren().add(turtleView);
     }
 
@@ -88,6 +92,7 @@ public class TurtleView {
     }
 
     private void addPath(Line newPath){
+        System.out.println(penColor.getValue());
         newPath.setFill(penColor.getValue());
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
@@ -135,7 +140,7 @@ public class TurtleView {
      * @return Color Property
      */
     public ObjectProperty<Color> getColorProperty(){
-        return penColor.valueProperty();
+        return penColor;
     }
 
 }
