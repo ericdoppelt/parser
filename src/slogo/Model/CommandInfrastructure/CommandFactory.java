@@ -2,12 +2,14 @@ package slogo.Model.CommandInfrastructure;
 
 import static java.util.Map.entry;
 
+import java.util.List;
 import java.util.Map;
 import javafx.util.Pair;
 import slogo.Model.Commands.*;
 import slogo.Model.Commands.TurtleCommands.*;
 import slogo.Model.Commands.MathOperations.*;
 import slogo.Model.Commands.TurtleQueries.*;
+import slogo.Model.ModelDatabase;
 import slogo.Model.TurtleData;
 
 public class CommandFactory {
@@ -21,7 +23,7 @@ public class CommandFactory {
   private double parameterTwo;
   private Map<String, Pair<Command, Integer>> POSSIBLE_COMMANDS_MAP;
 
-  public CommandFactory(String command, TurtleData turtle){
+  public CommandFactory(String command, TurtleData turtle, ModelDatabase database){
     targetTurtle = turtle;
     targetCommand = command;
     updateCommandMap();
