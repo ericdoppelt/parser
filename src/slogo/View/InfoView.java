@@ -23,7 +23,7 @@ public class InfoView {
 
     private final ToggleGroup myGroup = new ToggleGroup();
 
-    private final String RESOURCE_LANGUAGE = "English";
+    private final String RESOURCE_LANGUAGE = "languages/English";
     private final ResourceBundle myBundle = ResourceBundle.getBundle(RESOURCE_LANGUAGE);
 
     private ToggleButton historyToggle;

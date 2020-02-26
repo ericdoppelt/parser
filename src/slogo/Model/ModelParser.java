@@ -36,7 +36,7 @@ public class ModelParser {
    */
 
   private String commandFromController;
-  private static final String RESOURCES_PACKAGE = "resources/languages/";
+  private static final String RESOURCES_PACKAGE = "languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
   private CommandDatabase commandDatabase;

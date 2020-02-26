@@ -31,7 +31,7 @@ public class InputView {
     private static final Color DEFAULT_PEN_COLOR = Color.web("0xcc8099ff");
 
     private static final ObservableList allLanguages = FXCollections.observableArrayList("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
-    private static final String DEFAULT_LANGUAGE = "English";
+    private static final String DEFAULT_LANGUAGE = "languages/English";
 
     private static final String ACCEPTABLE_FILE_EXTENSION = "*.png";
     private static final String TYPE_OF_FILE_EXTENSION = "PNG";

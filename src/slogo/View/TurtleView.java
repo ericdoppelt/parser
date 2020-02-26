@@ -31,7 +31,7 @@ public class TurtleView {
     public static final int Y_COORDINATE = 1;
     public static final double ANGLE_OFFSET = 90.0;
 
-    private static final String DEFAULT_IMAGE_PATH = "perfectTurtle.png";
+    private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
 
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
@@ -79,6 +79,7 @@ public class TurtleView {
     }
 
     private Image getImage(String Path){
+        System.out.println(Path);
         Image newImage = new Image(Path);
         heightOffset = newImage.getHeight()/2;
         widthOffset = newImage.getWidth()/2;
