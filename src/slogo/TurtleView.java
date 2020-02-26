@@ -2,23 +2,23 @@ package slogo;
 
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PrimitiveIterator;
 
 /**
  * Turtle View handles all turtle display methods along with its path.
@@ -40,11 +40,17 @@ public class TurtleView {
 
     private double heightOffset;
     private double widthOffset;
-    private Color lineColor = Color.BLACK;
+    private ColorPicker penColor = new ColorPicker(Color.BLACK);
     private double lineWidth = 2.0;
 
+    /**
+     * Constructor used to build a new Turtle Display. One per backend Turtle.
+     * @param turtle Backend Turtle To Bind
+     * @param pane Platform to display Turtle
+     */
     public TurtleView(TurtleData turtle, Pane pane){
         myBackground = pane;
+        System.out.println(turtle.getTurtleX());
         setUpTurtle(turtle, pane);
         previousPosition = setUpInitialPosition();
         bindPositions(turtle.getCoordHistory());
@@ -52,14 +58,18 @@ public class TurtleView {
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
-        Image t = new Image(DEFAULT_IMAGE_PATH);
-        turtleView = new ImageView(t);
+        turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
         turtleView.xProperty().bind(turtle.getTurtleXProperty());
         turtleView.yProperty().bind(turtle.getTurtleYProperty());
         turtleView.setRotate(turtle.getTurtleHeading()+ ANGLE_OFFSET);
         pane.getChildren().add(turtleView);
-        heightOffset = t.getHeight()/2;
-        widthOffset = t.getWidth()/2;
+    }
+
+    private Image getImage(String Path){
+        Image newImage = new Image(Path);
+        heightOffset = newImage.getHeight()/2;
+        widthOffset = newImage.getWidth()/2;
+        return newImage;
     }
 
     private List<Double> setUpInitialPosition(){
@@ -78,7 +88,7 @@ public class TurtleView {
     }
 
     private void addPath(Line newPath){
-        newPath.setFill(lineColor);
+        newPath.setFill(penColor.getValue());
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
     }
@@ -103,12 +113,29 @@ public class TurtleView {
         turtleAngle = new SimpleDoubleProperty();
         Bindings.bindBidirectional(isPenDown, turtle.getPenDownProperty());
         Bindings.bindBidirectional(turtleAngle, turtle.directionProperty());
+        turtleView.visibleProperty().bind(turtle.turtleVisibility());
         addAngleChangeListener();
     }
 
     private void addAngleChangeListener(){
         turtleAngle.addListener( (observable, oldValue, newValue) ->
                 turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET)));
+    }
+
+    /**
+     * Method that allows setting a new image for the turtle
+     * @param newImage: New Image File to be used to replace default turtle image
+     */
+    public void setNewImage(File newImage){
+        turtleView.setImage(getImage(newImage.toURI().toString()));
+    }
+
+    /**
+     * Turtle Method returns Color property to bind for automatic Pen Color changing
+     * @return Color Property
+     */
+    public ObjectProperty<Color> getColorProperty(){
+        return penColor.valueProperty();
     }
 
 }
