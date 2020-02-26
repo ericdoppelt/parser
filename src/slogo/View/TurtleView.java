@@ -6,14 +6,16 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
 
@@ -58,7 +60,15 @@ public class TurtleView {
         bindPositions(turtle.getCoordHistory());
         bindProperties(turtle);
 
-        penColor = new SimpleObjectProperty<Color>(this, "Color", DEFAULT_PEN_COLOR);
+        penColor = new SimpleObjectProperty<Color>(DEFAULT_PEN_COLOR);
+        penColor.addListener(new ChangeListener<Color>() {
+            @Override
+            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
+                System.out.println("CHANGE");
+                System.out.println(oldValue);
+                System.out.println(newValue);
+            }
+        });
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
@@ -92,10 +102,13 @@ public class TurtleView {
     }
 
     private void addPath(Line newPath){
+        System.out.println("FILLCOLOR" + penColor.getValue());
+        newPath.setFill((Paint)penColor.getValue());
         System.out.println(penColor.getValue());
-        newPath.setFill(penColor.getValue());
+        
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
+        System.out.println(penColor.getValue());
     }
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
@@ -139,7 +152,7 @@ public class TurtleView {
      * Turtle Method returns Color property to bind for automatic Pen Color changing
      * @return Color Property
      */
-    public ObjectProperty<Color> getColorProperty(){
+    public ObjectProperty<Color> getPenColorProperty(){
         return penColor;
     }
 

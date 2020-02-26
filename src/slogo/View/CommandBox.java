@@ -55,7 +55,7 @@ public class CommandBox {
         myParser = parser;
         shortCommandField = getCommandField();
         myCommandField = shortCommandField;
-        stetUpButtons();
+        setUpButtons();
         setUpCommandLine();
         formatButtons();
     }
@@ -147,7 +147,7 @@ public class CommandBox {
         expandButton.setText(newLabel);
     }
     // Method to create all buttons
-    private void stetUpButtons(){
+    private void setUpButtons(){
         runButton = getButton(RUN, event -> retrieveText());
         clearButton = getButton(CLEAR, event -> clearText());
         expandButton = getButton(EXPAND, event -> resizeCommandField());
