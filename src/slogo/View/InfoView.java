@@ -80,7 +80,9 @@ public class InfoView {
         }));
         myHistory = new SimpleListProperty<>();
         myHistory.addListener(((observable, oldValue, newValue) -> {
-            ((VBox)myHistoryToggle.getUserData()).getChildren().add(new Label(newValue.get(newValue.size() - 1)));
+            if (newValue.size() > 0) {
+                ((VBox) myHistoryToggle.getUserData()).getChildren().add(new Label(newValue.get(newValue.size() - 1)));
+            }
         }));
     }
 

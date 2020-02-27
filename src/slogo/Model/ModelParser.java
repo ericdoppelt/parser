@@ -40,7 +40,6 @@ public class ModelParser {
    */
 
   private String commandFromController;
-  private static final String RESOURCES_PACKAGE = "languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
   private CommandDatabase commandDatabase;
@@ -81,7 +80,7 @@ public class ModelParser {
    * Adds the given resource file to this language's recognized types
    */
   public void addPatterns (String syntax) {
-    ResourceBundle resources = ResourceBundle.getBundle(RESOURCES_PACKAGE + syntax);
+    ResourceBundle resources = ResourceBundle.getBundle(syntax);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
       mySymbols.add(new SimpleEntry<>(key,
