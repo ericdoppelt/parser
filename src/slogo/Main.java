@@ -8,6 +8,7 @@ public class Main {
      */
   public static void main (String[] args) {
     SlogoView slogoInterpretor = new SlogoView(args);
+
   }
 }
 

@@ -94,7 +94,7 @@ public class CommandBox {
         myCurrentCommand = myCommandField.getText();
         myCommands.add(myCurrentCommand);
         myCommandField.clear();
-        myParser.initializeNewParserText(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
+        myParser.initializeNewParserTextandParse(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
     }
     private void clearText(){
         myCommandField.clear();

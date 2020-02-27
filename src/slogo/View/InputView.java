@@ -1,5 +1,6 @@
 package slogo.View;
 
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -9,10 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -29,11 +27,11 @@ public class InputView {
 
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
-    private static final Color DEFAULT_BACKGROUND_COLOR = Color.CORAL;
+    private static final Color DEFAULT_BACKGROUND_COLOR = Color.ANTIQUEWHITE;
     private static final Color DEFAULT_PEN_COLOR = Color.web("0xcc8099ff");
 
     private static final ObservableList allLanguages = FXCollections.observableArrayList("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
-    private static final String DEFAULT_LANGUAGE = "English";
+    private static final String DEFAULT_LANGUAGE = "languages/English";
 
     private static final String ACCEPTABLE_FILE_EXTENSION = "*.png";
     private static final String TYPE_OF_FILE_EXTENSION = "PNG";
@@ -83,11 +81,21 @@ public class InputView {
     }
 
 
-    private void initValues() {
+    private void initValues() throws TurtleException {
         myCurrentLanguage = DEFAULT_LANGUAGE;
-
-        myTurtleImage = new SimpleObjectProperty<>(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+        //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
+        try {
+            myTurtleImage = new SimpleObjectProperty<>(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+        } catch (TurtleException e) {
+            String errorMessage = "INVALID TURTLE";
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(errorMessage);
+            Platform.runLater(alert::showAndWait);
+            throw new TurtleException(e);
+        }
     }
+
     private void createLanguageButton() {
 
         Label addedLabel = new Label(myResourceBundle.getString("setLanguage"));
@@ -105,11 +113,10 @@ public class InputView {
         myBackGroundPicker = createColorPicker(DEFAULT_BACKGROUND_COLOR);
         createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
 
-        myPenPicker   = createColorPicker(DEFAULT_PEN_COLOR);
+        myPenPicker = createColorPicker(DEFAULT_PEN_COLOR);
         createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
     }
 
-    //TODO: implement action
     private void createColorBox(String text, ColorPicker picker) {
         Label addedLabel = new Label(text);
         addVBox(addedLabel, picker);
@@ -151,7 +158,7 @@ public class InputView {
 
     private void inputFile() {
         File turtleFile = FILE_CHOOSER.showOpenDialog(new Stage());
-        //TODO: Handle this error
+        //TODO: Handle this error if the Turtle File selected is null
         if (turtleFile == null) {
             return;
         }

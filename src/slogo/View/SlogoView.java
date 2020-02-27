@@ -7,12 +7,21 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import slogo.Model.CommandInfrastructure.CommandDatabase;
+import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
 
 
 public class SlogoView extends Application {
 
+    private static final int SCENE_WIDTH = 1000;
+    private static final int SCENE_HEIGHT = 600;
+
+    private static final String MODELPARSER_LANGUAGE = "English";
+
     private BorderPane myBorderPane;
+    private ModelDatabase myModelDatabse;
+    private CommandDatabase myCommandDatabase;
     private ModelParser myModelParser;
     private InputView myInputView;
     private Pane myBackgroundPane;
@@ -33,12 +42,14 @@ public class SlogoView extends Application {
     }
 
     private void initModel() {
-        myModelParser = new ModelParser("English");
+        myModelDatabse = new ModelDatabase();
+        myCommandDatabase = new CommandDatabase(myModelDatabse.getMyTurtle());
+        myModelParser = new ModelParser(MODELPARSER_LANGUAGE,myCommandDatabase);
     }
 
     private void initView() {
         myBackgroundPane = new Pane();
-        myTurtleView = new TurtleView(myModelParser.getMyTurtle(), myBackgroundPane);
+        myTurtleView = new TurtleView(myModelDatabse.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
         InfoView myInfo = new InfoView();
@@ -53,7 +64,7 @@ public class SlogoView extends Application {
     }
 
     private void initStage(Stage primaryStage) {
-        Scene myScene = new Scene(myBorderPane, 600,600);
+        Scene myScene = new Scene(myBorderPane, SCENE_WIDTH,SCENE_HEIGHT);
         primaryStage.setScene(myScene);
         primaryStage.show();
     }

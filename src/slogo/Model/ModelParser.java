@@ -13,7 +13,7 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-import slogo.Model.CommandInfrastructure.CommandFactory;
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 
 public class ModelParser {
@@ -36,26 +36,29 @@ public class ModelParser {
    */
 
   private String commandFromController;
-  private static final String RESOURCES_PACKAGE = "resources/languages/";
+  private static final String RESOURCES_PACKAGE = "languages/";
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
-  private TurtleData turtle = new TurtleData("Happy", 0,0,50);
-  private CommandFactory commandFactory = new CommandFactory(this);
-  private CommandProducer commandProducer = new CommandProducer(turtle, commandFactory);
+  private CommandDatabase commandDatabase;
+  private CommandProducer commandProducer;
   private int argumentThreshold;
   private List<String> linesArray;
   private int currentLinesIndex;
 
 
-  public ModelParser(String language){
+  public ModelParser(String language, CommandDatabase commandData){
+    setUpModelParserLanguage(language);
+
+    commandDatabase = commandData;
+    commandData.addParser(this);
+    commandProducer = new CommandProducer(commandData);
+  }
+
+  public void setUpModelParserLanguage(String language){
     mySymbols = new ArrayList<>();
     addPatterns(language);
     addPatterns(REGEX_SYNTAX);
-//    commandFromController = inputString;
-  }
 
-  public TurtleData getMyTurtle(){
-    return turtle;
   }
 
 
@@ -112,7 +115,7 @@ public class ModelParser {
     return regex.matcher(text).matches();
   }
 
-  public void initializeNewParserText (List<String> lines) {
+  public void initializeNewParserTextandParse (List<String> lines) {
     linesArray = lines;
     parseText(lines);
   }
@@ -142,9 +145,9 @@ public class ModelParser {
         if(this.getSymbol(lines.get(index)).equals("Constant")){
           argumentStack.push(Integer.parseInt(lines.get(index)));
         }
-        else if(commandFactory.isInCommandMap(this.getSymbol(lines.get(index)))) {
+        else if(commandDatabase.isInCommandMap(this.getSymbol(lines.get(index)))) {
           commandStack.push(this.getSymbol(lines.get(index)));
-          argumentThreshold = argumentStack.size() + commandFactory.getAmountOfParametersNeeded(commandStack.peek());
+          argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
         }
         else if(this.getSymbol(lines.get(index)).equals("ListStart")){
           int listEnd = lines.subList(index,lines.size()).indexOf("]");
@@ -164,15 +167,12 @@ public class ModelParser {
   }
 
   public List<String> getLinesArray(){
+    System.out.println(linesArray);
     return linesArray;
   }
 
   public int getCurrentLinesIndex(){
     return currentLinesIndex;
-  }
-
-  public ModelParser getModelParser(){
-    return this;
   }
 
 }

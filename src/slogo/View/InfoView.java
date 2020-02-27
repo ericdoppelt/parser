@@ -23,7 +23,7 @@ public class InfoView {
 
     private final ToggleGroup myGroup = new ToggleGroup();
 
-    private final String RESOURCE_LANGUAGE = "English";
+    private final String RESOURCE_LANGUAGE = "languages/English";
     private final ResourceBundle myBundle = ResourceBundle.getBundle(RESOURCE_LANGUAGE);
 
     private ToggleButton historyToggle;
@@ -68,13 +68,16 @@ public class InfoView {
 
     private void initHelpButton() {
         myHelpButton = new Button();
-        Image helpImage = new Image(this.getClass().getClassLoader().getResourceAsStream(HELP_IMAGE_PATH), 0, 25, true, false);
-        myHelpButton.setGraphic(new ImageView(helpImage));
-
+        //TODO: exception for is the image path is wrong (similar to the turtle image in inputview)
+        try {
+            Image helpImage = new Image(this.getClass().getClassLoader().getResourceAsStream(HELP_IMAGE_PATH), 0, 25, true, false);
+            myHelpButton.setGraphic(new ImageView(helpImage));
+        } catch (Exception e) {
+        }
         myHelpButton.setOnAction(event -> {
             try {
                 Desktop.getDesktop().browse(new URL("https://www2.cs.duke.edu/courses/compsci308/current/assign/03_parser/commands.php").toURI());
-            //TODO: Handle error
+            //TODO: Not sure if this needs to be a custom error TBH since Java can handle it, but basically its just if the help link is bad
             } catch (IOException | URISyntaxException e) {
                 System.out.println("Bad Error!");
             }
