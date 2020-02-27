@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.ModelDatabase;
@@ -85,9 +86,9 @@ public class SlogoView extends Application {
     // TODO: once we understand bindings better, refactor
     private void createBindableBackground() {
         myBackgroundPane.backgroundProperty().bind(Bindings.createObjectBinding(() -> {
-            BackgroundFill fill = new BackgroundFill(myInputView.getBackgroundColorValue(), CornerRadii.EMPTY, Insets.EMPTY);
+            BackgroundFill fill = new BackgroundFill((Paint)myInputView.getBackgroundPropertyColor().getValue(), CornerRadii.EMPTY, Insets.EMPTY);
             return new Background(fill);
-        }, myInputView.getBackgroundProperty()));
+        }, myInputView.getBackgroundPropertyColor()));
     }
 
 
