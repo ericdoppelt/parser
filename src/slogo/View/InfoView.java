@@ -72,12 +72,17 @@ public class InfoView {
     private void initProperties() {
         myVariables = new SimpleMapProperty<>();
         myVariables.addListener(((observable, oldValue, newValue) -> {
+            ((VBox)myVariableToggle.getUserData()).getChildren().clear();
+            for (String s : newValue.keySet()) {
+                ((VBox)myVariableToggle.getUserData()).getChildren().add(new Label(s.substring(1) + ": " + newValue.get(s)));
+            }
         }));
 
         myCommands = new SimpleMapProperty<>();
-        myCommands.addListener(((observable, oldValue, newValue) -> {
+        myCommands.addListener(((observable, oldValue, newvalue) -> {
 
         }));
+
         myHistory = new SimpleListProperty<>();
         myHistory.addListener(((observable, oldValue, newValue) -> {
             if (newValue.size() > 0) {

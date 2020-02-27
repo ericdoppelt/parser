@@ -2,10 +2,8 @@ package slogo.Model.CommandInfrastructure;
 
 import static java.util.Map.entry;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -66,7 +64,7 @@ public class CommandDatabase {
   private Number parameterOne;
   private Number parameterTwo;
   private Map<String, Pair<Command, Integer>> POSSIBLE_COMMANDS_MAP;
-  private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(FXCollections.observableMap(new HashMap<String, Number>()));
+  private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(FXCollections.observableMap(new LinkedHashMap<String, Number>()));
   private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
   private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
 
