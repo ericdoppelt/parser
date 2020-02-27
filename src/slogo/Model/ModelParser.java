@@ -162,7 +162,7 @@ public class ModelParser {
     for (int index = 0; index < lines.size(); index++) {
       if (lines.get(index).trim().length() > 0) {
         currentLinesIndex = index;
-        System.out.println(commandDatabase.getVariableMap().keySet());
+        System.out.println(commandDatabase.getVariables().keySet());
 //        System.out.println(currentLinesIndex);
         //enum stuff that will probably used for the final implementation
 //        System.out.print(this.getSymbol(line));
@@ -186,8 +186,8 @@ public class ModelParser {
           argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
         }
         else if(this.getSymbol(lines.get(index)).equals("Variable")){
-          if(commandDatabase.getVariableMap().containsKey(lines.get(index))) {
-            argumentStack.push((Number) commandDatabase.getVariableMap().get(lines.get(index)));
+          if(commandDatabase.getVariables().containsKey(lines.get(index))) {
+            argumentStack.push((Number) commandDatabase.getVariables().get(lines.get(index)));
           }
           else{
             commandDatabase.setVariableName(lines.get(index));

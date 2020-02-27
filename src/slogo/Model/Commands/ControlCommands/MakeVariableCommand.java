@@ -19,7 +19,7 @@ public class MakeVariableCommand extends Command {
 
 
   public MakeVariableCommand(String variableName, Number parameterOne, CommandDatabase commandDatabase) {
-    variableMap = commandDatabase.getVariableMap();
+    variableMap = commandDatabase.getVariables();
     variable = variableName;
     expression = parameterOne;
   }
