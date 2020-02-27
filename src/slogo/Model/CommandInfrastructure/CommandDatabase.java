@@ -3,6 +3,7 @@ package slogo.Model.CommandInfrastructure;
 import static java.util.Map.entry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javafx.beans.property.ListProperty;
@@ -10,7 +11,6 @@ import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.util.Pair;
 import slogo.Model.Commands.BooleanOperations.AndCommand;
 import slogo.Model.Commands.BooleanOperations.EqualCommand;
@@ -66,7 +66,7 @@ public class CommandDatabase {
   private Number parameterOne;
   private Number parameterTwo;
   private Map<String, Pair<Command, Integer>> POSSIBLE_COMMANDS_MAP;
-  private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty();
+  private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(FXCollections.observableMap(new HashMap<String, Number>()));
   private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
   private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
 
@@ -159,7 +159,8 @@ public class CommandDatabase {
     HISTORY_LIST.getValue().add(command);
   }
 
-  public void addToVaribles(String command, Number expression) {
+  public void addToVariables(String command, Number expression) {
+    this.VARIABLE_MAP.putIfAbsent(command, expression);
     this.VARIABLE_MAP.put(command, expression);
   }
 

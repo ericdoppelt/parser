@@ -138,7 +138,7 @@ public class ModelParser {
     int listStartCounter = 0;
     int listEndCounter = 0;
     for(int i = 0; i < listToCheck.size(); i++){
-      System.out.println("ga " + listToCheck.get(i));
+//      System.out.println("ga " + listToCheck.get(i));
       if(listToCheck.get(i).equals("]")){
         listEndCounter++;
       }
@@ -202,11 +202,11 @@ public class ModelParser {
 //          System.out.println("test");
           continue;
         }
-        System.out.println("Before Parse: " + commandStack);
-        System.out.println("Before Parse: " + argumentStack);
+//        System.out.println("Before Parse: " + commandStack);
+//        System.out.println("Before Parse: " + argumentStack);
         commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
-        System.out.println("After Parse: " + commandStack);
-        System.out.println("After Parse: " + argumentStack);
+//        System.out.println("After Parse: " + commandStack);
+//        System.out.println("After Parse: " + argumentStack);
       }
     }
 

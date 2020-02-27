@@ -32,15 +32,15 @@ public class RepeatCommand extends Command {
   @Override
   public void execute() {
     currentIndex = parser.getCurrentLinesIndex();
-    System.out.println("current index " + currentIndex);
+//    System.out.println("current index " + currentIndex);
     linesSubArray = parser.getLinesArray();
-    System.out.println("BigArray " + linesSubArray);
+//    System.out.println("BigArray " + linesSubArray);
 
     currentSubList = linesSubArray.subList(currentIndex + 1, linesSubArray.size());
-    System.out.println("currentSublist " + currentSubList);
+//    System.out.println("currentSublist " + currentSubList);
     currentSubList = currentSubList.subList(currentSubList.indexOf("["), currentSubList.size());
     int listStart = currentSubList.indexOf("[");
-    System.out.println("listStart" + listStart);
+//    System.out.println("listStart" + listStart);
     int listEnd = findListEnd(currentSubList) + listStart;
     linesSubArray = currentSubList.subList(listStart + 1, listEnd);
     System.out.println("test" + linesSubArray);
