@@ -29,6 +29,7 @@ public class SlogoView extends Application {
     private InputView myInputView;
     private Pane myBackgroundPane;
     private TurtleView myTurtleView;
+    private InfoView myInfoView;
 
     public SlogoView() {}
 
@@ -55,7 +56,7 @@ public class SlogoView extends Application {
         myTurtleView = new TurtleView(myModelDatabase.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
-        InfoView myInfo = new InfoView();
+        myInfoView = new InfoView();
 
         VBox commandAndInput = new VBox();
         commandAndInput.getChildren().addAll(myInputView.getInputPanel(), myCommandLine.getCommandLine());
@@ -65,7 +66,7 @@ public class SlogoView extends Application {
         myBorderPane = new BorderPane();
         myBorderPane.setBottom(commandAndInput);
         myBorderPane.setCenter(myBackgroundPane);
-        myBorderPane.setRight(myInfo.getCompletePanel());
+        myBorderPane.setRight(myInfoView.getCompletePanel());
     }
 
     private void initStage(Stage primaryStage) {
@@ -81,6 +82,7 @@ public class SlogoView extends Application {
         createBindablePen();
         createBindableImage();
         createBindableLanguage();
+        createBindableInfoPanel();
     }
 
     // Inspiration from https://stackoverflow.com/questions/33999728/binding-colorpicker-in-javafx-to-label-background-property
@@ -103,6 +105,12 @@ public class SlogoView extends Application {
     }
 
     private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
+
+    private void createBindableInfoPanel() {
+        myCommandDatabase.bindHistory(myInfoView.getHistoryProperty());
+        myCommandDatabase.bindCommands(myInfoView.getCommandProperty());
+        myCommandDatabase.bindVariables(myInfoView.getVariableProperty());
+    }
 }
 
 
