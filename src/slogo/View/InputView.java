@@ -35,7 +35,7 @@ public class InputView {
 
     private ObservableList allLanguages;
     private static final String PATH_TO_RESOURCE_LANGUAGES = "././././resources/languages";
-    private static final int LENGTH_TO_SUBSTRING_LANGUAGE_NAME = 11;
+    private static final int LENGTH_OF_FILE_ENDING = 11;
     private static final String DEFAULT_LANGUAGE = "English";
 
     private static final String ACCEPTABLE_FILE_EXTENSION = "*.png";
@@ -77,7 +77,7 @@ public class InputView {
         List languageNames = new ArrayList<String>();
         for (File tempFile : languageDirectory.listFiles()) {
             String fileName = tempFile.getName();
-            fileName = fileName.substring(0, fileName.length() - LENGTH_TO_SUBSTRING_LANGUAGE_NAME);
+            fileName = fileName.substring(0, fileName.length() - LENGTH_OF_FILE_ENDING);
             languageNames.add(fileName);
         }
         allLanguages = FXCollections.observableArrayList(languageNames);
