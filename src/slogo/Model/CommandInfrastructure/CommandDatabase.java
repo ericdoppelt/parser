@@ -55,6 +55,7 @@ public class CommandDatabase {
   private double parameterTwo;
   private Map<String, Pair<Command, Integer>> POSSIBLE_COMMANDS_MAP;
   private Map<String, Number> VARIABLE_MAP = new HashMap<>();
+  private List<String> HISTORY_LIST = new ArrayList<>();
   private List<Command> COMMAND_LIST = new ArrayList<>();
   private List<TurtleData> Turtle_List = new ArrayList<>();
   private TurtleData targetTurtle;
@@ -185,8 +186,5 @@ public class CommandDatabase {
     );
 
   }
-
-
-
 }
 
