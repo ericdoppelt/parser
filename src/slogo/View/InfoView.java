@@ -72,7 +72,6 @@ public class InfoView {
     private void initProperties() {
         myVariables = new SimpleMapProperty<>();
         myVariables.addListener(((observable, oldValue, newValue) -> {
-
         }));
 
         myCommands = new SimpleMapProperty<>();
@@ -80,6 +79,9 @@ public class InfoView {
 
         }));
         myHistory = new SimpleListProperty<>();
+        myHistory.addListener(((observable, oldValue, newValue) -> {
+            ((VBox)myHistoryToggle.getUserData()).getChildren().add(new Label(newValue.get(newValue.size() - 1)));
+        }));
     }
 
     private void initButtons() {
@@ -117,31 +119,18 @@ public class InfoView {
 
     private void setHistoryInfo() {
         VBox historyToggleInfo = new VBox();
-        for (String s : myHistory) {
-            HBox labelWrapper = new HBox();
-            Label tempInfo = new Label();
-            tempInfo.setText(s);
-            labelWrapper.getChildren().add(tempInfo);
-            HBox.setHgrow(tempInfo, Priority.ALWAYS);
-            historyToggleInfo.getChildren().add(labelWrapper);
-        }
         myHistoryToggle.setUserData(historyToggleInfo);
     }
 
     private void setVariableInfo() {
         VBox variableToggleInfo = new VBox();
-        for (String s : myVariables.keySet()) {
-            HBox labelWrapper = new HBox();
-            Label tempInfo = new Label();
-            tempInfo.setText(s + ": " + myVariables.get(s));
-            labelWrapper.getChildren().add(tempInfo);
-            labelWrapper.setHgrow(tempInfo, Priority.ALWAYS);
-            variableToggleInfo.getChildren().add(labelWrapper);
-        }
         myVariableToggle.setUserData(variableToggleInfo);
     }
 
-    private void setCommandInfo() {}
+    private void setCommandInfo() {
+        VBox commandToggleInfo = new VBox();
+        myCommandToggle.setUserData(commandToggleInfo);
+    }
 
     private void setButtonActions() {
         for (Toggle tempToggle : myToggleGroup.getToggles()) {
