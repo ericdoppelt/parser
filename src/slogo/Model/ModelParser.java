@@ -44,10 +44,13 @@ public class ModelParser {
   private int argumentThreshold;
   private List<String> linesArray;
   private int currentLinesIndex;
+  private String languageChosen;
+
 
 
   public ModelParser(String language, CommandDatabase commandData){
-    setUpModelParserLanguage(language);
+    languageChosen = language;
+    setUpModelParserLanguage(languageChosen);
 
     commandDatabase = commandData;
     commandData.addParser(this);
