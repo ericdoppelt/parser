@@ -23,7 +23,7 @@ public class SlogoView extends Application {
     private static final String STYLESHEET_FILE = "default.css";
 
     private BorderPane myBorderPane;
-    private ModelDatabase myModelDatabse;
+    private ModelDatabase myModelDatabase;
     private CommandDatabase myCommandDatabase;
     private ModelParser myModelParser;
     private InputView myInputView;
@@ -45,14 +45,14 @@ public class SlogoView extends Application {
     }
 
     private void initModel() {
-        myModelDatabse = new ModelDatabase();
-        myCommandDatabase = new CommandDatabase(myModelDatabse.getMyTurtle());
-        myModelParser = new ModelParser(MODELPARSER_LANGUAGE,myCommandDatabase);
+        myModelDatabase = new ModelDatabase();
+        myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtle());
+        myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase);
     }
 
     private void initView() {
         myBackgroundPane = new Pane();
-        myTurtleView = new TurtleView(myModelDatabse.getMyTurtle(), myBackgroundPane);
+        myTurtleView = new TurtleView(myModelDatabase.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
         InfoView myInfo = new InfoView();
@@ -80,6 +80,7 @@ public class SlogoView extends Application {
         createBindableBackground();
         createBindablePen();
         createBindableImage();
+        createBindableLanguage();
     }
 
     // Inspiration from https://stackoverflow.com/questions/33999728/binding-colorpicker-in-javafx-to-label-background-property
@@ -100,6 +101,8 @@ public class SlogoView extends Application {
     private void createBindableImage() {
         myTurtleView.getImageProperty().bind(myInputView.getTurtleImage());
     }
+
+    private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
 }
 
 

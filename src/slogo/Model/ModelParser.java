@@ -13,6 +13,10 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
+
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 
@@ -44,17 +48,24 @@ public class ModelParser {
   private int argumentThreshold;
   private List<String> linesArray;
   private int currentLinesIndex;
-  private String languageChosen;
+  private ObjectProperty languageChosen;
 
 
 
   public ModelParser(String language, CommandDatabase commandData){
-    languageChosen = language;
-    setUpModelParserLanguage(languageChosen);
+    createBindableLanguage(language);
 
     commandDatabase = commandData;
     commandData.addParser(this);
     commandProducer = new CommandProducer(commandData);
+  }
+
+  private void createBindableLanguage(String language) {
+    languageChosen = new SimpleObjectProperty<String>(language);
+    languageChosen.addListener((observable, oldValue, newValue) -> {
+      setUpModelParserLanguage((String)newValue);
+    });
+    setUpModelParserLanguage(languageChosen.getValue().toString());
   }
 
   public void setUpModelParserLanguage(String language){
@@ -64,6 +75,7 @@ public class ModelParser {
 
   }
 
+  public Property getParserLanguageProperty() {return languageChosen;}
 
   /**
    * Adds the given resource file to this language's recognized types
