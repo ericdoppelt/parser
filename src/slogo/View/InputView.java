@@ -28,12 +28,10 @@ import java.util.ResourceBundle;
 
 public class InputView {
 
-
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.ANTIQUEWHITE;
     private static final Color DEFAULT_PEN_COLOR = Color.web("0xcc8099ff");
-
 
     private ObservableList allLanguages;
     private static final String PATH_TO_RESOURCE_LANGUAGES = "././././resources/languages";
@@ -49,46 +47,35 @@ public class InputView {
 
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
-    private ObjectProperty<Image> myTurtleImage;
-    private StringProperty myCurrentLanguage;
+    private ComboBox myLanguageBox;
+    private Property<Image> myTurtleImage;
 
     HBox myButtons;
 
     public InputView() {
-        myButtons = new HBox();
         initLanguageOptions();
         initButtons();
         formatButtons();
     }
 
-    public Node getInputPanel() {
-        return myButtons;
-    }
+    //FIXME: find a way to make this not return the HBox?
+    public Node getInputPanel() {return myButtons;}
 
-    public Color getBackgroundColorValue() {
-        return myBackGroundPicker.getValue();
-    }
+    public Property<Color> getBackgroundPropertyColor() {return myBackGroundPicker.valueProperty();}
 
-    public Property getBackgroundProperty() {
-        return myBackGroundPicker.valueProperty();
-    }
+    public Property<Color> getPenPropertyColor()  {return myPenPicker.valueProperty();}
 
-    public Property<Color> getPenPropertyColor()  { return myPenPicker.valueProperty(); }
+    public Property<String> getLanguage() {return myLanguageBox.valueProperty();}
 
-    public StringProperty getLanguage() {
-        return myCurrentLanguage;
-    }
-
-    public ObjectProperty<Image> getTurtleImage() {
+    public Property<Image> getTurtleImage() {
         return myTurtleImage;
     }
 
     private void initLanguageOptions() {
         //TODO: exception here
         File languageDirectory = new File(PATH_TO_RESOURCE_LANGUAGES);
-        File[] languageFiles = languageDirectory.listFiles();
         List languageNames = new ArrayList<String>();
-        for (File tempFile : languageFiles) {
+        for (File tempFile : languageDirectory.listFiles()) {
             String fileName = tempFile.getName();
             fileName = fileName.substring(0, fileName.length() - LENGTH_TO_SUBSTRING_LANGUAGE_NAME);
             languageNames.add(fileName);
@@ -97,15 +84,33 @@ public class InputView {
     }
 
     private void initButtons() {
-        initValues();
-        createColorPickers();
-        createLanguageButton();
-        createTurtleButton();
+        myButtons = new HBox();
+        initColorPickers();
+        initLanguageButton();
+        initTurtleButton();
     }
 
+    private void initColorPickers() {
+        myBackGroundPicker = new ColorPicker(DEFAULT_BACKGROUND_COLOR);
+        createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
 
-    private void initValues() throws TurtleException {
-        myCurrentLanguage = new SimpleStringProperty(DEFAULT_LANGUAGE);
+        myPenPicker = new ColorPicker(DEFAULT_PEN_COLOR);
+        createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
+    }
+
+    private void createColorBox(String text, ColorPicker picker) {
+        Label addedLabel = new Label(text);
+        addVBox(addedLabel, picker);
+    }
+
+    private void initLanguageButton() {
+        Label addedLabel = new Label(myResourceBundle.getString("setLanguage"));
+        myLanguageBox = new ComboBox(allLanguages);
+        myLanguageBox.getSelectionModel().select(DEFAULT_LANGUAGE);
+        addVBox(addedLabel, myLanguageBox);
+    }
+
+    private void initTurtleButton() {
         myTurtleImage = new SimpleObjectProperty<>();
         //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
         try {
@@ -118,40 +123,6 @@ public class InputView {
             Platform.runLater(alert::showAndWait);
             inputFile();
         }
-    }
-
-    private void createLanguageButton() {
-
-        Label addedLabel = new Label(myResourceBundle.getString("setLanguage"));
-        ComboBox languageButton = new ComboBox(allLanguages);
-        languageButton.getSelectionModel().select(DEFAULT_LANGUAGE);
-        languageButton.setOnAction(event -> updateLanguage((String)languageButton.getValue()));
-        addVBox(addedLabel, languageButton);
-    }
-
-    private void updateLanguage(String newLanguage) {
-        myCurrentLanguage.setValue(newLanguage);
-    }
-
-    private void createColorPickers() {
-        myBackGroundPicker = createColorPicker(DEFAULT_BACKGROUND_COLOR);
-        createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
-
-        myPenPicker = createColorPicker(DEFAULT_PEN_COLOR);
-        createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
-    }
-
-    private void createColorBox(String text, ColorPicker picker) {
-        Label addedLabel = new Label(text);
-        addVBox(addedLabel, picker);
-    }
-
-    private ColorPicker createColorPicker(Color defaultColor) {
-        ColorPicker addedColorPicker = new ColorPicker(defaultColor);
-        return addedColorPicker;
-    }
-
-    private void createTurtleButton() {
 
         Label turtleLabel = new Label(myResourceBundle.getString("setTurtle"));
         Button turtleButton = new Button(myResourceBundle.getString("loadTurtleImage"));
@@ -182,7 +153,7 @@ public class InputView {
 
     private void inputFile() {
         File turtleFile = FILE_CHOOSER.showOpenDialog(new Stage());
-        //TODO: Handle this error if the Turtle File selected is null
+        //TODO: Handle this error if the Turtle File selected is null and check type of image
         if (turtleFile == null) {
             return;
         }
