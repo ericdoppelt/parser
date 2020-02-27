@@ -10,9 +10,11 @@ import slogo.Model.Commands.Command;
 public class TangentCommand extends Command {
 
   private double returnArgValue;
+  private Number amountOfDegrees;
 
-  public TangentCommand(double degrees) {
-    returnArgValue = Math.tan(Math.toRadians(degrees));
+  public TangentCommand(Number degrees) {
+    amountOfDegrees = degrees;
+
    }
 
   /**
@@ -20,6 +22,7 @@ public class TangentCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = Math.tan(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
   }
 

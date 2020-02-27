@@ -10,9 +10,11 @@ import slogo.Model.Commands.Command;
 public class MinusCommand extends Command {
 
   private double returnArgValue;
+  private Number firstTerm;
 
-  public MinusCommand(double parameterOne) {
-    returnArgValue = -parameterOne;
+
+  public MinusCommand(Number parameterOne) {
+    firstTerm = parameterOne;
   }
 
   /**
@@ -20,6 +22,7 @@ public class MinusCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = -firstTerm.doubleValue();
 //    System.out.println(turtleObject.getTurtleHeading());
   }
 

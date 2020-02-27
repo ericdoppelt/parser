@@ -14,19 +14,27 @@ public class TowardsCommand extends Command {
   private double returnArgValue;
   private double originalTurtleDirection;
   private double newTurtleDirection;
-  private double towardsX;
-  private double towardsY;
+  private Number towardsX;
+  private Number towardsY;
   private static final int halfRevolution = 180;
   private static final int fullRevolution = 360;
 
   private static final int zero = 0;
 
-  public TowardsCommand(TurtleData turtle, double inputX, double inputY) {
+  public TowardsCommand(TurtleData turtle, Number inputX, Number inputY) {
     turtleObject = turtle;
     towardsX = inputX;
     towardsY = inputY;
-    double differenceX = towardsX - turtle.getTurtleX();
-    double differenceY = towardsY - turtle.getTurtleY();
+
+  }
+
+  /**
+   * Rotates a turtle by a counterclockwise rotation of a degree amount.
+   */
+  @Override
+  public void execute() {
+    double differenceX = towardsX.doubleValue() - turtleObject.getTurtleX();
+    double differenceY = towardsY.doubleValue() - turtleObject.getTurtleY();
     double towardsAngle = Math.toDegrees(Math.atan(differenceY/differenceX));
 //    System.out.println("a " + towardsAngle);
 
@@ -38,16 +46,9 @@ public class TowardsCommand extends Command {
       newTurtleDirection = towardsAngle;
     }
     constrainAngle();
-    originalTurtleDirection = turtle.getTurtleHeading();
+    originalTurtleDirection = turtleObject.getTurtleHeading();
     returnArgValue = newTurtleDirection - originalTurtleDirection;
 
-  }
-
-  /**
-   * Rotates a turtle by a counterclockwise rotation of a degree amount.
-   */
-  @Override
-  public void execute() {
     System.out.println("turtle heading before " + turtleObject.getTurtleHeading());
     turtleObject.setTurtleDirection(newTurtleDirection);
     System.out.println("turtle heading after " + turtleObject.getTurtleHeading());

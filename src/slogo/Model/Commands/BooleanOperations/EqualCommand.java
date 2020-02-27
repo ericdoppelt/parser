@@ -12,14 +12,13 @@ public class EqualCommand extends Command {
   //returns the distance turtle moved
 
   private double returnArgValue;
+  private Number firstTerm;
+  private Number secondTerm;
 
-  public EqualCommand(double parameterOne, double parameterTwo) {
-    if(parameterOne == parameterTwo) {
-      returnArgValue = 1;
-    }
-    else {
-      returnArgValue = 0;
-    }
+  public EqualCommand(Number parameterOne, Number parameterTwo) {
+    firstTerm = parameterOne;
+    secondTerm = parameterTwo;
+
   }
 
   /**
@@ -27,8 +26,14 @@ public class EqualCommand extends Command {
    */
   @Override
   public void execute() {
+    if(Math.abs(firstTerm.doubleValue() - secondTerm.doubleValue()) < 0.00001) {
+      returnArgValue = 1;
+    }
+    else {
+      returnArgValue = 0;
+    }
 
-    //System.out.println(returnArgValue);
+    System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }

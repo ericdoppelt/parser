@@ -12,12 +12,11 @@ public class RightCommand extends Command {
 
   private TurtleData turtleObject;
   private double returnArgValue;
-  private double angleChangeCC;
+  private Number degreesChanged;
 
-  public RightCommand(TurtleData turtle, double degreeAngleChange) {
+  public RightCommand(TurtleData turtle, Number degreeAngleChange) {
     turtleObject = turtle;
-    returnArgValue = degreeAngleChange;
-    angleChangeCC = -degreeAngleChange;
+    degreesChanged = degreeAngleChange;
   }
 
   /**
@@ -25,9 +24,9 @@ public class RightCommand extends Command {
    */
   @Override
   public void execute() {
-
+    returnArgValue = degreesChanged.doubleValue();
     System.out.println("turtle heading " + turtleObject.getTurtleHeading());
-    turtleObject.rotateTurtleHeading(angleChangeCC);
+    turtleObject.rotateTurtleHeading(-degreesChanged.doubleValue());
     System.out.println("turtle heading " + turtleObject.getTurtleHeading());
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());

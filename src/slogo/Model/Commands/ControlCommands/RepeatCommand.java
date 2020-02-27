@@ -13,13 +13,14 @@ public class RepeatCommand extends Command {
 
   private double returnArgValue = 0;
   private List<String> linesSubArray;
+  private List<String> currentSubList;
   private int currentIndex;
-  private double amountOfIterations;
+  private Number amountOfIterations;
   private ModelParser parser;
 
 
 
-  public RepeatCommand(double iterations, ModelParser modelParser) {
+  public RepeatCommand(Number iterations, ModelParser modelParser) {
     parser = modelParser;
     amountOfIterations = iterations;
 
@@ -31,18 +32,20 @@ public class RepeatCommand extends Command {
   @Override
   public void execute() {
     currentIndex = parser.getCurrentLinesIndex();
-    System.out.println(currentIndex);
-    List<String> parserLineArray = parser.getLinesArray();
-    System.out.println("BigArray " + parserLineArray);
+    System.out.println("current index " + currentIndex);
+    linesSubArray = parser.getLinesArray();
+    System.out.println("BigArray " + linesSubArray);
 
-    List<String> currentSubList = parserLineArray.subList(currentIndex, parserLineArray.size());
-
-    int listStart = currentSubList.indexOf("[") + 1;
-    int listEnd = currentSubList.indexOf("]");
-    linesSubArray = currentSubList.subList(listStart, listEnd);
+    currentSubList = linesSubArray.subList(currentIndex + 1, linesSubArray.size());
+    System.out.println("currentSublist " + currentSubList);
+    currentSubList = currentSubList.subList(currentSubList.indexOf("["), currentSubList.size());
+    int listStart = currentSubList.indexOf("[");
+    System.out.println("listStart" + listStart);
+    int listEnd = findListEnd(currentSubList) + listStart;
+    linesSubArray = currentSubList.subList(listStart + 1, listEnd);
     System.out.println("test" + linesSubArray);
 
-    for(int i = 0; i < amountOfIterations; i++){
+    for(int i = 0; i < amountOfIterations.doubleValue(); i++){
       parser.parseText(linesSubArray);
     }
   }
@@ -50,6 +53,26 @@ public class RepeatCommand extends Command {
   @Override
   public Double returnArgValue() {
     return this.returnArgValue;
+  }
+
+  public int findListEnd(List<String> listToCheck){
+    int listStartCounter = 0;
+    int listEndCounter = 0;
+    for(int i = 0; i < listToCheck.size(); i++){
+    //  System.out.println(currentSubList.get(i));
+      if(listToCheck.get(i).equals("]")){
+        listEndCounter++;
+      }
+      else if(listToCheck.get(i).equals("[")){
+        listStartCounter++;
+        //System.out.println(listStartCounter);
+      }
+      if(listEndCounter == listStartCounter){
+//        System.out.println("index " + (i + currentIndex));
+        return i;
+      }
+    }
+    return 0;
   }
 
 }

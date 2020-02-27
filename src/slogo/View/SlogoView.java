@@ -2,10 +2,11 @@ package slogo.View;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.ModelDatabase;
@@ -19,13 +20,16 @@ public class SlogoView extends Application {
 
     private static final String MODELPARSER_LANGUAGE = "English";
 
+    private static final String STYLESHEET_FILE = "default.css";
+
     private BorderPane myBorderPane;
-    private ModelDatabase myModelDatabse;
+    private ModelDatabase myModelDatabase;
     private CommandDatabase myCommandDatabase;
     private ModelParser myModelParser;
     private InputView myInputView;
     private Pane myBackgroundPane;
     private TurtleView myTurtleView;
+    private InfoView myInfoView;
 
     public SlogoView() {}
 
@@ -42,29 +46,33 @@ public class SlogoView extends Application {
     }
 
     private void initModel() {
-        myModelDatabse = new ModelDatabase();
-        myCommandDatabase = new CommandDatabase(myModelDatabse.getMyTurtle());
-        myModelParser = new ModelParser(MODELPARSER_LANGUAGE,myCommandDatabase);
+        myModelDatabase = new ModelDatabase();
+        myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtle());
+        myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase);
     }
 
     private void initView() {
         myBackgroundPane = new Pane();
-        myTurtleView = new TurtleView(myModelDatabse.getMyTurtle(), myBackgroundPane);
+        myTurtleView = new TurtleView(myModelDatabase.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
-        InfoView myInfo = new InfoView();
+        myInfoView = new InfoView();
 
         VBox commandAndInput = new VBox();
         commandAndInput.getChildren().addAll(myInputView.getInputPanel(), myCommandLine.getCommandLine());
+        BackgroundFill commandBackground = new BackgroundFill(Color.AZURE, CornerRadii.EMPTY, Insets.EMPTY);
+        commandAndInput.setBackground(new Background(commandBackground));
 
         myBorderPane = new BorderPane();
         myBorderPane.setBottom(commandAndInput);
         myBorderPane.setCenter(myBackgroundPane);
-        myBorderPane.setRight(myInfo.getInfoPanel());
+        myBorderPane.setRight(myInfoView.getCompletePanel());
     }
 
     private void initStage(Stage primaryStage) {
         Scene myScene = new Scene(myBorderPane, SCENE_WIDTH,SCENE_HEIGHT);
+        myScene.getStylesheets()
+                .add(getClass().getResource("/" + STYLESHEET_FILE).toExternalForm());
         primaryStage.setScene(myScene);
         primaryStage.show();
     }
@@ -73,26 +81,35 @@ public class SlogoView extends Application {
         createBindableBackground();
         createBindablePen();
         createBindableImage();
+        createBindableLanguage();
+        createBindableInfoPanel();
     }
 
     // Inspiration from https://stackoverflow.com/questions/33999728/binding-colorpicker-in-javafx-to-label-background-property
     // TODO: once we understand bindings better, refactor
     private void createBindableBackground() {
-        ObjectProperty<Background> backgroundProperty = myBackgroundPane.backgroundProperty();
-        backgroundProperty.bind(Bindings.createObjectBinding(() -> {
-            BackgroundFill fill = new BackgroundFill(myInputView.getBackgroundColor().getValue(), CornerRadii.EMPTY, Insets.EMPTY);
+        myBackgroundPane.backgroundProperty().bind(Bindings.createObjectBinding(() -> {
+            BackgroundFill fill = new BackgroundFill((Paint)myInputView.getBackgroundPropertyColor().getValue(), CornerRadii.EMPTY, Insets.EMPTY);
             return new Background(fill);
-        }, myInputView.getBackgroundColor().valueProperty()));
+        }, myInputView.getBackgroundPropertyColor()));
     }
 
 
     private void createBindablePen() {
-        myTurtleView.getPenColorProperty().bind(myInputView.getPenColor().valueProperty());
+        myTurtleView.getPenColorProperty().bind(myInputView.getPenPropertyColor());
         myTurtleView.getPenColorProperty().getValue();
     }
 
     private void createBindableImage() {
         myTurtleView.getImageProperty().bind(myInputView.getTurtleImage());
+    }
+
+    private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
+
+    private void createBindableInfoPanel() {
+        myCommandDatabase.bindHistory(myInfoView.getHistoryProperty());
+        myCommandDatabase.bindCommands(myInfoView.getCommandProperty());
+        myCommandDatabase.bindVariables(myInfoView.getVariableProperty());
     }
 }
 

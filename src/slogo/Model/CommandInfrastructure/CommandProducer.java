@@ -34,18 +34,18 @@ public class CommandProducer {
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
       System.out.println("BeforeA" + argStack);
       System.out.println("BeforeC" + commStack);
-      double parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek().toString());
+      int parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek().toString());
       Command newCommand = null;
       if(parametersNeeded == zeroParametersNeeded){
         newCommand = commandDatabase.makeZeroParameterCommand(commStack.pop().toString());
       }
       else if(parametersNeeded == oneParametersNeeded) {
-        Integer firstParameter = Integer.parseInt(argStack.pop().toString());
+        Number firstParameter = (Number) argStack.pop();
         newCommand = commandDatabase.makeOneParameterCommand(commStack.pop().toString(), firstParameter);
       }
       else if (parametersNeeded == twoParametersNeeded){
-        Integer secondParameter = Integer.parseInt(argStack.pop().toString()); //must be in this order because the second parameter is popped off first
-        Integer firstParameter = Integer.parseInt(argStack.pop().toString());
+        Number secondParameter = (Number) argStack.pop(); //must be in this order because the second parameter is popped off first
+        Number firstParameter = (Number) argStack.pop();
         newCommand = commandDatabase.makeTwoParameterCommand(commStack.pop().toString(), firstParameter, secondParameter);
       }
 //      Number returnValue =

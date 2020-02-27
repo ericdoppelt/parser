@@ -12,12 +12,12 @@ public class LeftCommand extends Command {
 
   private TurtleData turtleObject;
   private double returnArgValue;
-  private double angleChangeCCW;
+  private Number degreesChanged;
 
-  public LeftCommand(TurtleData turtle, double degreeAngleChange) {
+  public LeftCommand(TurtleData turtle, Number degreeAngleChange) {
     turtleObject = turtle;
-    returnArgValue = degreeAngleChange;
-    angleChangeCCW = degreeAngleChange;
+    degreesChanged = degreeAngleChange;
+
   }
 
   /**
@@ -25,8 +25,9 @@ public class LeftCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = degreesChanged.doubleValue();
     System.out.println(turtleObject.getTurtleHeading());
-    turtleObject.rotateTurtleHeading(angleChangeCCW);
+    turtleObject.rotateTurtleHeading(degreesChanged.doubleValue());
     System.out.println(turtleObject.getTurtleHeading());
   }
 

@@ -10,10 +10,11 @@ import slogo.Model.Commands.Command;
 public class RandomCommand extends Command {
 
   private double returnArgValue;
+  private Number maxRange;
 
-  public RandomCommand(double max) {
-    double randomValue = (int) Math.random() * max;
-    returnArgValue = randomValue;
+
+  public RandomCommand(Number max) {
+    maxRange = max;
    }
 
   /**
@@ -21,6 +22,8 @@ public class RandomCommand extends Command {
    */
   @Override
   public void execute() {
+    double randomValue = (int) Math.random() * maxRange.doubleValue();
+    returnArgValue = randomValue;
     System.out.println(returnArgValue);
   }
 

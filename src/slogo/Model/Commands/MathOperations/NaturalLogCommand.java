@@ -10,9 +10,11 @@ import slogo.Model.Commands.Command;
 public class NaturalLogCommand extends Command {
 
   private double returnArgValue;
+  private Number firstTerm;
 
-  public NaturalLogCommand(double parameterOne) {
-    returnArgValue = Math.log(parameterOne);
+
+  public NaturalLogCommand(Number parameterOne) {
+    firstTerm = parameterOne;
    }
 
   /**
@@ -20,6 +22,8 @@ public class NaturalLogCommand extends Command {
    */
   @Override
   public void execute() {
+
+    returnArgValue = Math.log(firstTerm.doubleValue());
     System.out.println(returnArgValue);
   }
 
