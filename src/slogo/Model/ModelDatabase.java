@@ -17,7 +17,7 @@ public class ModelDatabase {
 
   // regular expression representing any whitespace characters (space, tab, or newline)
   private String language;
-  private TurtleData turtle = new TurtleData("Happy", 0, 0, 50);
+  private TurtleData turtle = new TurtleData("Happy", 0, 0, 0);
 
   private ModelParser originParser;
   private CommandDatabase originCommandDatabase;
