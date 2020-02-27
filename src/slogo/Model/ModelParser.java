@@ -186,11 +186,12 @@ public class ModelParser {
           argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
         }
         else if(this.getSymbol(lines.get(index)).equals("Variable")){
-          if(commandDatabase.getVariables().containsKey(lines.get(index))) {
-            argumentStack.push((Number) commandDatabase.getVariables().get(lines.get(index)));
+          System.out.println(commandStack.peek());
+          if(commandStack.peek().equals("MakeVariable")){
+            commandDatabase.setVariableName(lines.get(index));
           }
           else{
-            commandDatabase.setVariableName(lines.get(index));
+            argumentStack.push((Number) commandDatabase.getVariables().get(lines.get(index)));
           }
         }
         else if(this.getSymbol(lines.get(index)).equals("ListStart")){

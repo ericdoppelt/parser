@@ -19,6 +19,8 @@ public class CommandProducer {
   private static final int oneParametersNeeded = 1;
   private static final int twoParametersNeeded = 2;
   private static final int controlParametersNeeded = 2;
+  private String commandHistory;
+
 
 
   public CommandProducer(CommandDatabase database){
@@ -37,17 +39,23 @@ public class CommandProducer {
       int parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek().toString());
       Command newCommand = null;
       if(parametersNeeded == zeroParametersNeeded){
+        commandHistory = commStack.peek().toString();
         newCommand = commandDatabase.makeZeroParameterCommand(commStack.pop().toString());
       }
       else if(parametersNeeded == oneParametersNeeded) {
         Number firstParameter = (Number) argStack.pop();
+        //System.out.println("Number " + commStack.peek().toString());
+        commandHistory = commStack.peek().toString() + " " + firstParameter.toString();
         newCommand = commandDatabase.makeOneParameterCommand(commStack.pop().toString(), firstParameter);
       }
       else if (parametersNeeded == twoParametersNeeded){
         Number secondParameter = (Number) argStack.pop(); //must be in this order because the second parameter is popped off first
         Number firstParameter = (Number) argStack.pop();
+        commandHistory = commStack.peek().toString() + " " + firstParameter.toString() + " " + secondParameter.toString();
         newCommand = commandDatabase.makeTwoParameterCommand(commStack.pop().toString(), firstParameter, secondParameter);
       }
+      System.out.println("ssas " + commandHistory);
+      commandDatabase.addToHistory(commandHistory);
 //      Number returnValue =
       newCommand.execute(); //change values to return a value
       argumentRunningTotal--;

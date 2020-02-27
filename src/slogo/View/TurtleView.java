@@ -30,6 +30,8 @@ public class TurtleView {
     public static final int X_COORDINATE = 0;
     public static final int Y_COORDINATE = 1;
     public static final double ANGLE_OFFSET = 90.0;
+    public static final double CENTER_X = 385;
+    public static final double CENTER_Y = 265;
 
     private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
 
@@ -42,9 +44,10 @@ public class TurtleView {
 
     private double heightOffset;
     private double widthOffset;
-    private ObjectProperty<Color> penColor;
-    private final Color DEFAULT_PEN_COLOR = Color.TURQUOISE;
+    private ObjectProperty<Color> penColor= new SimpleObjectProperty<>(Color.BLACK);
     private double lineWidth = 2.0;
+    private SimpleDoubleProperty paneHeightOffset = new SimpleDoubleProperty();
+    private SimpleDoubleProperty paneWidthOffset = new SimpleDoubleProperty();
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
@@ -53,33 +56,28 @@ public class TurtleView {
      */
     public TurtleView(TurtleData turtle, Pane pane){
         myBackground = pane;
-        System.out.println(turtle.getTurtleX());
         setUpTurtle(turtle, pane);
         previousPosition = setUpInitialPosition();
         bindPositions(turtle.getCoordHistory());
         bindProperties(turtle);
-
-        penColor = new SimpleObjectProperty<Color>(DEFAULT_PEN_COLOR);
-        penColor.addListener(new ChangeListener<Color>() {
-            @Override
-            public void changed(ObservableValue<? extends Color> observable, Color oldValue, Color newValue) {
-                System.out.println("CHANGE");
-                System.out.println(oldValue);
-                System.out.println(newValue);
-            }
-        });
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
-        turtleView.xProperty().bind(turtle.getTurtleXProperty());
-        turtleView.yProperty().bind(turtle.getTurtleYProperty());
+        //turtleView.xProperty().bind(turtle.getTurtleXProperty());
+        //turtleView.yProperty().bind(turtle.getTurtleYProperty());
         turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         pane.getChildren().add(turtleView);
+
+        turtleView.setY(CENTER_Y - heightOffset);
+        turtleView.setX(CENTER_X - widthOffset);
+
+        paneWidthOffset.bind(pane.widthProperty());
+        paneHeightOffset.bind(pane.heightProperty());
+
     }
 
     private Image getImage(String Path){
-        System.out.println(Path);
         Image newImage = new Image(Path);
         heightOffset = newImage.getHeight()/2;
         widthOffset = newImage.getWidth()/2;
@@ -97,17 +95,20 @@ public class TurtleView {
         x.addListener((ListChangeListener<List<Double>>) c -> {
             List<Double> currentPosition = c.getList().get(c.getList().size()-1);
             if(isPenDown.get()) addPath(getNewLine(previousPosition, currentPosition));
+            updateTurtlePosition(currentPosition.get(X_COORDINATE), currentPosition.get(Y_COORDINATE));
             previousPosition = currentPosition;
         });
     }
 
+    private void updateTurtlePosition(double x, double y){
+        turtleView.setX(x + paneWidthOffset.get()/2);
+        turtleView.setY(y + paneHeightOffset.get()/2);
+    }
+
     private void addPath(Line newPath){
         newPath.setStroke(penColor.getValue());
-        System.out.println(penColor.getValue());
-
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
-        System.out.println(penColor.getValue());
     }
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
