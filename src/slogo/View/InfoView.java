@@ -1,5 +1,9 @@
 package slogo.View;
 
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleMapProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -20,9 +24,9 @@ import java.util.List;
 
 public class InfoView {
 
-    private Map<String, Integer> myVariables = getTempVars();
-    private List<String> myHistory = getTempHistory();
-    private Map<String, String> myCommands;
+    private MapProperty<String, Integer> myVariables;
+    private ListProperty<String> myHistory;
+    private MapProperty<String, String> myCommands;
 
 
     private VBox myInfoPanel;
@@ -44,11 +48,16 @@ public class InfoView {
 
     public InfoView() {
         initInfoPanel();
+        initProperties();
         initButtons();
 
         setToggledInfo();
         setButtonActions();
     }
+
+    public MapProperty getVariableProperty() { return myVariables; }
+    public ListProperty getHistoryProperty() { return myHistory; }
+    public MapProperty getCommandProperty() { return myCommands; }
 
     private void initInfoPanel() {
         myButtonPanel = new HBox();
@@ -58,6 +67,19 @@ public class InfoView {
         myInfoPanel = new VBox();
         myInfoPanel.getChildren().addAll(myButtonPanel, myScrollPane);
         myInfoPanel.setVgrow(myScrollPane, Priority.ALWAYS);
+    }
+
+    private void initProperties() {
+        myVariables = new SimpleMapProperty<>();
+        myVariables.addListener(((observable, oldValue, newValue) -> {
+
+        }));
+
+        myCommands = new SimpleMapProperty<>();
+        myCommands.addListener(((observable, oldValue, newValue) -> {
+
+        }));
+        myHistory = new SimpleListProperty<>();
     }
 
     private void initButtons() {
