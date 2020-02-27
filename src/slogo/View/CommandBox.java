@@ -1,12 +1,10 @@
 package slogo.View;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -94,7 +92,11 @@ public class CommandBox {
         myCurrentCommand = myCommandField.getText();
         myCommands.add(myCurrentCommand);
         myCommandField.clear();
-        myParser.initializeNewParserTextandParse(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
+        try {
+            myParser.initializeNewParserTextandParse(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
+        }catch(Exception e){
+            displayBadCommand(e.getMessage());
+        }
     }
     private void clearText(){
         myCommandField.clear();
@@ -157,5 +159,11 @@ public class CommandBox {
         for (Node button : myCommandLine.getChildren()) {
             myCommandLine.setHgrow(button, Priority.ALWAYS);
         }
+    }
+
+    private void displayBadCommand(String message){
+        Alert myAlert = new Alert(Alert.AlertType.ERROR);
+        myAlert.setContentText(message);
+        Platform.runLater(myAlert::showAndWait);
     }
 }
