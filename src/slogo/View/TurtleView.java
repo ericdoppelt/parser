@@ -94,6 +94,8 @@ public class TurtleView {
     private void addPositionChangeListener(ObservableList<List<Double>> x){
         x.addListener((ListChangeListener<List<Double>>) c -> {
             List<Double> currentPosition = c.getList().get(c.getList().size()-1);
+            System.out.println(previousPosition);
+            System.out.println(currentPosition);
             if(isPenDown.get()) addPath(getNewLine(previousPosition, currentPosition));
             updateTurtlePosition(currentPosition.get(X_COORDINATE), currentPosition.get(Y_COORDINATE));
             //previousPosition = currentPosition;
@@ -103,6 +105,8 @@ public class TurtleView {
     private void updateTurtlePosition(double x, double y){
         turtleView.setX(x + paneWidthOffset.get()/2);
         turtleView.setY(y + paneHeightOffset.get()/2);
+        System.out.println(turtleView.getX());
+        System.out.println(turtleView.getY());
         previousPosition.clear();
         previousPosition.add(X_COORDINATE, turtleView.getX());
         previousPosition.add(Y_COORDINATE, turtleView.getY());
