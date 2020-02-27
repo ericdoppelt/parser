@@ -17,6 +17,7 @@ public class TurtleData {
   private SimpleDoubleProperty headingDirection = new SimpleDoubleProperty();
   private SimpleBooleanProperty penDown = new SimpleBooleanProperty();
   private SimpleBooleanProperty turtleVisibility = new SimpleBooleanProperty(true);
+  private SimpleBooleanProperty turtleShowTrails = new SimpleBooleanProperty(true);
   private String turtleID;
 
   private static final int fullRevolution = 360;
@@ -121,6 +122,11 @@ public class TurtleData {
   public void setTurtleVisibility(boolean isTurtleVisible){
 //    System.out.println(this.yCoord);
     this.turtleVisibility.set(isTurtleVisible);
+  }
+
+  public void setTurtleTrails(boolean areTrailsVisible){
+//    System.out.println(this.yCoord);
+    this.turtleVisibility.set(areTrailsVisible);
   }
 
   public void rotateTurtleHeading(double angleAmount){

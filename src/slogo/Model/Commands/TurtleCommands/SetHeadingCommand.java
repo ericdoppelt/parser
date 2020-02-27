@@ -13,15 +13,15 @@ public class SetHeadingCommand extends Command {
   private TurtleData turtleObject;
   private double returnArgValue;
   private double originalTurtleDirection;
-  private double newTurtleDirection;
+  private Number newTurtleDirection;
   private static final int fullRevolution = 360;
 
-  public SetHeadingCommand(TurtleData turtle, double degreeAngle) {
+  public SetHeadingCommand(TurtleData turtle, Number degreeAngle) {
     turtleObject = turtle;
     originalTurtleDirection = turtle.getTurtleHeading();
     newTurtleDirection = degreeAngle;
     //returnArgValue = min(abs(newTurtleDirection - originalTurtleDirection), fullRevolution - abs(newTurtleDirection - originalTurtleDirection));
-    returnArgValue = newTurtleDirection - originalTurtleDirection;
+
 
   }
 
@@ -30,8 +30,9 @@ public class SetHeadingCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = newTurtleDirection.doubleValue() - originalTurtleDirection;
     //System.out.println("turtle heading " + turtleObject.getTurtleHeading());
-    turtleObject.setTurtleDirection(newTurtleDirection);
+    turtleObject.setTurtleDirection(newTurtleDirection.doubleValue());
     //System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());

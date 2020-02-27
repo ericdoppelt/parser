@@ -9,12 +9,12 @@ import slogo.Model.Commands.Command;
  */
 public class SumCommand extends Command {
 
-  private double firstTerm;
-  private double secondTerm;
+  private Number firstTerm;
+  private Number secondTerm;
   private double returnArgValue;
 
 
-  public SumCommand(double parameterOne, double parameterTwo) {
+  public SumCommand(Number parameterOne, Number parameterTwo) {
     firstTerm = parameterOne;
     secondTerm = parameterTwo;
   }
@@ -25,7 +25,7 @@ public class SumCommand extends Command {
    */
   @Override
   public void execute() {
-    returnArgValue = firstTerm + secondTerm;
+    returnArgValue = firstTerm.doubleValue() + secondTerm.doubleValue();
 //    System.out.println("1 " + this.sumResult);
 //    System.out.println("2 " + this.secondTerm);
 //    System.out.println("turtle X " + turtleObject.getTurtleX());

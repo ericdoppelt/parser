@@ -12,14 +12,12 @@ public class AndCommand extends Command {
   //returns the distance turtle moved
 
   private double returnArgValue;
+  private Number firstTerm;
+  private Number secondTerm;
 
-  public AndCommand(double parameterOne, double parameterTwo) {
-    if(parameterOne != 0 && parameterTwo != 0) {
-      returnArgValue = 1;
-    }
-    else {
-      returnArgValue = 0;
-    }
+  public AndCommand(Number parameterOne, Number parameterTwo) {
+    firstTerm = parameterOne;
+    secondTerm = parameterTwo;
   }
 
   /**
@@ -27,8 +25,13 @@ public class AndCommand extends Command {
    */
   @Override
   public void execute() {
-
-    //System.out.println(returnArgValue);
+    if(!firstTerm.equals(0) && !secondTerm.equals(0)) {
+      returnArgValue = 1;
+    }
+    else {
+      returnArgValue = 0;
+    }
+    System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
   }

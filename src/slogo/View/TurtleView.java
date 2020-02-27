@@ -1,22 +1,24 @@
-package slogo;
+package slogo.View;
 
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +30,10 @@ public class TurtleView {
     public static final int X_COORDINATE = 0;
     public static final int Y_COORDINATE = 1;
     public static final double ANGLE_OFFSET = 90.0;
+    public static final double CENTER_X = 385;
+    public static final double CENTER_Y = 265;
 
-    private static final String DEFAULT_IMAGE_PATH = "resources/languages/perfectTurtle.png";
+    private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
 
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
@@ -40,8 +44,10 @@ public class TurtleView {
 
     private double heightOffset;
     private double widthOffset;
-    private ColorPicker penColor = new ColorPicker(Color.BLACK);
+    private ObjectProperty<Color> penColor= new SimpleObjectProperty<>(Color.BLACK);
     private double lineWidth = 2.0;
+    private SimpleDoubleProperty paneHeightOffset = new SimpleDoubleProperty();
+    private SimpleDoubleProperty paneWidthOffset = new SimpleDoubleProperty();
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
@@ -50,7 +56,6 @@ public class TurtleView {
      */
     public TurtleView(TurtleData turtle, Pane pane){
         myBackground = pane;
-        System.out.println(turtle.getTurtleX());
         setUpTurtle(turtle, pane);
         previousPosition = setUpInitialPosition();
         bindPositions(turtle.getCoordHistory());
@@ -59,10 +64,17 @@ public class TurtleView {
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
-        turtleView.xProperty().bind(turtle.getTurtleXProperty());
-        turtleView.yProperty().bind(turtle.getTurtleYProperty());
-        turtleView.setRotate(turtle.getTurtleHeading()+ ANGLE_OFFSET);
+        //turtleView.xProperty().bind(turtle.getTurtleXProperty());
+        //turtleView.yProperty().bind(turtle.getTurtleYProperty());
+        turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         pane.getChildren().add(turtleView);
+
+        turtleView.setY(CENTER_Y - heightOffset);
+        turtleView.setX(CENTER_X - widthOffset);
+
+        paneWidthOffset.bind(pane.widthProperty());
+        paneHeightOffset.bind(pane.heightProperty());
+
     }
 
     private Image getImage(String Path){
@@ -82,13 +94,26 @@ public class TurtleView {
     private void addPositionChangeListener(ObservableList<List<Double>> x){
         x.addListener((ListChangeListener<List<Double>>) c -> {
             List<Double> currentPosition = c.getList().get(c.getList().size()-1);
+            System.out.println(previousPosition);
+            System.out.println(currentPosition);
             if(isPenDown.get()) addPath(getNewLine(previousPosition, currentPosition));
-            previousPosition = currentPosition;
+            updateTurtlePosition(currentPosition.get(X_COORDINATE), currentPosition.get(Y_COORDINATE));
+            //previousPosition = currentPosition;
         });
     }
 
+    private void updateTurtlePosition(double x, double y){
+        turtleView.setX(x + paneWidthOffset.get()/2);
+        turtleView.setY(y + paneHeightOffset.get()/2);
+        System.out.println(turtleView.getX());
+        System.out.println(turtleView.getY());
+        previousPosition.clear();
+        previousPosition.add(X_COORDINATE, turtleView.getX());
+        previousPosition.add(Y_COORDINATE, turtleView.getY());
+    }
+
     private void addPath(Line newPath){
-        newPath.setFill(penColor.getValue());
+        newPath.setStroke(penColor.getValue());
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
     }
@@ -97,8 +122,8 @@ public class TurtleView {
         Line newPath = new Line();
         newPath.setStartX(oldValues.get(X_COORDINATE) + widthOffset);
         newPath.setStartY(oldValues.get(Y_COORDINATE) + heightOffset);
-        newPath.setEndX(newValues.get(X_COORDINATE) + widthOffset);
-        newPath.setEndY(newValues.get(Y_COORDINATE) + heightOffset);
+        newPath.setEndX(newValues.get(X_COORDINATE) + widthOffset + paneWidthOffset.get()/2);
+        newPath.setEndY(newValues.get(Y_COORDINATE) + heightOffset + paneHeightOffset.get()/2);
         return newPath;
     }
 
@@ -124,18 +149,17 @@ public class TurtleView {
 
     /**
      * Method that allows setting a new image for the turtle
-     * @param newImage: New Image File to be used to replace default turtle image
      */
-    public void setNewImage(File newImage){
-        turtleView.setImage(getImage(newImage.toURI().toString()));
+    public ObjectProperty<Image> getImageProperty(){
+        return turtleView.imageProperty();
     }
 
     /**
      * Turtle Method returns Color property to bind for automatic Pen Color changing
      * @return Color Property
      */
-    public ObjectProperty<Color> getColorProperty(){
-        return penColor.valueProperty();
+    public ObjectProperty<Color> getPenColorProperty(){
+        return penColor;
     }
 
 }

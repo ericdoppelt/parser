@@ -10,9 +10,11 @@ import slogo.Model.Commands.Command;
 public class CosineCommand extends Command {
 
   private double returnArgValue;
+  private Number amountOfDegrees;
 
-  public CosineCommand(double degrees) {
-    returnArgValue = Math.cos(Math.toRadians(degrees));
+  public CosineCommand(Number degrees) {
+    amountOfDegrees = degrees;
+
    }
 
   /**
@@ -20,6 +22,7 @@ public class CosineCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = Math.cos(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
   }
 

@@ -10,9 +10,12 @@ import slogo.Model.Commands.Command;
 public class SineCommand extends Command {
 
   private double returnArgValue;
+  private Number amountOfDegrees;
 
-  public SineCommand(double degrees) {
-    returnArgValue = Math.sin(Math.toRadians(degrees));
+
+  public SineCommand(Number degrees) {
+    amountOfDegrees = degrees;
+
    }
 
   /**
@@ -20,6 +23,7 @@ public class SineCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = Math.sin(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
   }
 

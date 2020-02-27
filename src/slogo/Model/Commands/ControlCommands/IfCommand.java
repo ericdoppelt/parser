@@ -9,20 +9,20 @@ import slogo.Model.ModelParser;
  *
  * @author Frank Tang
  */
-public class RepeatCommand extends Command {
+public class IfCommand extends Command {
 
   private double returnArgValue = 0;
   private List<String> linesSubArray;
   private List<String> currentSubList;
   private int currentIndex;
-  private Number amountOfIterations;
+  private Number expression;
   private ModelParser parser;
 
 
 
-  public RepeatCommand(Number iterations, ModelParser modelParser) {
+  public IfCommand(Number parameterOne, ModelParser modelParser) {
     parser = modelParser;
-    amountOfIterations = iterations;
+    expression = parameterOne;
 
   }
 
@@ -31,21 +31,20 @@ public class RepeatCommand extends Command {
    */
   @Override
   public void execute() {
-    currentIndex = parser.getCurrentLinesIndex();
+    if (expression.doubleValue() > 0) {
+      currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
-    linesSubArray = parser.getLinesArray();
+      linesSubArray = parser.getLinesArray();
 //    System.out.println("BigArray " + linesSubArray);
 
-    currentSubList = linesSubArray.subList(currentIndex + 1, linesSubArray.size());
+      currentSubList = linesSubArray.subList(currentIndex + 1, linesSubArray.size());
 //    System.out.println("currentSublist " + currentSubList);
-    currentSubList = currentSubList.subList(currentSubList.indexOf("["), currentSubList.size());
-    int listStart = currentSubList.indexOf("[");
+      currentSubList = currentSubList.subList(currentSubList.indexOf("["), currentSubList.size());
+      int listStart = currentSubList.indexOf("[");
 //    System.out.println("listStart" + listStart);
-    int listEnd = parser.findListEnd(currentSubList) + listStart;
-    linesSubArray = currentSubList.subList(listStart + 1, listEnd);
-    System.out.println("test" + linesSubArray);
-
-    for(int i = 0; i < amountOfIterations.doubleValue(); i++){
+      int listEnd = parser.findListEnd(currentSubList) + listStart;
+      linesSubArray = currentSubList.subList(listStart + 1, listEnd);
+      System.out.println("test" + linesSubArray);
       parser.parseText(linesSubArray);
     }
   }

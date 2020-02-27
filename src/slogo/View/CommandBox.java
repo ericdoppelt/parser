@@ -1,13 +1,12 @@
-package slogo;
+package slogo.View;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import slogo.Model.ModelParser;
 
@@ -54,9 +53,11 @@ public class CommandBox {
         myParser = parser;
         shortCommandField = getCommandField();
         myCommandField = shortCommandField;
-        stetUpButtons();
+        setUpButtons();
         setUpCommandLine();
+        formatButtons();
     }
+
     /**
      * Returns command line node to be displayed
      */
@@ -91,7 +92,11 @@ public class CommandBox {
         myCurrentCommand = myCommandField.getText();
         myCommands.add(myCurrentCommand);
         myCommandField.clear();
-        myParser.initializeNewParserText(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
+        try {
+            myParser.initializeNewParserTextandParse(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
+        }catch(Exception e){
+            displayBadCommand(e.getMessage());
+        }
     }
     private void clearText(){
         myCommandField.clear();
@@ -144,9 +149,21 @@ public class CommandBox {
         expandButton.setText(newLabel);
     }
     // Method to create all buttons
-    private void stetUpButtons(){
+    private void setUpButtons(){
         runButton = getButton(RUN, event -> retrieveText());
         clearButton = getButton(CLEAR, event -> clearText());
         expandButton = getButton(EXPAND, event -> resizeCommandField());
+    }
+
+    private void formatButtons() {
+        for (Node button : myCommandLine.getChildren()) {
+            myCommandLine.setHgrow(button, Priority.ALWAYS);
+        }
+    }
+
+    private void displayBadCommand(String message){
+        Alert myAlert = new Alert(Alert.AlertType.ERROR);
+        myAlert.setContentText(message);
+        Platform.runLater(myAlert::showAndWait);
     }
 }

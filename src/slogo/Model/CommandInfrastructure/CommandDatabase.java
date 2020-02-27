@@ -3,10 +3,26 @@ package slogo.Model.CommandInfrastructure;
 import static java.util.Map.entry;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleMapProperty;
+import javafx.collections.FXCollections;
 import javafx.util.Pair;
+import slogo.Model.Commands.BooleanOperations.AndCommand;
+import slogo.Model.Commands.BooleanOperations.EqualCommand;
+import slogo.Model.Commands.BooleanOperations.GreaterThanCommand;
+import slogo.Model.Commands.BooleanOperations.LessThanCommand;
+import slogo.Model.Commands.BooleanOperations.NotCommand;
+import slogo.Model.Commands.BooleanOperations.NotEqualCommand;
+import slogo.Model.Commands.BooleanOperations.OrCommand;
 import slogo.Model.Commands.Command;
+import slogo.Model.Commands.ControlCommands.DoTimesCommand;
+import slogo.Model.Commands.ControlCommands.IfCommand;
+import slogo.Model.Commands.ControlCommands.MakeVariableCommand;
 import slogo.Model.Commands.ControlCommands.RepeatCommand;
 import slogo.Model.Commands.MathOperations.ArcTangentCommand;
 import slogo.Model.Commands.MathOperations.CosineCommand;
@@ -40,28 +56,40 @@ import slogo.Model.Commands.TurtleQueries.IsPenDownCommand;
 import slogo.Model.Commands.TurtleQueries.IsShowingCommand;
 import slogo.Model.Commands.TurtleQueries.XCoordinateCommand;
 import slogo.Model.Commands.TurtleQueries.YCoordinateCommand;
+import slogo.Model.Commands.ControlCommands.IfElseCommand;
+import slogo.Model.Commands.ControlCommands.ForCommand;
+
 import slogo.Model.ModelParser;
 import slogo.Model.TurtleData;
 
-public class CommandFactory {
+public class CommandDatabase {
 
-  private String targetCommand;
+  private String targetVariable;
   private static final Integer zeroParameterNeeded = 0;
   private static final Integer oneParameterNeeded = 1;
   private static final Integer twoParametersNeeded = 2;
-  private static final Integer controlParametersNeeded = 1;
-  private double parameterOne;
-  private double parameterTwo;
-  private List<String> commandSubArrayOne;
-  private List<String> commandSubArrayTwo;
+  private Number parameterOne;
+  private Number parameterTwo;
   private Map<String, Pair<Command, Integer>> POSSIBLE_COMMANDS_MAP;
-  private List<TurtleData> Turtle_List = new ArrayList<>();
-  private TurtleData targetTurtle = new TurtleData("ye", 0,0,0);
-  private ModelParser parser;
+  private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(FXCollections.observableMap(new LinkedHashMap<String, Number>()));
+  private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
+  private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
 
-  public CommandFactory(ModelParser modelParser){
-    parser = modelParser;
+  private List<TurtleData> Turtle_List = new ArrayList<>();
+  private TurtleData targetTurtle;
+  private ModelParser originParser;
+
+  public CommandDatabase(TurtleData turtle){
+    targetTurtle = turtle;
     updateCommandMap();
+  }
+
+
+  /**
+   * Prompt the user to make a bet from a menu of choices.
+   */
+  public void addParser (ModelParser parser) {
+    originParser = parser;
   }
 
   /**
@@ -75,7 +103,15 @@ public class CommandFactory {
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
-  public Command makeOneParameterCommand (String targetCommand, double value) {
+  public void setVariableName(String targetCommand) {
+    targetVariable = targetCommand;
+  }
+
+
+  /**
+   * Prompt the user to make a bet from a menu of choices.
+   */
+  public Command makeOneParameterCommand (String targetCommand, Number value) {
     parameterOne = value;
     updateCommandMap();
     return POSSIBLE_COMMANDS_MAP.get(targetCommand).getKey();
@@ -84,19 +120,9 @@ public class CommandFactory {
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
-  public Command makeTwoParameterCommand (String targetCommand, double value1, double value2) {
+  public Command makeTwoParameterCommand (String targetCommand, Number value1, Number value2) {
     parameterOne = value1;
     parameterTwo = value2;
-    updateCommandMap();
-    return POSSIBLE_COMMANDS_MAP.get(targetCommand).getKey();
-  }
-
-  /**
-   * Prompt the user to make a bet from a menu of choices.
-   */
-  public Command makeControlParameterCommand (String targetCommand, double value1) {
-    parameterOne = value1;
-    System.out.println(parser.getCurrentLinesIndex());
     updateCommandMap();
     return POSSIBLE_COMMANDS_MAP.get(targetCommand).getKey();
   }
@@ -114,6 +140,35 @@ public class CommandFactory {
   public boolean isInCommandMap(String targetCommand) {
     return POSSIBLE_COMMANDS_MAP.containsKey(targetCommand);
   }
+
+  /**
+   * Prompt the user to make a bet from a menu of choices.
+   */
+  public MapProperty getVariables() {
+    return this.VARIABLE_MAP;
+  }
+
+  public void bindHistory(ListProperty displayedHistory) {
+    displayedHistory.bind(HISTORY_LIST);
+  }
+
+  public void bindCommands(MapProperty displayedCommands) {
+    displayedCommands.bind(COMMAND_LIST);
+  }
+
+  public void bindVariables(MapProperty displayedVariables) {
+    displayedVariables.bind(VARIABLE_MAP);
+  }
+
+  public void addToHistory(String command) {
+    HISTORY_LIST.getValue().add(command);
+  }
+
+  public void addToVariables(String command, Number expression) {
+    this.VARIABLE_MAP.putIfAbsent(command, expression);
+    this.VARIABLE_MAP.put(command, expression);
+  }
+
 
   /**
    * Prompt the user to make a bet from a menu of choices.
@@ -147,6 +202,7 @@ public class CommandFactory {
         entry("ArcTangent", new Pair<>(new ArcTangentCommand(parameterOne), oneParameterNeeded)),
         entry("NaturalLog", new Pair<>(new NaturalLogCommand(parameterOne), oneParameterNeeded)),
         entry("Minus", new Pair<>(new MinusCommand(parameterOne), oneParameterNeeded)),
+        entry("MakeVariable", new Pair<>(new MakeVariableCommand(targetVariable, parameterOne, this), oneParameterNeeded)),
         //Two Parameter Commands
         entry("Sum", new Pair<>(new SumCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("Difference", new Pair<>(new DifferenceCommand(parameterOne, parameterTwo), twoParametersNeeded)),
@@ -156,15 +212,23 @@ public class CommandFactory {
         entry("SetTowards", new Pair<>(new TowardsCommand(targetTurtle, parameterOne, parameterTwo), twoParametersNeeded)),
         entry("SetPosition", new Pair<>(new SetPositionCommand(targetTurtle, parameterOne, parameterTwo), twoParametersNeeded)),
         entry("Power", new Pair<>(new PowerCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("And", new Pair<>(new AndCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("Or", new Pair<>(new OrCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("NotEqual", new Pair<>(new NotEqualCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("Equal", new Pair<>(new EqualCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("Not", new Pair<>(new NotCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("LessThan", new Pair<>(new LessThanCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        entry("GreaterThan", new Pair<>(new GreaterThanCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+
 
         //Control Parameter Commands
-        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, parser), oneParameterNeeded))
-
+        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("DoTimes", new Pair<>(new DoTimesCommand(originParser, this), zeroParameterNeeded)),
+        entry("If", new Pair<>(new IfCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("IfElse", new Pair<>(new IfElseCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("For", new Pair<>(new ForCommand(originParser, this), zeroParameterNeeded))
     );
 
   }
-
-
-
 }
 
