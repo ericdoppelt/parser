@@ -1,4 +1,6 @@
 
+import slogo.Model.Commands.Command;
+
 import java.util.*;
 
 /**
