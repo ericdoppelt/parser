@@ -34,8 +34,8 @@ public class CommandProducer {
     argumentRunningTotal = argumentThreshold;
 //    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
-      System.out.println("BeforeA" + argStack);
-      System.out.println("BeforeC" + commStack);
+//      System.out.println("BeforeA" + argStack);
+//      System.out.println("BeforeC" + commStack);
       int parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek().toString());
       Command newCommand = null;
       if(parametersNeeded == zeroParametersNeeded){
@@ -54,7 +54,7 @@ public class CommandProducer {
         commandHistory = commStack.peek().toString() + " " + firstParameter.toString() + " " + secondParameter.toString();
         newCommand = commandDatabase.makeTwoParameterCommand(commStack.pop().toString(), firstParameter, secondParameter);
       }
-      System.out.println("ssas " + commandHistory);
+//      System.out.println("ssas " + commandHistory);
       commandDatabase.addToHistory(commandHistory);
 //      Number returnValue =
       newCommand.execute(); //change values to return a value
@@ -69,8 +69,8 @@ public class CommandProducer {
         argStack.push(newCommand.returnArgValue());
 //        argStack.push(returnValue);
       }
-      System.out.println("AfterA" + argStack);
-      System.out.println("AfterC" + commStack);
+//      System.out.println("AfterA" + argStack);
+//      System.out.println("AfterC" + commStack);
     }
   }
 

@@ -21,7 +21,7 @@ public class MakeVariableCommand extends Command {
     dataBase = commandDatabase;
     variable = variableName;
     expression = parameterOne;
-    System.out.println("test" + parameterOne);
+//    System.out.println("test" + parameterOne);
   }
 
   /**
@@ -29,8 +29,8 @@ public class MakeVariableCommand extends Command {
    */
   @Override
   public void execute() {
-    System.out.println(variable);
-    System.out.println(expression.doubleValue());
+//    System.out.println(variable);
+//    System.out.println(expression.doubleValue());
 //    dataBase.getVariables().putIfAbsent(variable, expression.doubleValue());
     dataBase.addToVariables(variable, expression.doubleValue());
     returnArgValue = expression.doubleValue();
