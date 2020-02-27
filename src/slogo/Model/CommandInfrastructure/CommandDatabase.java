@@ -2,8 +2,10 @@ package slogo.Model.CommandInfrastructure;
 
 import static java.util.Map.entry;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -18,6 +20,8 @@ import slogo.Model.Commands.BooleanOperations.NotCommand;
 import slogo.Model.Commands.BooleanOperations.NotEqualCommand;
 import slogo.Model.Commands.BooleanOperations.OrCommand;
 import slogo.Model.Commands.Command;
+import slogo.Model.Commands.ControlCommands.DoTimesCommand;
+import slogo.Model.Commands.ControlCommands.IfCommand;
 import slogo.Model.Commands.ControlCommands.MakeVariableCommand;
 import slogo.Model.Commands.ControlCommands.RepeatCommand;
 import slogo.Model.Commands.MathOperations.ArcTangentCommand;
@@ -52,6 +56,9 @@ import slogo.Model.Commands.TurtleQueries.IsPenDownCommand;
 import slogo.Model.Commands.TurtleQueries.IsShowingCommand;
 import slogo.Model.Commands.TurtleQueries.XCoordinateCommand;
 import slogo.Model.Commands.TurtleQueries.YCoordinateCommand;
+import slogo.Model.Commands.ControlCommands.IfElseCommand;
+import slogo.Model.Commands.ControlCommands.ForCommand;
+
 import slogo.Model.ModelParser;
 import slogo.Model.TurtleData;
 
@@ -215,7 +222,11 @@ public class CommandDatabase {
 
 
         //Control Parameter Commands
-        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser), oneParameterNeeded))
+        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("DoTimes", new Pair<>(new DoTimesCommand(originParser, this), zeroParameterNeeded)),
+        entry("If", new Pair<>(new IfCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("IfElse", new Pair<>(new IfElseCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("For", new Pair<>(new ForCommand(originParser, this), zeroParameterNeeded))
     );
 
   }

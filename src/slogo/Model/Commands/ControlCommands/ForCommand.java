@@ -1,6 +1,7 @@
 package slogo.Model.Commands.ControlCommands;
 
 import java.util.List;
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.ModelParser;
 
@@ -9,20 +10,25 @@ import slogo.Model.ModelParser;
  *
  * @author Frank Tang
  */
-public class RepeatCommand extends Command {
+public class ForCommand extends Command {
 
   private double returnArgValue = 0;
   private List<String> linesSubArray;
   private List<String> currentSubList;
+  private List<String> commandSubList;
   private int currentIndex;
-  private Number amountOfIterations;
+  private Number variableStart;
+  private Number variableEnd;
+  private Number variableIncrement;
+  private String variableName;
   private ModelParser parser;
+  private CommandDatabase commandDatabase;
 
 
 
-  public RepeatCommand(Number iterations, ModelParser modelParser) {
+  public ForCommand(ModelParser modelParser, CommandDatabase database) {
     parser = modelParser;
-    amountOfIterations = iterations;
+    commandDatabase = database;
 
   }
 
@@ -42,11 +48,23 @@ public class RepeatCommand extends Command {
     int listStart = currentSubList.indexOf("[");
 //    System.out.println("listStart" + listStart);
     int listEnd = parser.findListEnd(currentSubList) + listStart;
+    commandSubList = currentSubList.subList(listEnd + 1, currentSubList.size());
     linesSubArray = currentSubList.subList(listStart + 1, listEnd);
     System.out.println("test" + linesSubArray);
 
-    for(int i = 0; i < amountOfIterations.doubleValue(); i++){
-      parser.parseText(linesSubArray);
+    variableName = linesSubArray.get(0);
+    variableStart = Integer.parseInt(linesSubArray.get(1));
+    variableEnd = Integer.parseInt(linesSubArray.get(2));
+    variableIncrement = Integer.parseInt(linesSubArray.get(3));
+
+
+    int commandListEnd = parser.findListEnd(commandSubList);
+    commandSubList = commandSubList.subList(1, commandListEnd);
+    System.out.println("Commandsublist " + commandSubList);
+
+    for(int i = variableStart.intValue(); i <= variableEnd.intValue(); i = i + variableIncrement.intValue()){
+      commandDatabase.addToVariables(variableName, i);
+      parser.parseText(commandSubList);
     }
   }
 
