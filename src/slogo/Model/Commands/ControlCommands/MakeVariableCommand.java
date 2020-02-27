@@ -32,11 +32,8 @@ public class MakeVariableCommand extends Command {
     System.out.println(variable);
     System.out.println(expression.doubleValue());
 //    dataBase.getVariables().putIfAbsent(variable, expression.doubleValue());
-    dataBase.getVariables().put(variable, expression.doubleValue());
-
+    dataBase.addToVariables(variable, expression.doubleValue());
     returnArgValue = expression.doubleValue();
-
-
 
   }
 
