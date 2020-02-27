@@ -2,7 +2,6 @@ package slogo.View;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -65,7 +64,7 @@ public class SlogoView extends Application {
         myBorderPane = new BorderPane();
         myBorderPane.setBottom(commandAndInput);
         myBorderPane.setCenter(myBackgroundPane);
-        myBorderPane.setRight(myInfo.getInfoPanel());
+        myBorderPane.setRight(myInfo.getCompletePanel());
     }
 
     private void initStage(Stage primaryStage) {
