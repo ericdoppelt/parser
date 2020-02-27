@@ -1,20 +1,14 @@
 package slogo;
 
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import slogo.Model.ModelDatabase;
-import slogo.Model.ModelParser;
-
-import javax.swing.border.Border;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Tester class
@@ -23,13 +17,14 @@ import java.util.ArrayList;
 public class tester extends Application {
     @Override
     public void start(Stage primaryStage) {
-        ModelParser modelParser = new ModelParser("English");
+      ModelDatabase modelDatabase = new ModelDatabase();
+       // ModelParser modelParser = new ModelParser("English");
 //<<<<<<< HEAD
         BorderPane mypane = new BorderPane();
 
         Pane p = new Pane();
-        TurtleView myTurtle = new TurtleView(modelParser.getMyTurtle(), p);
-        CommandBox myCommandLine = new CommandBox(modelParser, myTurtle);
+        TurtleView myTurtle = new TurtleView(modelDatabase.getMyTurtle(), p);
+        CommandBox myCommandLine = new CommandBox(modelDatabase.getModelParser(), myTurtle);
 
 //=======
         //TurtleView myTurtle = new TurtleView(modelParser.getMyTurtle());
