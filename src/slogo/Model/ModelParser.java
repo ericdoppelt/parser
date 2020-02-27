@@ -44,10 +44,13 @@ public class ModelParser {
   private int argumentThreshold;
   private List<String> linesArray;
   private int currentLinesIndex;
+  private String languageChosen;
+
 
 
   public ModelParser(String language, CommandDatabase commandData){
-    setUpModelParserLanguage(language);
+    languageChosen = language;
+    setUpModelParserLanguage(languageChosen);
 
     commandDatabase = commandData;
     commandData.addParser(this);
@@ -120,14 +123,34 @@ public class ModelParser {
     parseText(lines);
   }
 
+  public int findListEnd(List<String> listToCheck){
+    int listStartCounter = 0;
+    int listEndCounter = 0;
+    for(int i = 0; i < listToCheck.size(); i++){
+      System.out.println("ga " + listToCheck.get(i));
+      if(listToCheck.get(i).equals("]")){
+        listEndCounter++;
+      }
+      else if(listToCheck.get(i).equals("[")){
+        listStartCounter++;
+//        System.out.println(listStartCounter);
+      }
+      if(listEndCounter == listStartCounter){
+        return i;
+      }
+    }
+    return 0;
+  }
+
   // given some text, prints results of parsing it using the given language
   public void parseText (List<String> lines) {
     //System.out.println(lines);
     Stack<String> commandStack = new Stack<>();
-    Stack<Integer> argumentStack = new Stack<>();
+    Stack<Number> argumentStack = new Stack<>();
     for (int index = 0; index < lines.size(); index++) {
       if (lines.get(index).trim().length() > 0) {
         currentLinesIndex = index;
+        System.out.println(commandDatabase.getVariableMap().keySet());
 //        System.out.println(currentLinesIndex);
         //enum stuff that will probably used for the final implementation
 //        System.out.print(this.getSymbol(line));
@@ -149,9 +172,19 @@ public class ModelParser {
           commandStack.push(this.getSymbol(lines.get(index)));
           argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
         }
+        else if(this.getSymbol(lines.get(index)).equals("Variable")){
+          if(commandDatabase.getVariableMap().containsKey(lines.get(index))) {
+            argumentStack.push((Number) commandDatabase.getVariableMap().get(lines.get(index)));
+          }
+          else{
+            commandDatabase.setVariableName(lines.get(index));
+          }
+        }
         else if(this.getSymbol(lines.get(index)).equals("ListStart")){
-          int listEnd = lines.subList(index,lines.size()).indexOf("]");
-          index = index + listEnd;
+          List<String> list = linesArray.subList(index, linesArray.size());
+          int listEnd = findListEnd(list);
+          index = listEnd + index;
+          System.out.println("ss " + index);
 //          System.out.println("lineend " + listEnd);
 //          System.out.println("test");
           continue;
