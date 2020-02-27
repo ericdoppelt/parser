@@ -96,13 +96,16 @@ public class TurtleView {
             List<Double> currentPosition = c.getList().get(c.getList().size()-1);
             if(isPenDown.get()) addPath(getNewLine(previousPosition, currentPosition));
             updateTurtlePosition(currentPosition.get(X_COORDINATE), currentPosition.get(Y_COORDINATE));
-            previousPosition = currentPosition;
+            //previousPosition = currentPosition;
         });
     }
 
     private void updateTurtlePosition(double x, double y){
         turtleView.setX(x + paneWidthOffset.get()/2);
         turtleView.setY(y + paneHeightOffset.get()/2);
+        previousPosition.clear();
+        previousPosition.add(X_COORDINATE, turtleView.getX());
+        previousPosition.add(Y_COORDINATE, turtleView.getY());
     }
 
     private void addPath(Line newPath){
@@ -115,8 +118,8 @@ public class TurtleView {
         Line newPath = new Line();
         newPath.setStartX(oldValues.get(X_COORDINATE) + widthOffset);
         newPath.setStartY(oldValues.get(Y_COORDINATE) + heightOffset);
-        newPath.setEndX(newValues.get(X_COORDINATE) + widthOffset);
-        newPath.setEndY(newValues.get(Y_COORDINATE) + heightOffset);
+        newPath.setEndX(newValues.get(X_COORDINATE) + widthOffset + paneWidthOffset.get()/2);
+        newPath.setEndY(newValues.get(Y_COORDINATE) + heightOffset + paneHeightOffset.get()/2);
         return newPath;
     }
 
