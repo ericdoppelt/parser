@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javafx.beans.Observable;
+import javafx.beans.property.*;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.util.Pair;
 import slogo.Model.Commands.Command;
 import slogo.Model.Commands.ControlCommands.MakeVariableCommand;
@@ -54,9 +59,10 @@ public class CommandDatabase {
   private double parameterOne;
   private double parameterTwo;
   private Map<String, Pair<Command, Integer>> POSSIBLE_COMMANDS_MAP;
-  private Map<String, Number> VARIABLE_MAP = new HashMap<>();
-  private List<String> HISTORY_LIST = new ArrayList<>();
-  private List<Command> COMMAND_LIST = new ArrayList<>();
+  private MapProperty<String, Integer> VARIABLE_MAP = new SimpleMapProperty();
+  private ListProperty<String> HISTORY_LIST = new SimpleListProperty();
+  private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
+
   private List<TurtleData> Turtle_List = new ArrayList<>();
   private TurtleData targetTurtle;
   private ModelParser originParser;
@@ -65,6 +71,7 @@ public class CommandDatabase {
     targetTurtle = turtle;
     updateCommandMap();
   }
+
 
   /**
    * Prompt the user to make a bet from a menu of choices.
@@ -134,9 +141,22 @@ public class CommandDatabase {
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
-  public Map getVariableMap() {
+  public MapProperty getVariables() {
     return VARIABLE_MAP;
   }
+
+  public void bindHistory(ListProperty displayedHistory) {
+    displayedHistory.bind(HISTORY_LIST);
+  }
+
+  public void bindCommands(MapProperty displayedCommands) {
+    displayedCommands.bind(COMMAND_LIST);
+  }
+
+  public void bindVariables(MapProperty displayedVariables) {
+    displayedVariables.bind(VARIABLE_MAP);
+  }
+
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
@@ -182,7 +202,6 @@ public class CommandDatabase {
 
         //Control Parameter Commands
         entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser), oneParameterNeeded))
-
     );
 
   }
