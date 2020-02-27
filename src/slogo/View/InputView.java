@@ -21,8 +21,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -34,7 +34,10 @@ public class InputView {
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.ANTIQUEWHITE;
     private static final Color DEFAULT_PEN_COLOR = Color.web("0xcc8099ff");
 
-    private static final ObservableList allLanguages = FXCollections.observableArrayList("Chinese", "English", "French", "German", "Italian", "Portuguese", "Russian", "Spanish", "Urdu");
+
+    private ObservableList allLanguages;
+    private static final String PATH_TO_RESOURCE_LANGUAGES = "././././resources/languages";
+    private static final int LENGTH_TO_SUBSTRING_LANGUAGE_NAME = 11;
     private static final String DEFAULT_LANGUAGE = "English";
 
     private static final String ACCEPTABLE_FILE_EXTENSION = "*.png";
@@ -53,6 +56,7 @@ public class InputView {
 
     public InputView() {
         myButtons = new HBox();
+        initLanguageOptions();
         initButtons();
         formatButtons();
     }
@@ -77,6 +81,19 @@ public class InputView {
 
     public ObjectProperty<Image> getTurtleImage() {
         return myTurtleImage;
+    }
+
+    private void initLanguageOptions() {
+        //TODO: exception here
+        File languageDirectory = new File(PATH_TO_RESOURCE_LANGUAGES);
+        File[] languageFiles = languageDirectory.listFiles();
+        List languageNames = new ArrayList<String>();
+        for (File tempFile : languageFiles) {
+            String fileName = tempFile.getName();
+            fileName = fileName.substring(0, fileName.length() - LENGTH_TO_SUBSTRING_LANGUAGE_NAME);
+            languageNames.add(fileName);
+        }
+        allLanguages = FXCollections.observableArrayList(languageNames);
     }
 
     private void initButtons() {
