@@ -69,19 +69,21 @@ public class InfoView {
         myInfoPanel.setVgrow(myScrollPane, Priority.ALWAYS);
     }
 
+    //TODO: REMOVE DUPLICATION
     private void initProperties() {
         myVariables = new SimpleMapProperty<>();
         myVariables.addListener(((observable, oldValue, newValue) -> {
             ((VBox)myVariableToggle.getUserData()).getChildren().clear();
-            for (String s : newValue.keySet()) {
-                ((VBox)myVariableToggle.getUserData()).getChildren().add(new Label(s.substring(1) + ": " + newValue.get(s)));
-            }
+            for (String s : newValue.keySet())
+                ((VBox) myVariableToggle.getUserData()).getChildren().add(new Label(s.substring(1) + ": " + newValue.get(s)));
         }));
 
         myCommands = new SimpleMapProperty<>();
-        myCommands.addListener(((observable, oldValue, newvalue) -> {
-
-        }));
+        myCommands.addListener((observable, oldValue, newValue) -> {
+            ((VBox)myCommandToggle.getUserData()).getChildren().clear();
+            for (String s : newValue.keySet())
+                ((VBox) myCommandToggle.getUserData()).getChildren().add(new Label(s.substring(1) + newValue.get(s)));
+        });
 
         myHistory = new SimpleListProperty<>();
         myHistory.addListener(((observable, oldValue, newValue) -> {
