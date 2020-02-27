@@ -12,13 +12,13 @@ import slogo.Model.Commands.Command;
 public class MakeVariableCommand extends Command {
 
   private double returnArgValue = 0;
-  private double expression;
+  private Number expression;
   private String variable;
   private Map<String, Number> variableMap;
 
 
 
-  public MakeVariableCommand(String variableName, double parameterOne, CommandDatabase commandDatabase) {
+  public MakeVariableCommand(String variableName, Number parameterOne, CommandDatabase commandDatabase) {
     variableMap = commandDatabase.getVariableMap();
     variable = variableName;
     expression = parameterOne;
@@ -30,11 +30,11 @@ public class MakeVariableCommand extends Command {
   @Override
   public void execute() {
     System.out.println(variable);
-    System.out.println(expression);
-    variableMap.putIfAbsent(variable, expression);
-    variableMap.put(variable, expression);
+    System.out.println(expression.doubleValue());
+    variableMap.putIfAbsent(variable, expression.doubleValue());
+    variableMap.put(variable, expression.doubleValue());
 
-    returnArgValue = expression;
+    returnArgValue = expression.doubleValue();
 
 
 

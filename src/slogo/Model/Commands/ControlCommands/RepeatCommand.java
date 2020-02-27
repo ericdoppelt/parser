@@ -15,12 +15,12 @@ public class RepeatCommand extends Command {
   private List<String> linesSubArray;
   private List<String> currentSubList;
   private int currentIndex;
-  private double amountOfIterations;
+  private Number amountOfIterations;
   private ModelParser parser;
 
 
 
-  public RepeatCommand(double iterations, ModelParser modelParser) {
+  public RepeatCommand(Number iterations, ModelParser modelParser) {
     parser = modelParser;
     amountOfIterations = iterations;
 
@@ -45,7 +45,7 @@ public class RepeatCommand extends Command {
     linesSubArray = currentSubList.subList(listStart + 1, listEnd);
     System.out.println("test" + linesSubArray);
 
-    for(int i = 0; i < amountOfIterations; i++){
+    for(int i = 0; i < amountOfIterations.doubleValue(); i++){
       parser.parseText(linesSubArray);
     }
   }

@@ -10,9 +10,14 @@ import slogo.Model.Commands.Command;
 public class PowerCommand extends Command {
 
   private double returnArgValue;
+  private Number baseNumber;
+  private Number exponentNumber;
 
-  public PowerCommand(double base, double exponent) {
-    returnArgValue = Math.pow(base, exponent);
+
+
+  public PowerCommand(Number base, Number exponent) {
+    baseNumber = base;
+    exponentNumber = exponent;
    }
 
   /**
@@ -20,6 +25,7 @@ public class PowerCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = Math.pow(baseNumber.doubleValue(), exponentNumber.doubleValue());
     System.out.println(returnArgValue);
   }
 

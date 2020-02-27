@@ -9,12 +9,12 @@ import slogo.Model.Commands.Command;
  */
 public class DifferenceCommand extends Command {
 
-  private double firstTerm;
-  private double secondTerm;
+  private Number firstTerm;
+  private Number secondTerm;
   private double returnArgValue;
 
 
-  public DifferenceCommand(double parameterOne, double parameterTwo) {
+  public DifferenceCommand(Number parameterOne, Number parameterTwo) {
     firstTerm = parameterOne;
     secondTerm = parameterTwo;
   }
@@ -25,7 +25,7 @@ public class DifferenceCommand extends Command {
    */
   @Override
   public void execute() {
-    returnArgValue = firstTerm - secondTerm;
+    returnArgValue = firstTerm.doubleValue() - secondTerm.doubleValue();
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 

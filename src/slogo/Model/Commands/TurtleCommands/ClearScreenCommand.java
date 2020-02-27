@@ -16,7 +16,7 @@ public class ClearScreenCommand extends Command {
   private double returnArgValue;
   private static final double zeroX = 0;
   private static final double zeroY = 0;
-  //Add clear Screen Boolean
+  private static final boolean areTrailsVisible = false;
 
   public ClearScreenCommand(TurtleData turtle) {
     turtleObject = turtle;
@@ -39,7 +39,7 @@ public class ClearScreenCommand extends Command {
     System.out.println("turtleX after " + turtleObject.getTurtleX());
     System.out.println("turtleY after " + turtleObject.getTurtleY());
     System.out.println("return " + returnArgValue);
-//    turtleObject.setShowTrails();
+    turtleObject.setTurtleTrails(areTrailsVisible);
   }
 
   @Override

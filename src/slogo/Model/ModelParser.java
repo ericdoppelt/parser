@@ -178,7 +178,8 @@ public class ModelParser {
 //        }
 
         if(this.getSymbol(lines.get(index)).equals("Constant")){
-          argumentStack.push(Integer.parseInt(lines.get(index)));
+          //System.out.println(lines.get(index));
+          argumentStack.push(Double.parseDouble(lines.get(index)));
         }
         else if(commandDatabase.isInCommandMap(this.getSymbol(lines.get(index)))) {
           commandStack.push(this.getSymbol(lines.get(index)));

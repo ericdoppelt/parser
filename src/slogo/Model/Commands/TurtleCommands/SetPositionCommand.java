@@ -14,17 +14,13 @@ public class SetPositionCommand extends Command {
 
   private TurtleData turtleObject;
   private double returnArgValue;
-  private double newX;
-  private double newY;
+  private Number newX;
+  private Number newY;
 
-  public SetPositionCommand(TurtleData turtle, double inputX, double inputY) {
+  public SetPositionCommand(TurtleData turtle, Number inputX, Number inputY) {
     turtleObject = turtle;
     newX = inputX;
     newY = inputY;
-    double differenceX = newX - turtle.getTurtleX();
-    double differenceY = newY - turtle.getTurtleY();
-
-    returnArgValue = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
 
   }
 
@@ -33,10 +29,14 @@ public class SetPositionCommand extends Command {
    */
   @Override
   public void execute() {
+    double differenceX = newX.doubleValue() - turtleObject.getTurtleX();
+    double differenceY = newY.doubleValue() - turtleObject.getTurtleY();
+
+    returnArgValue = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
     System.out.println("turtleX before " + turtleObject.getTurtleX());
     System.out.println("turtleY before " + turtleObject.getTurtleY());
-    turtleObject.setXCoord(newX);
-    turtleObject.setYCoord(newY);
+    turtleObject.setXCoord(newX.doubleValue());
+    turtleObject.setYCoord(newY.doubleValue());
     System.out.println("turtleX after " + turtleObject.getTurtleX());
     System.out.println("turtleY after " + turtleObject.getTurtleY());
     System.out.println("return " + returnArgValue);

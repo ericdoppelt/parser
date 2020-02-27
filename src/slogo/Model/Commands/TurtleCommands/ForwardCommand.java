@@ -13,17 +13,17 @@ public class ForwardCommand extends Command {
   private TurtleData turtleObject;
   private double returnArgValue;
   private double turtleHeading;
-  private double distanceToTravel;
+  private Number distanceToTravel;
 
   private double distanceProportionY;
   private double distanceProportionX;
 
 
 
-  public ForwardCommand(TurtleData turtle, double distance) {
+  public ForwardCommand(TurtleData turtle, Number distance) {
     turtleObject = turtle;
-    returnArgValue = distance;
     distanceToTravel = distance;
+//    returnArgValue = distanceToTravel.doubleValue();
     turtleHeading = turtleObject.getTurtleHeading();
 
     distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
@@ -38,8 +38,8 @@ public class ForwardCommand extends Command {
   @Override
   public void execute() {
 
-    turtleObject.moveXCoord(distanceToTravel * distanceProportionX);
-    turtleObject.moveYCoord(distanceToTravel * distanceProportionY);
+    turtleObject.moveXCoord(distanceToTravel.doubleValue() * distanceProportionX);
+    turtleObject.moveYCoord(distanceToTravel.doubleValue() * distanceProportionY);
 
     // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());

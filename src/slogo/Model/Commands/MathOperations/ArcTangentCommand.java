@@ -10,9 +10,12 @@ import slogo.Model.Commands.Command;
 public class ArcTangentCommand extends Command {
 
   private double returnArgValue;
+  private Number amountOfDegrees;
 
-  public ArcTangentCommand(double degrees) {
-    returnArgValue = Math.atan(Math.toRadians(degrees));
+
+  public ArcTangentCommand(Number degrees) {
+    amountOfDegrees = degrees;
+
    }
 
   /**
@@ -20,6 +23,7 @@ public class ArcTangentCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = Math.atan(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
   }
 

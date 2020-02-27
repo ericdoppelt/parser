@@ -11,11 +11,13 @@ import slogo.Model.TurtleData;
 public class BackCommand extends Command {
 
   private TurtleData turtleObject;
-  private double originalArgValue;
+  private double returnArgValue;
+  private Number distanceToTravel;
 
-  public BackCommand(TurtleData turtle, double distance) {
+
+  public BackCommand(TurtleData turtle, Number distance) {
     turtleObject = turtle;
-    originalArgValue = distance;
+    distanceToTravel = distance;
   }
 
   /**
@@ -23,13 +25,13 @@ public class BackCommand extends Command {
    */
   @Override
   public void execute() {
+    returnArgValue = distanceToTravel.doubleValue();
     double turtleHeading = turtleObject.getTurtleHeading();
-    double distanceToTravel = originalArgValue;
     double distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
     double distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
 
-    turtleObject.moveXCoord(-distanceToTravel * distanceProportionX);
-    turtleObject.moveYCoord(-distanceToTravel * distanceProportionY);
+    turtleObject.moveXCoord(-distanceToTravel.doubleValue() * distanceProportionX);
+    turtleObject.moveYCoord(-distanceToTravel.doubleValue() * distanceProportionY);
     // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
     System.out.println(turtleObject.getTurtleX());
@@ -38,7 +40,7 @@ public class BackCommand extends Command {
 
   @Override
   public Double returnArgValue() {
-    return this.originalArgValue;
+    return this.returnArgValue;
   }
 
 }
