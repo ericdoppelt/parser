@@ -46,6 +46,7 @@ public class ModelParser {
   private CommandProducer commandProducer;
   private int argumentThreshold;
   private List<String> linesArray;
+  private List<String> immutableLinesArray;
   private int currentLinesIndex;
   private ObjectProperty languageChosen;
 
@@ -130,21 +131,20 @@ public class ModelParser {
   }
 
   public void initializeNewParserTextandParse (List<String> lines) {
+    immutableLinesArray = lines;
     linesArray = lines;
-    parseText(lines);
+    parseText(immutableLinesArray);
   }
 
   public int findListEnd(List<String> listToCheck){
     int listStartCounter = 0;
     int listEndCounter = 0;
     for(int i = 0; i < listToCheck.size(); i++){
-//      System.out.println("ga " + listToCheck.get(i));
       if(listToCheck.get(i).equals("]")){
         listEndCounter++;
       }
       else if(listToCheck.get(i).equals("[")){
         listStartCounter++;
-//        System.out.println(listStartCounter);
       }
       if(listEndCounter == listStartCounter){
         return i;
@@ -160,24 +160,10 @@ public class ModelParser {
     Stack<Number> argumentStack = new Stack<>();
     for (int index = 0; index < lines.size(); index++) {
       if (lines.get(index).trim().length() > 0) {
-        currentLinesIndex = index;
-        System.out.println(commandDatabase.getVariables().keySet());
-//        System.out.println(currentLinesIndex);
-        //enum stuff that will probably used for the final implementation
-//        System.out.print(this.getSymbol(line));
-//        symbolName = ParserEnum.valueOf(this.getSymbol(line));
-//        switch (symbolName){
-//          case Constant:
-//            argumentStack.push(Integer.parseInt(line));
-//          case Variable:
-//          case Command:
-//            commandStack.push(this.getSymbol(line));
-//          case Comment:
-//          case List:
-//        }
-
+        linesArray = lines.subList(index, lines.size());
+        System.out.println("inParser " + linesArray);
+//        currentLinesIndex = index;
         if(this.getSymbol(lines.get(index)).equals("Constant")){
-          //System.out.println(lines.get(index));
           argumentStack.push(Double.parseDouble(lines.get(index)));
         }
         else if(commandDatabase.isInCommandMap(this.getSymbol(lines.get(index)))) {
@@ -185,7 +171,7 @@ public class ModelParser {
           argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
         }
         else if(this.getSymbol(lines.get(index)).equals("Variable")){
-          System.out.println(commandStack.peek());
+//          System.out.println(commandStack.peek());
           if(commandStack.peek().equals("MakeVariable")){
             commandDatabase.setVariableName(lines.get(index));
           }
@@ -194,12 +180,13 @@ public class ModelParser {
           }
         }
         else if(this.getSymbol(lines.get(index)).equals("ListStart")){
-          List<String> list = linesArray.subList(index, linesArray.size());
-          int listEnd = findListEnd(list);
+          System.out.println("linesarray " + linesArray);
+          int listEnd = findListEnd(linesArray);
+          System.out.println("listend " + listEnd);
+          System.out.println("index before " + index);
+
           index = listEnd + index;
-          System.out.println("ss " + index);
-//          System.out.println("lineend " + listEnd);
-//          System.out.println("test");
+          System.out.println("index " + index);
           continue;
         }
 //        System.out.println("Before Parse: " + commandStack);
@@ -213,7 +200,7 @@ public class ModelParser {
   }
 
   public List<String> getLinesArray(){
-    System.out.println(linesArray);
+//    System.out.println(linesArray);
     return linesArray;
   }
 
