@@ -81,7 +81,6 @@ public class CommandDatabase {
 
   public CommandDatabase(TurtleData turtle){
     targetTurtle = turtle;
-    updateCommandMap();
   }
 
 
@@ -90,6 +89,7 @@ public class CommandDatabase {
    */
   public void addParser (ModelParser parser) {
     originParser = parser;
+    updateCommandMap();
   }
 
   /**

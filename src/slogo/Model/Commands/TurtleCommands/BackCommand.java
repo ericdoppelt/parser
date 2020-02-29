@@ -34,8 +34,8 @@ public class BackCommand extends Command {
     turtleObject.moveYCoord(-distanceToTravel.doubleValue() * distanceProportionY);
     // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
-    System.out.println(turtleObject.getTurtleX());
-    System.out.println(turtleObject.getTurtleY());
+    System.out.println("backX " + turtleObject.getTurtleX());
+    System.out.println("backY " + turtleObject.getTurtleY());
   }
 
   @Override
