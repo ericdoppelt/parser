@@ -27,8 +27,14 @@ import java.util.ResourceBundle;
 
 public class InputView {
 
+    private static final String BUTTON_METHODS_BUNDLE = "ButtonsMethods";
+    private static final String BUTTON_LABELS_BUNDLE = "ButtonsLabels";
+    private static final String BUTTON_NAMES_BUNDLE = "ButtonsNames";
+
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
+    private ResourceBundle myButtonsLabel = null;
+    private ResourceBundle myButtonsMethod = null;
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.ANTIQUEWHITE;
     private static final Color DEFAULT_PEN_COLOR = Color.web("8099ff");
 
