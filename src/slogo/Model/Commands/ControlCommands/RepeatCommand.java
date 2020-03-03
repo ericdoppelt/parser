@@ -23,7 +23,6 @@ public class RepeatCommand extends Command {
   public RepeatCommand(Number iterations, ModelParser modelParser) {
     parser = modelParser;
     amountOfIterations = iterations;
-
   }
 
   /**
@@ -34,19 +33,19 @@ public class RepeatCommand extends Command {
     //currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
     linesSubArray = parser.getLinesArray();
-    System.out.println("shortened array from parser " + linesSubArray);
+//    System.out.println("shortened array from parser " + linesSubArray);
 
     currentSubList = linesSubArray.subList(1, linesSubArray.size());
-    System.out.println("currentSublist " + currentSubList);
+//    System.out.println("currentSublist " + currentSubList);
     int listStart = currentSubList.indexOf("[");
     currentSubList = currentSubList.subList(listStart, currentSubList.size());
 //    System.out.println("listStart" + listStart);
     int listEnd = parser.findListEnd(currentSubList) + listStart;
     linesSubArray = currentSubList.subList(listStart + 1, listEnd);
-    System.out.println("test" + linesSubArray);
+//    System.out.println("test" + linesSubArray);
 
     for(int i = 0; i < amountOfIterations.intValue(); i++){
-      System.out.println("linessub "  + linesSubArray);
+//      System.out.println("linessub "  + linesSubArray);
       parser.parseText(linesSubArray);
     }
   }

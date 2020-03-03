@@ -39,17 +39,13 @@ public class ModelParser {
    * @author Frank Tang
    */
 
-  private String commandFromController;
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
   private CommandDatabase commandDatabase;
   private CommandProducer commandProducer;
   private int argumentThreshold;
   private List<String> linesArray;
-  private List<String> immutableLinesArray;
-  private int currentLinesIndex;
   private ObjectProperty languageChosen;
-
 
 
   public ModelParser(String language, CommandDatabase commandData){
@@ -61,7 +57,7 @@ public class ModelParser {
   }
 
   private void createBindableLanguage(String language) {
-    languageChosen = new SimpleObjectProperty<String>(language);
+    languageChosen = new SimpleObjectProperty<>(language);
     languageChosen.addListener((observable, oldValue, newValue) -> {
       setUpModelParserLanguage((String)newValue);
     });
@@ -131,9 +127,8 @@ public class ModelParser {
   }
 
   public void initializeNewParserTextandParse (List<String> lines) {
-    immutableLinesArray = lines;
     linesArray = lines;
-    parseText(immutableLinesArray);
+    parseText(lines);
   }
 
   public int findListEnd(List<String> listToCheck){
@@ -154,58 +149,40 @@ public class ModelParser {
   }
 
   // given some text, prints results of parsing it using the given language
-  public void parseText (List<String> lines) {
-    //System.out.println(lines);
+  public void parseText (List<String> inputCommandList) {
     Stack<String> commandStack = new Stack<>();
     Stack<Number> argumentStack = new Stack<>();
-    for (int index = 0; index < lines.size(); index++) {
-      if (lines.get(index).trim().length() > 0) {
-        linesArray = lines.subList(index, lines.size());
-        System.out.println("inParser " + linesArray);
-//        currentLinesIndex = index;
-        if(this.getSymbol(lines.get(index)).equals("Constant")){
-          argumentStack.push(Double.parseDouble(lines.get(index)));
+    for (int index = 0; index < inputCommandList.size(); index++) {
+      if (inputCommandList.get(index).trim().length() > 0) {
+        linesArray = inputCommandList.subList(index, inputCommandList.size());
+        if(this.getSymbol(inputCommandList.get(index)).equals("Constant")){
+          argumentStack.push(Double.parseDouble(inputCommandList.get(index)));
         }
-        else if(commandDatabase.isInCommandMap(this.getSymbol(lines.get(index)))) {
-          commandStack.push(this.getSymbol(lines.get(index)));
+        else if(commandDatabase.isInCommandMap(this.getSymbol(inputCommandList.get(index)))) {
+          commandStack.push(this.getSymbol(inputCommandList.get(index)));
           argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
         }
-        else if(this.getSymbol(lines.get(index)).equals("Variable")){
-//          System.out.println(commandStack.peek());
+        else if(this.getSymbol(inputCommandList.get(index)).equals("Variable")){
           if(commandStack.peek().equals("MakeVariable")){
-            commandDatabase.setVariableName(lines.get(index));
+            commandDatabase.setVariableName(inputCommandList.get(index));
           }
           else{
-            argumentStack.push((Number) commandDatabase.getVariables().get(lines.get(index)));
+            argumentStack.push((Number) commandDatabase.getVariableMap().get(inputCommandList.get(index)));
           }
         }
-        else if(this.getSymbol(lines.get(index)).equals("ListStart")){
-          System.out.println("linesarray " + linesArray);
+        else if(this.getSymbol(inputCommandList.get(index)).equals("ListStart")){
           int listEnd = findListEnd(linesArray);
-          System.out.println("listend " + listEnd);
-          System.out.println("index before " + index);
-
           index = listEnd + index;
-          System.out.println("index " + index);
           continue;
         }
-//        System.out.println("Before Parse: " + commandStack);
-//        System.out.println("Before Parse: " + argumentStack);
         commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
-//        System.out.println("After Parse: " + commandStack);
-//        System.out.println("After Parse: " + argumentStack);
       }
     }
 
   }
 
   public List<String> getLinesArray(){
-//    System.out.println(linesArray);
     return linesArray;
-  }
-
-  public int getCurrentLinesIndex(){
-    return currentLinesIndex;
   }
 
 }

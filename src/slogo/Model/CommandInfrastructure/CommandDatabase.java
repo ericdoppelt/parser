@@ -144,7 +144,7 @@ public class CommandDatabase {
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
-  public MapProperty getVariables() {
+  public MapProperty getVariableMap() {
     return this.VARIABLE_MAP;
   }
 
@@ -164,7 +164,7 @@ public class CommandDatabase {
     HISTORY_LIST.getValue().add(command);
   }
 
-  public void addToVariables(String command, Number expression) {
+  public void addToVariableMap(String command, Number expression) {
     this.VARIABLE_MAP.putIfAbsent(command, expression);
     this.VARIABLE_MAP.put(command, expression);
   }
@@ -219,6 +219,9 @@ public class CommandDatabase {
         entry("Not", new Pair<>(new NotCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("LessThan", new Pair<>(new LessThanCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("GreaterThan", new Pair<>(new GreaterThanCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        //
+        // TODO: make into reflection
+
 
 
         //Control Parameter Commands
