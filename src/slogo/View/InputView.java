@@ -5,8 +5,6 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 
@@ -20,48 +18,52 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class InputView {
 
-    private static final String BUTTON_METHODS_BUNDLE = "ButtonsMethods";
-    private static final String BUTTON_LABELS_BUNDLE = "ButtonsLabels";
-    private static final String BUTTON_NAMES_BUNDLE = "ButtonsNames";
+    private static final List<String> ALL_BUTTONS = new ArrayList<>(Arrays.asList("turtle", "preferences", "workspace"));
+    private static final List<String> ALL_COLOR_PICKERS = new ArrayList<>(Arrays.asList("background", "pen"));
+    private static final List<String> ALL_COMBO_BOXES = new ArrayList<>(Arrays.asList("language"));
 
-    private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
+    private static final String ALL_LABELS_BUNDLE = "inputLabels";
+    private static final String BUTTON_METHODS_BUNDLE = "buttonMethods";
+    private static final String BUTTON_TEXT_BUNDLE = "buttonTexts";
+    private static final String DEFAULT_VALUES_BUNDLE = "defaultValues";
 
-    private ResourceBundle myButtonsLabel = null;
-    private ResourceBundle myButtonsMethod = null;
-    private static final Color DEFAULT_BACKGROUND_COLOR = Color.ANTIQUEWHITE;
-    private static final Color DEFAULT_PEN_COLOR = Color.web("8099ff");
+    private ResourceBundle myMethodsBundle  = ResourceBundle.getBundle(BUTTON_METHODS_BUNDLE);
+    private ResourceBundle myTextsBundle = ResourceBundle.getBundle(BUTTON_TEXT_BUNDLE);
+    private ResourceBundle myLabelsBundle  = ResourceBundle.getBundle(ALL_LABELS_BUNDLE);
+    private ResourceBundle myValuesBundle = ResourceBundle.getBundle(DEFAULT_VALUES_BUNDLE);
 
-    private ObservableList allLanguages;
+    private ObservableList allLanguages = initLanguageOptions();
     private static final String PATH_TO_RESOURCE_LANGUAGES = "././././resources/languages";
     private static final int LENGTH_OF_FILE_ENDING = 11;
-    private static final String DEFAULT_LANGUAGE = "English";
-
 
     private static final String ACCEPTABLE_TURTLE_FILE = "*.png";
     private static final String TURTLE_FILE_EXTENSION = ".png";
     private static final String TYPE_OF_TURTLE_FILE = "PNG";
     private static final String INITIAL_TURTLE_DIRECTORY = "user.dir";
+
+    private static final String TURTLE_KEY = "turtle";
+    private static final String BACKGROUND_KEY = "background";
+    private static final String PEN_KEY = "pen";
+    private static final String LANGUAGE_KEY = "language";
+
     //TODO: bad convention"
     private final FileChooser TURTLE_FILE_CHOOSER = createFileChooser(ACCEPTABLE_TURTLE_FILE, TYPE_OF_TURTLE_FILE, INITIAL_TURTLE_DIRECTORY);
+    private static final String TURTLEIMAGE_PACKAGE = "turtleImages/";
 
-    private static final String DEFAULT_TURTLE_IMAGE = "turtleImages/perfectTurtle.png";
-    private static final String PATH_TO_TURTLEIMAGES = "././././resources/turtleImages/";
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
     private ComboBox myLanguageBox;
     private Property<Image> myTurtleImage;
 
+
     HBox myButtons;
 
     public InputView() {
-        initLanguageOptions();
         initButtons();
         formatButtons();
     }
@@ -75,11 +77,60 @@ public class InputView {
 
     public Property<String> getLanguage() {return myLanguageBox.valueProperty();}
 
-    public Property<Image> getTurtleImage() {
-        return myTurtleImage;
+    public Property<Image> getTurtleImage() {return myTurtleImage;}
+
+    private void initButtons() {
+        myButtons = new HBox();
+        for (String pickerType : ALL_COLOR_PICKERS) makeColorVBox(pickerType);
+        for (String buttonType : ALL_BUTTONS) makeButtonVBox(buttonType);
+        for (String comboBoxType : ALL_COMBO_BOXES) makeComboVBox(comboBoxType);
     }
 
-    private void initLanguageOptions() {
+    private void makeButtonVBox(String buttonType) {
+        if (buttonType.equals(TURTLE_KEY)) setDefaultTurtle();
+
+        VBox addedVBox = new VBox();
+        addedVBox.setAlignment(Pos.CENTER);
+        Label addedLabel = new Label(myLabelsBundle.getString(buttonType));
+        Button addedButton = new Button(myTextsBundle.getString(buttonType));
+        // FIXME: this is bad code
+            addedButton.setOnAction(e -> {
+                try {
+                    this.getClass().getDeclaredMethod(myMethodsBundle.getString(buttonType), null).invoke(this);
+                } catch(Exception ex) {
+                    System.out.println(ex);
+                }
+            });
+        addedVBox.getChildren().addAll(addedLabel, addedButton);
+        myButtons.getChildren().add(addedVBox);
+    }
+
+    private void makeColorVBox(String pickerType) {
+        VBox addedVBox = new VBox();
+        addedVBox.setAlignment(Pos.CENTER);
+        Label addedLabel = new Label(myLabelsBundle.getString(pickerType));
+        ColorPicker addedColorPicker = new ColorPicker(Color.web(myValuesBundle.getString(pickerType)));
+
+        if (pickerType.equals(BACKGROUND_KEY)) myBackGroundPicker = addedColorPicker;
+        else if (pickerType.equals(PEN_KEY)) myPenPicker = addedColorPicker;
+
+        addedVBox.getChildren().addAll(addedLabel, addedColorPicker);
+        myButtons.getChildren().add(addedVBox);
+    }
+
+    private void makeComboVBox(String comboBoxType) {
+        VBox addedVBox = new VBox();
+        addedVBox.setAlignment(Pos.CENTER);
+        Label addedLabel = new Label(myLabelsBundle.getString(comboBoxType));
+        ComboBox addedComboBox = new ComboBox(allLanguages);
+        addedComboBox.setValue(myValuesBundle.getString(comboBoxType));
+
+        if (comboBoxType.equals(LANGUAGE_KEY)) myLanguageBox = addedComboBox;
+        addedVBox.getChildren().addAll(addedLabel, addedComboBox);
+        myButtons.getChildren().add(addedVBox);
+    }
+
+    private ObservableList initLanguageOptions() {
         //TODO: exception here
         File languageDirectory = new File(PATH_TO_RESOURCE_LANGUAGES);
         List languageNames = new ArrayList<String>();
@@ -88,49 +139,17 @@ public class InputView {
             fileName = fileName.substring(0, fileName.length() - LENGTH_OF_FILE_ENDING);
             languageNames.add(fileName);
         }
-        allLanguages = FXCollections.observableArrayList(languageNames);
+        return FXCollections.observableArrayList(languageNames);
     }
 
-    private void initButtons() {
-        myButtons = new HBox();
-        initColorPickers();
-        initLanguageButton();
-        initTurtleButton();
-        initPrefButton();
-    }
 
-    private void initPrefButton() {
-        Button prefButton = new Button();
-        prefButton.setOnAction(e -> inputPrefFile());
-        prefButton.setText(myResourceBundle.getString("setPreferencesButton"));
-        Label prefLabel = new Label(myResourceBundle.getString("setPreferencesText"));
-        addVBox(prefLabel, prefButton);
-    }
-
-    private void initColorPickers() {
-        myBackGroundPicker = new ColorPicker(DEFAULT_BACKGROUND_COLOR);
-        createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
-        myPenPicker = new ColorPicker(DEFAULT_PEN_COLOR);
-        createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
-    }
-
-    private void createColorBox(String text, ColorPicker picker) {
-        Label addedLabel = new Label(text);
-        addVBox(addedLabel, picker);
-    }
-
-    private void initLanguageButton() {
-        Label addedLabel = new Label(myResourceBundle.getString("setLanguage"));
-        myLanguageBox = new ComboBox(allLanguages);
-        myLanguageBox.getSelectionModel().select(DEFAULT_LANGUAGE);
-        addVBox(addedLabel, myLanguageBox);
-    }
-
-    private void initTurtleButton() {
+    private void setDefaultTurtle() {
         myTurtleImage = new SimpleObjectProperty<>();
+        String defaultFilePath = TURTLEIMAGE_PACKAGE + myValuesBundle.getString("turtle") + TURTLE_FILE_EXTENSION;
+        System.out.println(defaultFilePath);
         //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
         try {
-            myTurtleImage.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(DEFAULT_TURTLE_IMAGE)));
+            myTurtleImage.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
         } catch (Exception e) {
             String errorMessage = "INVALID TURTLE";
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -139,32 +158,13 @@ public class InputView {
             Platform.runLater(alert::showAndWait);
             inputTurtleFile();
         }
-
-        Label turtleLabel = new Label(myResourceBundle.getString("setTurtle"));
-        Button turtleButton = new Button(myResourceBundle.getString("loadTurtleImage"));
-        turtleButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                inputTurtleFile();
-            }
-        });
-        addVBox(turtleLabel, turtleButton);
     }
 
     private FileChooser createFileChooser(String extension, String fileType, String directory) {
         FileChooser returnedChooser = new FileChooser();
-        returnedChooser.setTitle(myResourceBundle.getString("fileChooserHeader"));
         returnedChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(fileType, extension));
         returnedChooser.setInitialDirectory(new File(System.getProperty(directory)));
         return returnedChooser;
-    }
-
-    private VBox addVBox(Label label, Node input) {
-        VBox returnedBox = new VBox();
-        returnedBox.setAlignment(Pos.CENTER);
-        returnedBox.getChildren().addAll(label, input);
-        myButtons.getChildren().add(returnedBox);
-        return returnedBox;
     }
 
     //FIXME: clear duplication here
@@ -178,25 +178,27 @@ public class InputView {
     }
 
     private void inputPrefFile() {
-
         TextInputDialog prefProperties = new TextInputDialog("Duvall");
         prefProperties.setHeaderText("What Preference Would You Like to Load?");
         prefProperties.showAndWait();
         ResourceBundle prefBundle = null;
         try {
             prefBundle = ResourceBundle.getBundle(prefProperties.getEditor().getText());
-            myBackGroundPicker.setValue(Color.web(prefBundle.getString("backgroundColor")));
-            myPenPicker.setValue(Color.web(prefBundle.getString("penColor")));
+            myBackGroundPicker.setValue(Color.web(prefBundle.getString("background")));
+            myPenPicker.setValue(Color.web(prefBundle.getString("pen")));
             myLanguageBox.setValue(prefBundle.getString("language"));
             // TODO: duplication
-            File turtleFile = new File(PATH_TO_TURTLEIMAGES + prefBundle.getString("turtleImage") + TURTLE_FILE_EXTENSION);
-            System.out.println(turtleFile);
-            myTurtleImage.setValue(new Image(turtleFile.toURI().toString()));
+
+            String defaultFilePath = TURTLEIMAGE_PACKAGE + prefBundle.getString("turtle") + TURTLE_FILE_EXTENSION;
+            myTurtleImage.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
         } catch (Exception e) {
             System.out.println(e);
         }
    }
 
+   private void createNewWindow() {
+        SlogoView newWindow = new SlogoView(new Stage());
+   }
 
     private void formatButtons() {
         for (Node button : myButtons.getChildren()) {

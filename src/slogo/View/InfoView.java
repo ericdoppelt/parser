@@ -88,9 +88,16 @@ public class InfoView {
         myHistory = new SimpleListProperty<>();
         myHistory.addListener(((observable, oldValue, newValue) -> {
             if (newValue.size() > 0) {
-                ((VBox) myHistoryToggle.getUserData()).getChildren().add(new Label(newValue.get(newValue.size() - 1)));
+                Label addedLabel = new Label(newValue.get(newValue.size() - 1));
+                addedLabel.setOnMouseClicked(e -> execute(addedLabel.getText()));
+                ((VBox) myHistoryToggle.getUserData()).getChildren().add(addedLabel);
             }
         }));
+    }
+
+    //TODO: fill this in
+    private void execute(String s) {
+
     }
 
     private void initButtons() {

@@ -13,7 +13,7 @@ import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
 
 
-public class SlogoView extends Application {
+public class SlogoView {
 
     private static final int SCENE_WIDTH = 1000;
     private static final int SCENE_HEIGHT = 600;
@@ -31,19 +31,15 @@ public class SlogoView extends Application {
     private TurtleView myTurtleView;
     private InfoView myInfoView;
 
-    public SlogoView() {}
 
-    public SlogoView(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public SlogoView(Stage displayedStage) {
         initModel();
         initView();
-        initStage(primaryStage);
+        initStage(displayedStage);
         bindProperties();
     }
+
+
 
     private void initModel() {
         myModelDatabase = new ModelDatabase();
