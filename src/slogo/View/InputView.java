@@ -2,7 +2,6 @@ package slogo.View;
 
 import javafx.beans.property.*;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,23 +27,32 @@ import java.util.ResourceBundle;
 
 public class InputView {
 
+    private static final String BUTTON_METHODS_BUNDLE = "ButtonsMethods";
+    private static final String BUTTON_LABELS_BUNDLE = "ButtonsLabels";
+    private static final String BUTTON_NAMES_BUNDLE = "ButtonsNames";
+
     private ResourceBundle myResourceBundle  = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
+    private ResourceBundle myButtonsLabel = null;
+    private ResourceBundle myButtonsMethod = null;
     private static final Color DEFAULT_BACKGROUND_COLOR = Color.ANTIQUEWHITE;
-    private static final Color DEFAULT_PEN_COLOR = Color.web("0xcc8099ff");
+    private static final Color DEFAULT_PEN_COLOR = Color.web("8099ff");
 
     private ObservableList allLanguages;
     private static final String PATH_TO_RESOURCE_LANGUAGES = "././././resources/languages";
     private static final int LENGTH_OF_FILE_ENDING = 11;
     private static final String DEFAULT_LANGUAGE = "English";
 
-    private static final String ACCEPTABLE_FILE_EXTENSION = "*.png";
-    private static final String TYPE_OF_FILE_EXTENSION = "PNG";
-    private static final String INITIAL_FILE_DIRECTORY = "user.dir";
-    private final FileChooser FILE_CHOOSER = createFileChooser(ACCEPTABLE_FILE_EXTENSION);
+
+    private static final String ACCEPTABLE_TURTLE_FILE = "*.png";
+    private static final String TURTLE_FILE_EXTENSION = ".png";
+    private static final String TYPE_OF_TURTLE_FILE = "PNG";
+    private static final String INITIAL_TURTLE_DIRECTORY = "user.dir";
+    //TODO: bad convention"
+    private final FileChooser TURTLE_FILE_CHOOSER = createFileChooser(ACCEPTABLE_TURTLE_FILE, TYPE_OF_TURTLE_FILE, INITIAL_TURTLE_DIRECTORY);
 
     private static final String DEFAULT_TURTLE_IMAGE = "turtleImages/perfectTurtle.png";
-
+    private static final String PATH_TO_TURTLEIMAGES = "././././resources/turtleImages/";
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
     private ComboBox myLanguageBox;
@@ -88,12 +96,20 @@ public class InputView {
         initColorPickers();
         initLanguageButton();
         initTurtleButton();
+        initPrefButton();
+    }
+
+    private void initPrefButton() {
+        Button prefButton = new Button();
+        prefButton.setOnAction(e -> inputPrefFile());
+        prefButton.setText(myResourceBundle.getString("setPreferencesButton"));
+        Label prefLabel = new Label(myResourceBundle.getString("setPreferencesText"));
+        addVBox(prefLabel, prefButton);
     }
 
     private void initColorPickers() {
         myBackGroundPicker = new ColorPicker(DEFAULT_BACKGROUND_COLOR);
         createColorBox(myResourceBundle.getString("setBackground"), myBackGroundPicker);
-
         myPenPicker = new ColorPicker(DEFAULT_PEN_COLOR);
         createColorBox(myResourceBundle.getString("setPen"), myPenPicker);
     }
@@ -121,7 +137,7 @@ public class InputView {
             alert.setTitle("Error");
             alert.setHeaderText(errorMessage);
             Platform.runLater(alert::showAndWait);
-            inputFile();
+            inputTurtleFile();
         }
 
         Label turtleLabel = new Label(myResourceBundle.getString("setTurtle"));
@@ -129,17 +145,17 @@ public class InputView {
         turtleButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                inputFile();
+                inputTurtleFile();
             }
         });
         addVBox(turtleLabel, turtleButton);
     }
 
-    private FileChooser createFileChooser(String extension) {
+    private FileChooser createFileChooser(String extension, String fileType, String directory) {
         FileChooser returnedChooser = new FileChooser();
-        returnedChooser.setTitle(myResourceBundle.getString("turtleImageChooser"));
-        returnedChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(TYPE_OF_FILE_EXTENSION, extension));
-        returnedChooser.setInitialDirectory(new File(System.getProperty(INITIAL_FILE_DIRECTORY)));
+        returnedChooser.setTitle(myResourceBundle.getString("fileChooserHeader"));
+        returnedChooser.getExtensionFilters().setAll(new FileChooser.ExtensionFilter(fileType, extension));
+        returnedChooser.setInitialDirectory(new File(System.getProperty(directory)));
         return returnedChooser;
     }
 
@@ -151,14 +167,36 @@ public class InputView {
         return returnedBox;
     }
 
-    private void inputFile() {
-        File turtleFile = FILE_CHOOSER.showOpenDialog(new Stage());
+    //FIXME: clear duplication here
+    private void inputTurtleFile() {
+        File turtleFile = TURTLE_FILE_CHOOSER.showOpenDialog(new Stage());
         //TODO: Handle this error if the Turtle File selected is null and check type of image
         if (turtleFile == null) {
             return;
         }
         myTurtleImage.setValue(new Image(turtleFile.toURI().toString()));
     }
+
+    private void inputPrefFile() {
+
+        TextInputDialog prefProperties = new TextInputDialog("Duvall");
+        prefProperties.setHeaderText("What Preference Would You Like to Load?");
+        prefProperties.showAndWait();
+        ResourceBundle prefBundle = null;
+        try {
+            prefBundle = ResourceBundle.getBundle(prefProperties.getEditor().getText());
+            myBackGroundPicker.setValue(Color.web(prefBundle.getString("backgroundColor")));
+            myPenPicker.setValue(Color.web(prefBundle.getString("penColor")));
+            myLanguageBox.setValue(prefBundle.getString("language"));
+            // TODO: duplication
+            File turtleFile = new File(PATH_TO_TURTLEIMAGES + prefBundle.getString("turtleImage") + TURTLE_FILE_EXTENSION);
+            System.out.println(turtleFile);
+            myTurtleImage.setValue(new Image(turtleFile.toURI().toString()));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+   }
+
 
     private void formatButtons() {
         for (Node button : myButtons.getChildren()) {
