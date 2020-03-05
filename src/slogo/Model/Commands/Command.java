@@ -13,4 +13,6 @@ public abstract class Command implements CommandInterface {
   public Command() {
   }
 
+  public abstract Number executeAndReturnValue();
+
 }

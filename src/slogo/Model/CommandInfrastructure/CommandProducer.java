@@ -57,7 +57,7 @@ public class CommandProducer {
 //      System.out.println("ssas " + commandHistory);
       commandDatabase.addToHistory(commandHistory);
 //      Number returnValue =
-      newCommand.execute(); //change values to return a value
+      Number returnValue = newCommand.executeAndReturnValue(); //change values to return a value
       argumentRunningTotal--;
 
       if(commStack.size() == 0){
@@ -66,7 +66,7 @@ public class CommandProducer {
       //CommandFactory nextCommandFactory = new CommandFactory(commStack.peek().toString(), turtle);
       else if(argStack.size() <= argumentRunningTotal){
         //System.out.println("return" + newCommand.returnArgValue());
-        argStack.push(newCommand.returnArgValue());
+        argStack.push(returnValue);
 //        argStack.push(returnValue);
       }
 //      System.out.println("AfterA" + argStack);

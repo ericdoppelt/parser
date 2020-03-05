@@ -12,7 +12,7 @@ public class FileTester {
         parameters.add("language");
         parameters.add("background");
         parameters.add("pen");
-        test.saveConfig(parameters);
+        test.saveConfig(parameters, "");
 
         FileReader testReader = new FileReader("TEST.xml");
         String parameter = testReader.getString("image");
