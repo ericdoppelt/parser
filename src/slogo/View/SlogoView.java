@@ -1,6 +1,5 @@
 package slogo.View;
 
-import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -11,6 +10,7 @@ import javafx.stage.Stage;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
+import slogo.View.Input.InputView;
 
 
 public class SlogoView {

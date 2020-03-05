@@ -1,4 +1,4 @@
-package slogo.View;
+package slogo.View.Input;
 
 import javafx.beans.property.*;
 import javafx.application.Platform;
@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import slogo.View.SlogoView;
 
 import java.io.File;
 import java.util.*;
@@ -98,13 +99,13 @@ public class InputView {
         Label addedLabel = new Label(buttonInfo[VBOX_LABEL_INDEX]);
         Button addedButton = new Button(buttonInfo[BUTTON_TEXT_INDEX]);
         // FIXME: this is bad code
-            addedButton.setOnAction(e -> {
-                try {
-                    this.getClass().getDeclaredMethod(buttonInfo[BUTTON_METHOD_INDEX], null).invoke(this);
-                } catch(Exception ex) {
-                    System.out.println(ex);
-                }
-            });
+        addedButton.setOnAction(e -> {
+            try {
+                this.getClass().getDeclaredMethod(buttonInfo[BUTTON_METHOD_INDEX], null).invoke(this);
+            } catch(Exception ex) {
+                System.out.println(ex);
+            }
+        });
         addedVBox.getChildren().addAll(addedLabel, addedButton);
         myButtons.getChildren().add(addedVBox);
     }
@@ -136,7 +137,7 @@ public class InputView {
 
         if (comboBoxType.equals(LANGUAGE_KEY)) myLanguageBox = addedComboBox;
         myLanguageBox.setValue("English");
-        
+
         addedVBox.getChildren().addAll(addedLabel, addedComboBox);
         myButtons.getChildren().add(addedVBox);
     }
@@ -155,7 +156,7 @@ public class InputView {
 
 
 
-     private void setDefaultTurtle() {
+    private void setDefaultTurtle() {
         myTurtleImage = new SimpleObjectProperty<>();
         String defaultFilePath = TURTLEIMAGE_PACKAGE + "perfectTurtle" + TURTLE_FILE_EXTENSION;
         System.out.println(defaultFilePath);
@@ -207,15 +208,15 @@ public class InputView {
         } catch (Exception e) {
             System.out.println(e);
         }
-   }
+    }
 
-   private void saveProperties() {
-       File savedPreferences = new File("././././resources/preferences/test.properties");
-   }
+    private void saveProperties() {
+        File savedPreferences = new File("././././resources/preferences/test.properties");
+    }
 
-   private void createNewWindow() {
+    private void createNewWindow() {
         SlogoView newWindow = new SlogoView(new Stage());
-   }
+    }
 
     private void formatButtons() {
         for (Node button : myButtons.getChildren()) {
