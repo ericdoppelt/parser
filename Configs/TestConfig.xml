@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <image>DUVALL</image>
+    <background>0xff</background>
+    <pen>0xAB</pen>
+    <language>GERMAN</language>
+</configuration>
