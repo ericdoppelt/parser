@@ -28,17 +28,12 @@ public class MakeVariableCommand extends Command {
    * Moves the turtle backwards by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
 //    System.out.println(variable);
 //    System.out.println(expression.doubleValue());
 //    dataBase.getVariables().putIfAbsent(variable, expression.doubleValue());
     dataBase.addToVariables(variable, expression.doubleValue());
     returnArgValue = expression.doubleValue();
-
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
 

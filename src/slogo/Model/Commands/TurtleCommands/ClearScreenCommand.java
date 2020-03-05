@@ -31,7 +31,7 @@ public class ClearScreenCommand extends Command {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     System.out.println("turtleX before " + turtleObject.getTurtleX());
     System.out.println("turtleY before " + turtleObject.getTurtleY());
     turtleObject.setXCoord(zeroX);
@@ -40,12 +40,9 @@ public class ClearScreenCommand extends Command {
     System.out.println("turtleY after " + turtleObject.getTurtleY());
     System.out.println("return " + returnArgValue);
     turtleObject.setTurtleTrails(areTrailsVisible);
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
+
 }
 
 

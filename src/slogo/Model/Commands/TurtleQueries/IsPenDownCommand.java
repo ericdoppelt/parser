@@ -14,18 +14,14 @@ public class IsPenDownCommand extends Command {
 
   public IsPenDownCommand(TurtleData turtleObject) {
     returnArgValue = turtleObject.getPenStatus();
-   }
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Integer executeAndReturnValue() {
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Integer returnArgValue() {
     return (int) this.returnArgValue;
   }
 
