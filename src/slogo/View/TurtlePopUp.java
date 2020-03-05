@@ -1,20 +1,15 @@
 package slogo.View;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Window;
 import javafx.util.converter.NumberStringConverter;
-import slogo.Model.TurtleData;
-
-import java.awt.*;
 
 public class TurtlePopUp {
 
@@ -38,6 +33,10 @@ public class TurtlePopUp {
         myTurtle = turtleInfo;
         myPopup = new Popup();
         setUpPane();
+    }
+
+    private void bindProperties(){
+        // TODO Bind all label properties to the respective valus
     }
 
     private void setUpPane(){
@@ -87,6 +86,5 @@ public class TurtlePopUp {
     public void updatePosition(Double x, Double y){
         myPopup.setX(x - 20);
         myPopup.setY(y + 5);
-
     }
 }

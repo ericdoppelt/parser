@@ -50,6 +50,9 @@ public class TurtleView {
     private SimpleDoubleProperty paneWidthOffset = new SimpleDoubleProperty();
     private TurtlePopUp myTurtleInfo;
 
+    private int currentIndex;
+    private ArrayList<Line> turtleLines;
+
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
      * @param turtle Backend Turtle To Bind
@@ -149,10 +152,26 @@ public class TurtleView {
         previousPosition.add(Y_COORDINATE, turtleView.getY());
     }
 
+    /**
+     * Methods for adding a new line/path for the turtle and keeping track of them
+     * @param newPath
+     */
+
     private void addPath(Line newPath){
         newPath.setStroke(penColor.getValue());
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
+        if(turtleLines == null) turtleLines = new ArrayList<>();
+        if(undoButtonClicked()) clearOldPath();
+        turtleLines.add(newPath);
+        currentIndex = turtleLines.size();
+    }
+
+    private boolean undoButtonClicked(){
+        return (currentIndex <turtleLines.size()-1);
+    }
+    private void clearOldPath(){
+        //TODO REMOVE LINES OF OLD PATH;
     }
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
@@ -177,6 +196,12 @@ public class TurtleView {
      */
     public ObjectProperty<Color> getPenColorProperty(){
         return penColor;
+    }
+    /**
+     * Undo button to restore turtle to its second most recent postition
+     */
+    public void undoMovement(){
+        // TODO move turtle back to its position and remove path
     }
 
 }
