@@ -25,23 +25,18 @@ public class EqualCommand extends Command {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
-    if(Math.abs(firstTerm.doubleValue() - secondTerm.doubleValue()) < 0.00001) {
+  public Integer executeAndReturnValue() {
+    if (Math.abs(firstTerm.doubleValue() - secondTerm.doubleValue()) < 0.00001) {
       returnArgValue = 1;
-    }
-    else {
+    } else {
       returnArgValue = 0;
     }
 
     System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Integer returnArgValue() {
     return (int) this.returnArgValue;
   }
+
 }
 
 

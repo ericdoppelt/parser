@@ -12,18 +12,14 @@ public class PiCommand extends Command {
   private final double returnArgValue = Math.PI;
 
   public PiCommand() {
-   }
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
 

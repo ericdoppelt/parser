@@ -14,18 +14,14 @@ public class YCoordinateCommand extends Command {
 
   public YCoordinateCommand(TurtleData turtleObject) {
     returnArgValue = turtleObject.getTurtleY();
-   }
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
 

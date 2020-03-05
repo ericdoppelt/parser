@@ -19,7 +19,6 @@ public class IfCommand extends Command {
   private ModelParser parser;
 
 
-
   public IfCommand(Number parameterOne, ModelParser modelParser) {
     parser = modelParser;
     expression = parameterOne;
@@ -30,7 +29,7 @@ public class IfCommand extends Command {
    * Moves the turtle backwards by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     if (expression.doubleValue() > 0) {
       currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
@@ -47,12 +46,10 @@ public class IfCommand extends Command {
       System.out.println("test" + linesSubArray);
       parser.parseText(linesSubArray);
     }
-  }
 
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
+
 
 }
 

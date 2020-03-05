@@ -30,7 +30,7 @@ public class RepeatCommand extends Command {
    * Moves the turtle backwards by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     //currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
     linesSubArray = parser.getLinesArray();
@@ -48,11 +48,8 @@ public class RepeatCommand extends Command {
     for(int i = 0; i < amountOfIterations.intValue(); i++){
       System.out.println("linessub "  + linesSubArray);
       parser.parseText(linesSubArray);
-    }
-  }
 
-  @Override
-  public Double returnArgValue() {
+    }
     return this.returnArgValue;
   }
 

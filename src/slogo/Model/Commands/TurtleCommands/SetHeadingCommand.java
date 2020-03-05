@@ -22,26 +22,21 @@ public class SetHeadingCommand extends Command {
     newTurtleDirection = degreeAngle;
     //returnArgValue = min(abs(newTurtleDirection - originalTurtleDirection), fullRevolution - abs(newTurtleDirection - originalTurtleDirection));
 
-
   }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     returnArgValue = newTurtleDirection.doubleValue() - originalTurtleDirection;
     //System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     turtleObject.setTurtleDirection(newTurtleDirection.doubleValue());
     //System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
+
   }
 
 }
