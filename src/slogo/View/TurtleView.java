@@ -48,6 +48,10 @@ public class TurtleView {
     private double lineWidth = 2.0;
     private SimpleDoubleProperty paneHeightOffset = new SimpleDoubleProperty();
     private SimpleDoubleProperty paneWidthOffset = new SimpleDoubleProperty();
+    private TurtlePopUp myTurtleInfo;
+
+    private int currentIndex;
+    private ArrayList<Line> turtleLines;
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
@@ -58,14 +62,12 @@ public class TurtleView {
         myBackground = pane;
         setUpTurtle(turtle, pane);
         previousPosition = setUpInitialPosition();
-        bindPositions(turtle.getCoordHistory());
         bindProperties(turtle);
+        addTurtlePopup();
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
-        //turtleView.xProperty().bind(turtle.getTurtleXProperty());
-        //turtleView.yProperty().bind(turtle.getTurtleYProperty());
         turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         pane.getChildren().add(turtleView);
 
@@ -74,7 +76,49 @@ public class TurtleView {
 
         paneWidthOffset.bind(pane.widthProperty());
         paneHeightOffset.bind(pane.heightProperty());
+    }
 
+    private void bindProperties(TurtleData turtle){
+        bindPositions(turtle.getCoordHistory());
+        isPenDown = new SimpleBooleanProperty();
+        turtleAngle = new SimpleDoubleProperty();
+        Bindings.bindBidirectional(isPenDown, turtle.getPenDownProperty());
+        Bindings.bindBidirectional(turtleAngle, turtle.directionProperty());
+        turtleView.visibleProperty().bind(turtle.turtleVisibility());
+        addAngleChangeListener();
+    }
+
+    private void bindPositions(ObservableList<List<Double>> turtlepos){
+        positions = FXCollections.observableArrayList();
+        Bindings.bindContentBidirectional(positions, turtlepos);
+        addPositionChangeListener(positions);
+    }
+
+    private void addAngleChangeListener(){
+        turtleAngle.addListener( (observable, oldValue, newValue) ->
+                turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET)));
+    }
+
+    private void addTurtlePopup(){
+        turtleView.setOnMouseEntered(event -> showPopup());
+        turtleView.setOnMouseExited(event -> hidePopup());
+    }
+
+    private void showPopup(){
+        if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this);
+        updatePopupPosition();
+        myTurtleInfo.show(turtleView.getScene().getWindow());
+    }
+
+    private void updatePopupPosition(){
+        if(myTurtleInfo == null) return;
+        myTurtleInfo.updatePosition(turtleView.getX() + turtleView.getScene().getWindow().getX() + 2*widthOffset,
+                turtleView.getY() + turtleView.getScene().getWindow().getY() + 2*heightOffset);
+    }
+
+
+    private void hidePopup(){
+        myTurtleInfo.hide();
     }
 
     private Image getImage(String Path){
@@ -94,28 +138,40 @@ public class TurtleView {
     private void addPositionChangeListener(ObservableList<List<Double>> x){
         x.addListener((ListChangeListener<List<Double>>) c -> {
             List<Double> currentPosition = c.getList().get(c.getList().size()-1);
-            System.out.println(previousPosition);
-            System.out.println(currentPosition);
+
             if(isPenDown.get()) addPath(getNewLine(previousPosition, currentPosition));
             updateTurtlePosition(currentPosition.get(X_COORDINATE), currentPosition.get(Y_COORDINATE));
-            //previousPosition = currentPosition;
         });
     }
 
     private void updateTurtlePosition(double x, double y){
         turtleView.setX(x + paneWidthOffset.get()/2);
         turtleView.setY(y + paneHeightOffset.get()/2);
-        System.out.println(turtleView.getX());
-        System.out.println(turtleView.getY());
         previousPosition.clear();
         previousPosition.add(X_COORDINATE, turtleView.getX());
         previousPosition.add(Y_COORDINATE, turtleView.getY());
     }
 
+    /**
+     * Methods for adding a new line/path for the turtle and keeping track of them
+     * @param newPath
+     */
+
     private void addPath(Line newPath){
         newPath.setStroke(penColor.getValue());
         newPath.setStrokeWidth(lineWidth);
         myBackground.getChildren().add(newPath);
+        if(turtleLines == null) turtleLines = new ArrayList<>();
+        if(undoButtonClicked()) clearOldPath();
+        turtleLines.add(newPath);
+        currentIndex = turtleLines.size();
+    }
+
+    private boolean undoButtonClicked(){
+        return (currentIndex <turtleLines.size()-1);
+    }
+    private void clearOldPath(){
+        //TODO REMOVE LINES OF OLD PATH;
     }
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
@@ -125,26 +181,6 @@ public class TurtleView {
         newPath.setEndX(newValues.get(X_COORDINATE) + widthOffset + paneWidthOffset.get()/2);
         newPath.setEndY(newValues.get(Y_COORDINATE) + heightOffset + paneHeightOffset.get()/2);
         return newPath;
-    }
-
-    private void bindPositions(ObservableList<List<Double>> turtlepos){
-        positions = FXCollections.observableArrayList();
-        Bindings.bindContentBidirectional(positions, turtlepos);
-        addPositionChangeListener(positions);
-    }
-
-    private void bindProperties(TurtleData turtle){
-        isPenDown = new SimpleBooleanProperty();
-        turtleAngle = new SimpleDoubleProperty();
-        Bindings.bindBidirectional(isPenDown, turtle.getPenDownProperty());
-        Bindings.bindBidirectional(turtleAngle, turtle.directionProperty());
-        turtleView.visibleProperty().bind(turtle.turtleVisibility());
-        addAngleChangeListener();
-    }
-
-    private void addAngleChangeListener(){
-        turtleAngle.addListener( (observable, oldValue, newValue) ->
-                turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET)));
     }
 
     /**
@@ -160,6 +196,12 @@ public class TurtleView {
      */
     public ObjectProperty<Color> getPenColorProperty(){
         return penColor;
+    }
+    /**
+     * Undo button to restore turtle to its second most recent postition
+     */
+    public void undoMovement(){
+        // TODO move turtle back to its position and remove path
     }
 
 }
