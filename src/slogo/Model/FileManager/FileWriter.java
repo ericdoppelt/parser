@@ -21,7 +21,7 @@ public class FileWriter{
 
     public FileWriter(){}
 
-    public void saveConfig(List<String> parameters){
+    public void saveConfig(List<String> parameters, String configName){
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -42,7 +42,7 @@ public class FileWriter{
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("./XMLs/TEST.xml"));
+            StreamResult result = new StreamResult(new File("./XMLs/"+configName+".xml"));
             transformer.transform(source, result);
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
