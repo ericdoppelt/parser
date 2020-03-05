@@ -77,12 +77,6 @@ public class CommandBox {
     public String getCommand(){
         return myCurrentCommand;
     }
-    /**
-     * Allows the other programs to display errors with the most recent command given
-     */
-    public void displayError(String x){
-        //myCommandField.setText(x);
-    }
 
     /**
      * Methods created to deal with button actions.
@@ -136,7 +130,7 @@ public class CommandBox {
         myButton.setPrefWidth(BUTTON_WIDTH);
         return myButton;
     }
-    // Places all buttons and textfields into a singular node
+    // Places all buttons and text fields into a singular node
     private void setUpCommandLine(){
         myCommandLine = new HBox();
         myCommandLine.getChildren().addAll(myCommandField,runButton, clearButton, expandButton);
@@ -146,6 +140,7 @@ public class CommandBox {
         myCommandLine.getChildren().remove(currentField);
         myCommandLine.getChildren().add(0, newField);
         myCommandField = newField;
+        formatButtons();
         expandButton.setText(newLabel);
     }
     // Method to create all buttons
