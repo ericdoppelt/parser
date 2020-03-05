@@ -135,6 +135,8 @@ public class InputView {
         ComboBox addedComboBox = new ComboBox(allLanguages);
 
         if (comboBoxType.equals(LANGUAGE_KEY)) myLanguageBox = addedComboBox;
+        myLanguageBox.setValue("English");
+        
         addedVBox.getChildren().addAll(addedLabel, addedComboBox);
         myButtons.getChildren().add(addedVBox);
     }

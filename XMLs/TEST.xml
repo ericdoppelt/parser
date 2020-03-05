@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration>
-    <image>TEST</image>
-    <language>TEST</language>
-    <background>TEST</background>
-    <pen>TEST</pen>
+    <image>perfectTurtle</image>
+    <language>English</language>
+    <background>abcdef</background>
+    <pen>ffffff</pen>
 </configuration>
