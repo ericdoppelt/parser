@@ -32,26 +32,35 @@ public class TurtlePopUp {
     public TurtlePopUp(TurtleView turtleInfo){
         myTurtle = turtleInfo;
         myPopup = new Popup();
-        setUpPane();
+        myPopup.getContent().add(getInfoMenu());
     }
 
-    private void bindProperties(){
-        // TODO Bind all label properties to the respective valus
-    }
-
-    private void setUpPane(){
-        infoMenu = new VBox();
-        infoMenu.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-        infoMenu.backgroundProperty().setValue(new Background( new BackgroundFill(Color.WHITE, null, null)));
+    private VBox getInfoMenu(){
+        infoMenu = getNewMenu();
         infoMenu.getChildren().addAll(new Label(TURTLE_ID), new Label(TURTLE_HEADING), new Label(TURTLE_POSITION), getPenProperties());
-        myPopup.getContent().add(infoMenu);
         infoMenu.setOnMouseEntered(event -> isActive = true);
         infoMenu.setOnMouseExited(event -> {
             isActive = false;
             hide();
         });
+        return infoMenu;
     }
 
+    private VBox getNewMenu(){
+        VBox menu = new VBox();
+        menu.setBorder(new Border(new BorderStroke(Color.BLACK,BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        menu.backgroundProperty().setValue(new Background( new BackgroundFill(Color.WHITE, null, null)));
+        return menu;
+    }
+
+    private void bindProperties(){
+        // TODO Bind all label properties to the respective values
+    }
+
+    /**
+     * Methods used to create the Pen properties and adding them to the menu
+     *
+     */
     private VBox getPenProperties(){
         penProperties = new VBox();
         addColorPicker();
@@ -75,14 +84,26 @@ public class TurtlePopUp {
         penProperties.getChildren().add(pColor);
     }
 
+    /**
+     * Display the turtle menu within the given window
+     * @param display where to show popup
+     */
     public void show(Window display){
         myPopup.show(display);
     }
 
+    /**
+     * Call to hide the turtle menu
+     */
     public void hide(){
         if(!isActive) myPopup.hide();
     }
 
+    /**
+     * Update the position of the window
+     * @param x new x coordinate
+     * @param y new y coordinate
+     */
     public void updatePosition(Double x, Double y){
         myPopup.setX(x - 20);
         myPopup.setY(y + 5);
