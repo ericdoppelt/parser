@@ -23,19 +23,22 @@ import java.util.*;
 
 public class InputView {
 
-    private static final List<String> ALL_BUTTONS = new ArrayList<>(Arrays.asList("turtle", "preferences", "workspace"));
+    private static final List<String> ALL_BUTTONS = new ArrayList<>(Arrays.asList("turtle", "preferences", "save", "workspace"));
     private static final List<String> ALL_COLOR_PICKERS = new ArrayList<>(Arrays.asList("background", "pen"));
     private static final List<String> ALL_COMBO_BOXES = new ArrayList<>(Arrays.asList("language"));
+    private static final List<String> SAVED_PREFERENCES = new ArrayList<>(Arrays.asList("turtle", "language", "background", "pen"));
 
-    private static final String ALL_LABELS_BUNDLE = "inputLabels";
-    private static final String BUTTON_METHODS_BUNDLE = "buttonMethods";
-    private static final String BUTTON_TEXT_BUNDLE = "buttonTexts";
-    private static final String DEFAULT_VALUES_BUNDLE = "defaultValues";
+    private static final String BUTTONS_BUNDLE = "buttons";
+    private static final String COLORPICKERS_BUNDLE = "colorPickers";
+    private static final String COMBOBOXES = "comboBoxes";
+    private static final String PROPERTIES_REGEX_SPLITTER = ", ";
+    private static final int VBOX_LABEL_INDEX = 0;
+    private static final int BUTTON_TEXT_INDEX = 1;
+    private static final int BUTTON_METHOD_INDEX = 2;
 
-    private ResourceBundle myMethodsBundle  = ResourceBundle.getBundle(BUTTON_METHODS_BUNDLE);
-    private ResourceBundle myTextsBundle = ResourceBundle.getBundle(BUTTON_TEXT_BUNDLE);
-    private ResourceBundle myLabelsBundle  = ResourceBundle.getBundle(ALL_LABELS_BUNDLE);
-    private ResourceBundle myValuesBundle = ResourceBundle.getBundle(DEFAULT_VALUES_BUNDLE);
+    private ResourceBundle myButtonsBundle = ResourceBundle.getBundle(BUTTONS_BUNDLE);
+    private ResourceBundle myColorPickersBundle  = ResourceBundle.getBundle(COLORPICKERS_BUNDLE);
+    private ResourceBundle myComboBoxesBundle  = ResourceBundle.getBundle(COMBOBOXES);
 
     private ObservableList allLanguages = initLanguageOptions();
     private static final String PATH_TO_RESOURCE_LANGUAGES = "././././resources/languages";
@@ -91,12 +94,13 @@ public class InputView {
 
         VBox addedVBox = new VBox();
         addedVBox.setAlignment(Pos.CENTER);
-        Label addedLabel = new Label(myLabelsBundle.getString(buttonType));
-        Button addedButton = new Button(myTextsBundle.getString(buttonType));
+        String[] buttonInfo = myButtonsBundle.getString(buttonType).split(PROPERTIES_REGEX_SPLITTER);
+        Label addedLabel = new Label(buttonInfo[VBOX_LABEL_INDEX]);
+        Button addedButton = new Button(buttonInfo[BUTTON_TEXT_INDEX]);
         // FIXME: this is bad code
             addedButton.setOnAction(e -> {
                 try {
-                    this.getClass().getDeclaredMethod(myMethodsBundle.getString(buttonType), null).invoke(this);
+                    this.getClass().getDeclaredMethod(buttonInfo[BUTTON_METHOD_INDEX], null).invoke(this);
                 } catch(Exception ex) {
                     System.out.println(ex);
                 }
@@ -108,8 +112,11 @@ public class InputView {
     private void makeColorVBox(String pickerType) {
         VBox addedVBox = new VBox();
         addedVBox.setAlignment(Pos.CENTER);
-        Label addedLabel = new Label(myLabelsBundle.getString(pickerType));
-        ColorPicker addedColorPicker = new ColorPicker(Color.web(myValuesBundle.getString(pickerType)));
+
+        String[] ColorPickerInfo = myColorPickersBundle.getString(pickerType).split(PROPERTIES_REGEX_SPLITTER);
+
+        Label addedLabel = new Label(ColorPickerInfo[VBOX_LABEL_INDEX]);
+        ColorPicker addedColorPicker = new ColorPicker();
 
         if (pickerType.equals(BACKGROUND_KEY)) myBackGroundPicker = addedColorPicker;
         else if (pickerType.equals(PEN_KEY)) myPenPicker = addedColorPicker;
@@ -121,9 +128,11 @@ public class InputView {
     private void makeComboVBox(String comboBoxType) {
         VBox addedVBox = new VBox();
         addedVBox.setAlignment(Pos.CENTER);
-        Label addedLabel = new Label(myLabelsBundle.getString(comboBoxType));
+
+        String[] ComboBoxInfo  = myComboBoxesBundle.getString(comboBoxType).split(PROPERTIES_REGEX_SPLITTER);
+
+        Label addedLabel = new Label(ComboBoxInfo[VBOX_LABEL_INDEX]);
         ComboBox addedComboBox = new ComboBox(allLanguages);
-        addedComboBox.setValue(myValuesBundle.getString(comboBoxType));
 
         if (comboBoxType.equals(LANGUAGE_KEY)) myLanguageBox = addedComboBox;
         addedVBox.getChildren().addAll(addedLabel, addedComboBox);
@@ -143,9 +152,10 @@ public class InputView {
     }
 
 
-    private void setDefaultTurtle() {
+
+     private void setDefaultTurtle() {
         myTurtleImage = new SimpleObjectProperty<>();
-        String defaultFilePath = TURTLEIMAGE_PACKAGE + myValuesBundle.getString("turtle") + TURTLE_FILE_EXTENSION;
+        String defaultFilePath = TURTLEIMAGE_PACKAGE + "perfectTurtle" + TURTLE_FILE_EXTENSION;
         System.out.println(defaultFilePath);
         //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
         try {
@@ -159,6 +169,7 @@ public class InputView {
             inputTurtleFile();
         }
     }
+
 
     private FileChooser createFileChooser(String extension, String fileType, String directory) {
         FileChooser returnedChooser = new FileChooser();
@@ -194,6 +205,10 @@ public class InputView {
         } catch (Exception e) {
             System.out.println(e);
         }
+   }
+
+   private void saveProperties() {
+       File savedPreferences = new File("././././resources/preferences/test.properties");
    }
 
    private void createNewWindow() {
