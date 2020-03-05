@@ -75,7 +75,7 @@ public class CommandDatabase {
   private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
   private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
 
-  private List<TurtleData> Turtle_List = new ArrayList<>();
+  private List<TurtleData> active_Turtles = new ArrayList<>();
   private TurtleData targetTurtle;
   private ModelParser originParser;
 
