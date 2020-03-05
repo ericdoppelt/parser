@@ -24,17 +24,13 @@ public class RemainderCommand extends Command {
    * Moves the turtle forward by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Integer executeAndReturnValue() {
     returnArgValue = firstTerm.doubleValue() % secondTerm.doubleValue();
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Integer returnArgValue() {
     return (int) this.returnArgValue;
   }
+
 
 }
 

@@ -15,20 +15,16 @@ public class NaturalLogCommand extends Command {
 
   public NaturalLogCommand(Number parameterOne) {
     firstTerm = parameterOne;
-   }
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
 
     returnArgValue = Math.log(firstTerm.doubleValue());
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
 

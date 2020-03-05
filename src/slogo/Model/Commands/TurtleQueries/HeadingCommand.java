@@ -14,21 +14,16 @@ public class HeadingCommand extends Command {
 
   public HeadingCommand(TurtleData turtleObject) {
     returnArgValue = turtleObject.getTurtleHeading();
-   }
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
-
 
 }
 

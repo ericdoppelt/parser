@@ -32,7 +32,7 @@ public class TowardsCommand extends Command {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     double differenceX = towardsX.doubleValue() - turtleObject.getTurtleX();
     double differenceY = towardsY.doubleValue() - turtleObject.getTurtleY();
     double towardsAngle = Math.toDegrees(Math.atan(differenceY/differenceX));
@@ -58,13 +58,8 @@ public class TowardsCommand extends Command {
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
     // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Double returnArgValue() {
-
     return this.returnArgValue;
+
   }
 
   private void constrainAngle(){

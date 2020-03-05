@@ -25,7 +25,6 @@ public class ForCommand extends Command {
   private CommandDatabase commandDatabase;
 
 
-
   public ForCommand(ModelParser modelParser, CommandDatabase database) {
     parser = modelParser;
     commandDatabase = database;
@@ -36,7 +35,7 @@ public class ForCommand extends Command {
    * Moves the turtle backwards by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
     linesSubArray = parser.getLinesArray();
@@ -57,19 +56,16 @@ public class ForCommand extends Command {
     variableEnd = Integer.parseInt(linesSubArray.get(2));
     variableIncrement = Integer.parseInt(linesSubArray.get(3));
 
-
     int commandListEnd = parser.findListEnd(commandSubList);
     commandSubList = commandSubList.subList(1, commandListEnd);
     System.out.println("Commandsublist " + commandSubList);
 
-    for(int i = variableStart.intValue(); i <= variableEnd.intValue(); i = i + variableIncrement.intValue()){
+    for (int i = variableStart.intValue(); i <= variableEnd.intValue();
+        i = i + variableIncrement.intValue()) {
       commandDatabase.addToVariables(variableName, i);
       parser.parseText(commandSubList);
     }
-  }
 
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
 

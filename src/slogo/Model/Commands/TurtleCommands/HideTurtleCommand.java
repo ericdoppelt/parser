@@ -25,20 +25,16 @@ public class HideTurtleCommand extends Command {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Integer executeAndReturnValue() {
     turtleObject.setPenStatus(isTurtleVisible);
     System.out.println("return " + returnArgValue);
     //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Integer returnArgValue() {
-
     return (int) this.returnArgValue;
+
   }
-  }
+
+}
 
 
 

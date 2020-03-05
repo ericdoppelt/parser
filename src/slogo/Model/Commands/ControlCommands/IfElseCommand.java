@@ -31,7 +31,7 @@ public class IfElseCommand extends Command {
    * Moves the turtle backwards by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
       currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
       linesSubArray = parser.getLinesArray();
@@ -57,10 +57,6 @@ public class IfElseCommand extends Command {
     else{
       parser.parseText(ifElseSubList);
     }
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
 

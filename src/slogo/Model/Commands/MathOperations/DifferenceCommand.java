@@ -24,16 +24,12 @@ public class DifferenceCommand extends Command {
    * Moves the turtle forward by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     returnArgValue = firstTerm.doubleValue() - secondTerm.doubleValue();
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
+
   }
 
 }

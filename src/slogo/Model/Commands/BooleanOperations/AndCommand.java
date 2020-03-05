@@ -24,22 +24,18 @@ public class AndCommand extends Command {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
-    if(!firstTerm.equals(0) && !secondTerm.equals(0)) {
+  public Integer executeAndReturnValue() {
+    if (!firstTerm.equals(0) && !secondTerm.equals(0)) {
       returnArgValue = 1;
-    }
-    else {
+    } else {
       returnArgValue = 0;
     }
     System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
 
-  }
-
-  @Override
-  public Integer returnArgValue() {
     return (int) this.returnArgValue;
   }
+
 }
 
 

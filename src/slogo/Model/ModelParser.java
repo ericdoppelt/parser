@@ -68,7 +68,7 @@ public class ModelParser {
     setUpModelParserLanguage(languageChosen.getValue().toString());
   }
 
-  public void setUpModelParserLanguage(String language){
+  private void setUpModelParserLanguage(String language){
     mySymbols = new ArrayList<>();
     addPatterns(language);
     addPatterns(REGEX_SYNTAX);
@@ -80,7 +80,7 @@ public class ModelParser {
   /**
    * Adds the given resource file to this language's recognized types
    */
-  public void addPatterns (String syntax) {
+  private void addPatterns (String syntax) {
     ResourceBundle resources = ResourceBundle.getBundle(syntax);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
@@ -93,7 +93,7 @@ public class ModelParser {
   /**
    * Returns language's type associated with the given text if one exists
    */
-  public String getSymbol (String text) {
+  private String getSymbol (String text) {
     final String ERROR = "NO MATCH";
     for (Entry<String, Pattern> e : mySymbols) {
       if (match(text, e.getValue())) {
@@ -128,12 +128,6 @@ public class ModelParser {
   private boolean match (String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
     return regex.matcher(text).matches();
-  }
-
-  public void initializeNewParserTextandParse (List<String> lines) {
-    immutableLinesArray = lines;
-    linesArray = lines;
-    parseText(immutableLinesArray);
   }
 
   public int findListEnd(List<String> listToCheck){

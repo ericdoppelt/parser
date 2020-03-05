@@ -15,19 +15,15 @@ public class TangentCommand extends Command {
   public TangentCommand(Number degrees) {
     amountOfDegrees = degrees;
 
-   }
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     returnArgValue = Math.tan(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
 
