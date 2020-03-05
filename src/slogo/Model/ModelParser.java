@@ -1,10 +1,5 @@
 package slogo.Model;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -104,25 +98,25 @@ public class ModelParser {
     return ERROR;
   }
 
-  // utility function that reads given file and returns its entire contents as a single string
-  public String readFileToString (String inputSource) {
-    try {
-      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
-      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
-    }
-    catch (URISyntaxException | IOException e) {
-      // NOT ideal way to handle exception, but this is just a simple test program
-      System.out.println("ERROR: Unable to read input file " + e.getMessage());
-
-      //potential error pop-up code
-//      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
-//      Alert alert = new Alert(Alert.AlertType.ERROR);
-//      alert.setTitle("Error");
-//      alert.setHeaderText(errorMessage);
-//      Platform.runLater(alert::showAndWait);
-      return "";
-    }
-  }
+//  // utility function that reads given file and returns its entire contents as a single string
+//  public String readFileToString (String inputSource) {
+//    try {
+//      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
+//      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
+//    }
+//    catch (URISyntaxException | IOException e) {
+//      // NOT ideal way to handle exception, but this is just a simple test program
+//      System.out.println("ERROR: Unable to read input file " + e.getMessage());
+//
+//      //potential error pop-up code
+////      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
+////      Alert alert = new Alert(Alert.AlertType.ERROR);
+////      alert.setTitle("Error");
+////      alert.setHeaderText(errorMessage);
+////      Platform.runLater(alert::showAndWait);
+//      return "";
+//    }
+//  }
 
   // Returns true if the given text matches the given regular expression pattern
   private boolean match (String text, Pattern regex) {
