@@ -130,12 +130,6 @@ public class ModelParser {
     return regex.matcher(text).matches();
   }
 
-  public void initializeNewParserTextandParse (List<String> lines) {
-    immutableLinesArray = lines;
-    linesArray = lines;
-    parseText(immutableLinesArray);
-  }
-
   public int findListEnd(List<String> listToCheck){
     int listStartCounter = 0;
     int listEndCounter = 0;

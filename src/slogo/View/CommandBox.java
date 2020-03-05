@@ -87,7 +87,7 @@ public class CommandBox {
         myCommands.add(myCurrentCommand);
         myCommandField.clear();
         try {
-            myParser.initializeNewParserTextandParse(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
+            myParser.parseText(Arrays.asList(myCurrentCommand.split(WHITESPACE)));
         }catch(Exception e){
             displayBadCommand(e.getMessage());
         }
