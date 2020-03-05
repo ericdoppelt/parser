@@ -14,7 +14,7 @@ public class FileTester {
             FileWriter test = new FileWriter();
             Map<String, String> configMap = new HashMap<>();
             configMap.put("image", "DUVALL");
-            configMap.put("language", "FRENCH");
+            configMap.put("language", "GERMAN");
             configMap.put("background", "0xff");
             configMap.put("pen", "0xAB");
             test.saveConfig(configMap, "TestConfig");
