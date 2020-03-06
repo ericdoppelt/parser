@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.function.Function;
 
 import javafx.beans.property.*;
@@ -17,8 +18,7 @@ public class CommandDatabase {
   private String targetVariable;
   private Number parameterOne;
   private Number parameterTwo;
-  private Number parameterThree;
-  private Number parameterFour;
+  private Stack<Number> parameterStack = new Stack<>();
   private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(
       FXCollections.observableMap(new LinkedHashMap<String, Number>()));
 
@@ -52,17 +52,8 @@ public class CommandDatabase {
     viewBackground.bindBidirectional(backgroundColorProperty);
   }
 
-  public Number getParameterOne() {
-    return parameterOne;
-  }
-  public Number getParameterTwo() {
-    return parameterTwo;
-  }
-  public Number getParameterThree() {
-    return parameterThree;
-  }
-  public Number getParameterFour() {
-    return parameterFour;
+  public Stack<Number> getParameterStack(){
+    return parameterStack;
   }
 
 
@@ -108,15 +99,7 @@ public class CommandDatabase {
   public void setParameterTwo(Number newValue) {
     parameterTwo = newValue;
   }
-
-  public void setParameterThree(Number newValue) {
-    parameterThree = newValue;
-  }
-
-  public void setParameterFour(Number newValue) {
-    parameterFour = newValue;
-  }
-
+  
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
