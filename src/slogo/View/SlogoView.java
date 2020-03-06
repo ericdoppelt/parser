@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
+import slogo.Model.CommandInfrastructure.CommandProducer;
 import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
 import slogo.View.Input.InputView;
@@ -25,6 +26,7 @@ public class SlogoView {
     private BorderPane myBorderPane;
     private ModelDatabase myModelDatabase;
     private CommandDatabase myCommandDatabase;
+    private CommandProducer myCommandProducer;
     private ModelParser myModelParser;
     private InputView myInputView;
     private Pane myBackgroundPane;
@@ -44,7 +46,8 @@ public class SlogoView {
     private void initModel() {
         myModelDatabase = new ModelDatabase();
         myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtle());
-        myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase);
+        myCommandProducer = new CommandProducer(myCommandDatabase, myModelDatabase.getHISTORY_LIST(), myModelDatabase.getCOMMAND_LIST());
+        myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase, myCommandProducer);
     }
 
     private void initView() {
@@ -103,8 +106,8 @@ public class SlogoView {
     private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
 
     private void createBindableInfoPanel() {
-        myCommandDatabase.bindHistory(myInfoView.getHistoryProperty());
-        myCommandDatabase.bindCommands(myInfoView.getCommandProperty());
+        myModelDatabase.bindHistory(myInfoView.getHistoryProperty());
+        myModelDatabase.bindCommands(myInfoView.getCommandProperty());
         myCommandDatabase.bindVariables(myInfoView.getVariableProperty());
     }
 }

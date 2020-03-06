@@ -1,6 +1,7 @@
 package slogo.Model.Commands.TurtleCommands;
 
-import slogo.Model.Commands.Command;
+import slogo.Model.CommandInfrastructure.CommandDatabase;
+import slogo.Model.Commands.Command1;
 import slogo.Model.TurtleData;
 
 /**
@@ -8,24 +9,23 @@ import slogo.Model.TurtleData;
  *
  * @author Frank Tang
  */
-public class ForwardCommand extends Command {
+public class ForwardCommand extends Command1 {
 
   private TurtleData turtleObject;
   private double returnArgValue;
   private double turtleHeading;
   private Number distanceToTravel;
+  private CommandDatabase database;
+
 
   private double distanceProportionY;
   private double distanceProportionX;
+  private int argumentsNeeded = 1;
 
-  public ForwardCommand(TurtleData turtle, Number distance) {
-    turtleObject = turtle;
-    distanceToTravel = distance;
-    turtleHeading = turtleObject.getTurtleHeading();
-
-    distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
-    distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
-
+  public ForwardCommand(CommandDatabase data) {
+    super(data);
+    database = data;
+    turtleObject = database.getTurtle();
   }
 
   /**
@@ -33,6 +33,11 @@ public class ForwardCommand extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
+    distanceToTravel = database.getParameterOne().doubleValue();
+    turtleHeading = turtleObject.getTurtleHeading();
+
+    distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
+    distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
     turtleObject.moveXCoord(distanceToTravel.doubleValue() * distanceProportionX);
     turtleObject.moveYCoord(distanceToTravel.doubleValue() * distanceProportionY);
 
@@ -43,6 +48,11 @@ public class ForwardCommand extends Command {
     returnArgValue = distanceToTravel.doubleValue();
     return this.returnArgValue;
 
+  }
+
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
   }
 
 
