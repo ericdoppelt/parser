@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <turtle>turtleImages/perfectTurtle.png</turtle>
+    <background>0xff0000ff</background>
+    <pen>0x000000ff</pen>
+    <language>English</language>
+</configuration>

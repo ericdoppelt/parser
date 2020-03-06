@@ -13,6 +13,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
+import slogo.Model.Commands.Command;
 
 public class ModelParser {
 
@@ -37,20 +38,22 @@ public class ModelParser {
   private List<Entry<String, Pattern>> mySymbols;
   private CommandDatabase commandDatabase;
   private CommandProducer commandProducer;
-//  private int argumentThreshold;
   private List<String> linesArray;
   private ObjectProperty languageChosen;
   private int currentIndex;
+  private int argumentThreshold;
   private Number finalCommandValue;
+  private Command argumentChecker;
 
 
 
-  public ModelParser(String language, CommandDatabase commandData){
+  public ModelParser(String language, CommandDatabase commandData, CommandProducer producer){
     createBindableLanguage(language);
 
     commandDatabase = commandData;
-    commandData.addParser(this);
-    commandProducer = new CommandProducer(commandData);
+    commandProducer = producer;
+    commandDatabase.addParser(this);
+
   }
 
   private void createBindableLanguage(String language) {
@@ -123,7 +126,7 @@ public class ModelParser {
     return regex.matcher(text).matches();
   }
 
-  public static int findListEnd(List<String> listToCheck){
+  public int findListEnd(List<String> listToCheck){
     int listStartCounter = 0;
     int listEndCounter = 0;
     for(int i = 0; i < listToCheck.size(); i++){
@@ -144,18 +147,16 @@ public class ModelParser {
   public Number parseText (List<String> inputCommandList) {
     Stack<String> commandStack = new Stack<>();
     Stack<Number> argumentStack = new Stack<>();
-    int argumentThreshold = 0;
+//    int argumentThreshold = 0;
     for (int index = 0; index < inputCommandList.size(); index++) {
       if (inputCommandList.get(index).trim().length() > 0) {
         currentIndex = index;
         linesArray = inputCommandList.subList(index, inputCommandList.size());
+        commandDatabase.setListArray(linesArray);
         if(this.getSymbol(inputCommandList.get(index)).equals("Constant")){
           argumentStack.push(Double.parseDouble(inputCommandList.get(index)));
         }
-        else if(commandDatabase.isInCommandMap(this.getSymbol(inputCommandList.get(index)))) {
-          commandStack.push(this.getSymbol(inputCommandList.get(index)));
-          argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
-        }
+
         else if(this.getSymbol(inputCommandList.get(index)).equals("Variable")){
           if(commandStack.peek().equals("MakeVariable")){
             commandDatabase.setVariableName(inputCommandList.get(index));
@@ -169,12 +170,31 @@ public class ModelParser {
           index = listEnd + index;
           continue;
         }
+        else if(checkCommand(this.getSymbol(inputCommandList.get(index)))){
+          commandStack.push(this.getSymbol(inputCommandList.get(index)));
+          argumentThreshold = argumentStack.size() + argumentChecker.getArgumentsNeeded();
+        }
         finalCommandValue = commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }
     }
     return finalCommandValue;
 
   }
+
+  public boolean checkCommand(String commandName){
+    try {
+      Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
+      Object o = commandClass.getDeclaredConstructors()[0].newInstance(commandDatabase);
+      argumentChecker = (Command) o;
+      return true;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+      // TODO: FIX THIS SO WE DON'T FAIL
+    }
+    return false;
+  }
+
 
   public List<String> getLinesArray(){
     return linesArray;
