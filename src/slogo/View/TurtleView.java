@@ -34,7 +34,7 @@ public class TurtleView {
     public static final double CENTER_X = 385;
     public static final double CENTER_Y = 265;
 
-    private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
+    private static final String TURTLEIMAGES_DIRECTORY = "turtleImages";
 
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
@@ -73,7 +73,8 @@ public class TurtleView {
         turtleView = new ImageView(getImage("turtleImages/perfectTurtle.png"));
         myTurtleFile = new SimpleObjectProperty<File>();
         myTurtleFile.addListener((observable, oldValue, newValue) -> {
-            turtleView.setImage(new Image(newValue.toString()));
+            String filePath = newValue.toString().substring(newValue.toString().indexOf(TURTLEIMAGES_DIRECTORY));
+            turtleView.setImage(new Image(filePath));
         });
 
         myTurtleFile.setValue(new File("turtleImages/perfectTurtle.png"));

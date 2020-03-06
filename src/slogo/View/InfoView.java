@@ -166,20 +166,4 @@ public class InfoView {
     public VBox getCompletePanel() {
         return myInfoPanel;
     }
-
-    private Map getTempVars() {
-        Map temp = new HashMap();
-        for (int i = 0; i < 100; i++) {
-            temp.put("same" + i, i);
-        }
-        return temp;
-    }
-
-    private List getTempHistory() {
-        List tempHist = new ArrayList();
-        for (int i = 0; i < 100; i++) {
-            tempHist.add("fd 50");
-        }
-        return tempHist;
-    }
 }
