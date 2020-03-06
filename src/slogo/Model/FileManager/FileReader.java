@@ -30,8 +30,8 @@ public class FileReader {
         }
     }
 
-    public Map<String, String> getConfigMap(String fileName){
-        setElement(fileName);
+    public Map<String, String> getConfigMap(File file){
+        setElement(file);
         constructMap();
         return configMap;
     }
@@ -42,13 +42,12 @@ public class FileReader {
         return node.getNodeValue();
     }
 
-    public boolean setElement(String fileName) throws XMLException {
+    public boolean setElement(File file) throws XMLException {
 
         try {
-            File simulation = new File("Configs/" + fileName);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(simulation);
+            Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList nodes = doc.getElementsByTagName("configuration");
             nodeList = doc.getElementsByTagName("*");
@@ -61,7 +60,7 @@ public class FileReader {
             }
             return false;
         } catch (Exception e) {
-            throw new XMLException("INVALID FILE: " + fileName, fileName);
+            throw new XMLException("INVALID FILE: " + file.toString());
         }
     }
 

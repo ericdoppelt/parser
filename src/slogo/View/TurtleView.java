@@ -1,6 +1,9 @@
 package slogo.View;
 
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,12 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Turtle View handles all turtle display methods along with its path.
@@ -31,7 +30,7 @@ public class TurtleView {
     public static final double CENTER_X = 385;
     public static final double CENTER_Y = 265;
 
-    private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
+    private static final String TURTLEIMAGES_DIRECTORY = "turtleImages";
 
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
@@ -39,6 +38,7 @@ public class TurtleView {
     private ObservableList<List<Double>> positions;
     private Pane myBackground;
     private ImageView turtleView;
+    private ObjectProperty<File> myTurtleFile;
 
     private double heightOffset;
     private double widthOffset;
@@ -50,6 +50,7 @@ public class TurtleView {
 
     private int currentIndex;
     private ArrayList<Line> turtleLines;
+
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
@@ -65,10 +66,19 @@ public class TurtleView {
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
-        turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
-        turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
-        pane.getChildren().add(turtleView);
+        turtleView = new ImageView(getImage("turtleImages/perfectTurtle.png"));
+        myTurtleFile = new SimpleObjectProperty<File>();
+        myTurtleFile.addListener((observable, oldValue, newValue) -> {
+            String filePath = newValue.toString().substring(newValue.toString().indexOf(TURTLEIMAGES_DIRECTORY));
+            turtleView.setImage(new Image(filePath));
+        });
 
+        myTurtleFile.setValue(new File("turtleImages/perfectTurtle.png"));
+
+        System.out.println(turtleView);
+        turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
+
+        pane.getChildren().add(turtleView);
         turtleView.setY(CENTER_Y - heightOffset);
         turtleView.setX(CENTER_X - widthOffset);
 
@@ -195,8 +205,8 @@ public class TurtleView {
     /**
      * Method that allows setting a new image for the turtle
      */
-    public ObjectProperty<Image> getImageProperty(){
-        return turtleView.imageProperty();
+    public ObjectProperty<File> getTurtleFile(){
+        return myTurtleFile;
     }
 
     /**

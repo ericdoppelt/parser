@@ -1,12 +1,9 @@
 package slogo.Model.FileManager;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class FileTester {
     public static void main(String args[]){
@@ -20,7 +17,7 @@ public class FileTester {
             test.saveConfig(configMap, "TestConfig");
 
             FileReader testReader = new FileReader();
-            testReader.getConfigMap("TestConfig.xml");
+            //testReader.getConfigMap("TestConfig.xml");
         } catch(XMLException e){
             popUp();
         }

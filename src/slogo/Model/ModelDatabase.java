@@ -1,12 +1,16 @@
 package slogo.Model;
 
+import java.util.ArrayList;
 import java.util.List;
-import javafx.application.Platform;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.scene.control.Alert;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
+import slogo.Model.CommandInfrastructure.CommandProducer;
+import slogo.Model.Commands.Command;
 
 public class ModelDatabase {
 
@@ -17,10 +21,15 @@ public class ModelDatabase {
 
   // regular expression representing any whitespace characters (space, tab, or newline)
   private String language;
+  private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
+  private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
+
   private TurtleData turtle = new TurtleData("Happy", 0, 0, 0);
 
-  private ModelParser originParser;
   private CommandDatabase originCommandDatabase;
+  private ModelParser originParser;
+  private CommandProducer originProducer;
+
 
   /**
    * Main Database for instantiating turtles and parsing data
@@ -35,53 +44,36 @@ public class ModelDatabase {
     language = "English";
 
     originCommandDatabase = new CommandDatabase(turtle);
-    originParser = new ModelParser(language, originCommandDatabase);
-  }
-
-  public List<TurtleData> getTurtleListProperty() {
-    return turtleListProperty.get();
-  }
-
-  ;
-
-  public TurtleData getTurtle(String id) {
-    for (TurtleData turtle : turtleListProperty.get()) {
-      if (turtle.getTurtleID().equals(id)) {
-        return turtle;
-      }
-    }
-    //eventually add error for no turtle existing
-    String errorMessage = "ERROR: Invalid Turtle ID";
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(errorMessage);
-    Platform.runLater(alert::showAndWait);
-    return null;
+    originProducer = new CommandProducer(originCommandDatabase, HISTORY_LIST, COMMAND_LIST);
+    originParser = new ModelParser(language, originCommandDatabase, originProducer);
   }
 
   public TurtleData getMyTurtle() {
     return turtle;
   }
 
-  public ModelParser getModelParser() {
-    return originParser;
+  public ListProperty<String> getHISTORY_LIST(){
+    return HISTORY_LIST;
+  }
+
+  public ListProperty<Command> getCOMMAND_LIST(){
+    return COMMAND_LIST;
   }
 
 
   public String getCommand() {
     return commandProperty.get();
   }
-  // try against different kinds of inputs
-//      model.parseText(model, examples);
-//      String fileInput = model.readFileToString(
-//          Main.class.getClassLoader().getResource("\\resources\\languages\\square.logo").toExternalForm());
-  // instead it will "comment out" the remainder of the program!
-//      model.parseText(model, Arrays.asList(fileInput.split(WHITESPACE)));
 
+//  public void addToHistory(String command) {
+//    HISTORY_LIST.getValue().add(command);
+//  }
+  public void bindHistory(ListProperty displayedHistory) {
+    displayedHistory.bind(HISTORY_LIST);
+  }
 
-  public void makeNewTurtle(String ID, double initX, double initY, double initHeading) {
-    TurtleData newTurtle = new TurtleData(ID, initX, initY, initHeading);
-    turtleListProperty.getValue().add(newTurtle);
+  public void bindCommands(MapProperty displayedCommands) {
+    displayedCommands.bind(COMMAND_LIST);
   }
 
 }

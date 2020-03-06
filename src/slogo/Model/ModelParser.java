@@ -1,10 +1,5 @@
 package slogo.Model;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,12 +8,12 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
+import slogo.Model.Commands.Command;
 
 public class ModelParser {
 
@@ -39,29 +34,30 @@ public class ModelParser {
    * @author Frank Tang
    */
 
-  private String commandFromController;
   private static final String REGEX_SYNTAX = "Syntax";
   private List<Entry<String, Pattern>> mySymbols;
   private CommandDatabase commandDatabase;
   private CommandProducer commandProducer;
-  private int argumentThreshold;
   private List<String> linesArray;
-  private List<String> immutableLinesArray;
-  private int currentLinesIndex;
   private ObjectProperty languageChosen;
+  private int currentIndex;
+  private int argumentThreshold;
+  private Number finalCommandValue;
+  private Command argumentChecker;
 
 
 
-  public ModelParser(String language, CommandDatabase commandData){
+  public ModelParser(String language, CommandDatabase commandData, CommandProducer producer){
     createBindableLanguage(language);
 
     commandDatabase = commandData;
-    commandData.addParser(this);
-    commandProducer = new CommandProducer(commandData);
+    commandProducer = producer;
+    commandDatabase.addParser(this);
+
   }
 
   private void createBindableLanguage(String language) {
-    languageChosen = new SimpleObjectProperty<String>(language);
+    languageChosen = new SimpleObjectProperty<>(language);
     languageChosen.addListener((observable, oldValue, newValue) -> {
       setUpModelParserLanguage((String)newValue);
     });
@@ -104,25 +100,25 @@ public class ModelParser {
     return ERROR;
   }
 
-  // utility function that reads given file and returns its entire contents as a single string
-  public String readFileToString (String inputSource) {
-    try {
-      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
-      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
-    }
-    catch (URISyntaxException | IOException e) {
-      // NOT ideal way to handle exception, but this is just a simple test program
-      System.out.println("ERROR: Unable to read input file " + e.getMessage());
-
-      //potential error pop-up code
-//      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
-//      Alert alert = new Alert(Alert.AlertType.ERROR);
-//      alert.setTitle("Error");
-//      alert.setHeaderText(errorMessage);
-//      Platform.runLater(alert::showAndWait);
-      return "";
-    }
-  }
+//  // utility function that reads given file and returns its entire contents as a single string
+//  public String readFileToString (String inputSource) {
+//    try {
+//      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
+//      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
+//    }
+//    catch (URISyntaxException | IOException e) {
+//      // NOT ideal way to handle exception, but this is just a simple test program
+//      System.out.println("ERROR: Unable to read input file " + e.getMessage());
+//
+//      //potential error pop-up code
+////      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
+////      Alert alert = new Alert(Alert.AlertType.ERROR);
+////      alert.setTitle("Error");
+////      alert.setHeaderText(errorMessage);
+////      Platform.runLater(alert::showAndWait);
+//      return "";
+//    }
+//  }
 
   // Returns true if the given text matches the given regular expression pattern
   private boolean match (String text, Pattern regex) {
@@ -148,58 +144,65 @@ public class ModelParser {
   }
 
   // given some text, prints results of parsing it using the given language
-  public void parseText (List<String> lines) {
-    //System.out.println(lines);
+  public Number parseText (List<String> inputCommandList) {
     Stack<String> commandStack = new Stack<>();
     Stack<Number> argumentStack = new Stack<>();
-    for (int index = 0; index < lines.size(); index++) {
-      if (lines.get(index).trim().length() > 0) {
-        linesArray = lines.subList(index, lines.size());
-        System.out.println("inParser " + linesArray);
-//        currentLinesIndex = index;
-        if(this.getSymbol(lines.get(index)).equals("Constant")){
-          argumentStack.push(Double.parseDouble(lines.get(index)));
+//    int argumentThreshold = 0;
+    for (int index = 0; index < inputCommandList.size(); index++) {
+      if (inputCommandList.get(index).trim().length() > 0) {
+        currentIndex = index;
+        linesArray = inputCommandList.subList(index, inputCommandList.size());
+        commandDatabase.setListArray(linesArray);
+        if(this.getSymbol(inputCommandList.get(index)).equals("Constant")){
+          argumentStack.push(Double.parseDouble(inputCommandList.get(index)));
         }
-        else if(commandDatabase.isInCommandMap(this.getSymbol(lines.get(index)))) {
-          commandStack.push(this.getSymbol(lines.get(index)));
-          argumentThreshold = argumentStack.size() + commandDatabase.getAmountOfParametersNeeded(commandStack.peek());
-        }
-        else if(this.getSymbol(lines.get(index)).equals("Variable")){
-//          System.out.println(commandStack.peek());
+
+        else if(this.getSymbol(inputCommandList.get(index)).equals("Variable")){
           if(commandStack.peek().equals("MakeVariable")){
-            commandDatabase.setVariableName(lines.get(index));
+            commandDatabase.setVariableName(inputCommandList.get(index));
           }
           else{
-            argumentStack.push((Number) commandDatabase.getVariables().get(lines.get(index)));
+            argumentStack.push((Number) commandDatabase.getVariableMap().get(inputCommandList.get(index)));
           }
         }
-        else if(this.getSymbol(lines.get(index)).equals("ListStart")){
-          System.out.println("linesarray " + linesArray);
+        else if(this.getSymbol(inputCommandList.get(index)).equals("ListStart")){
           int listEnd = findListEnd(linesArray);
-          System.out.println("listend " + listEnd);
-          System.out.println("index before " + index);
-
           index = listEnd + index;
-          System.out.println("index " + index);
           continue;
         }
-//        System.out.println("Before Parse: " + commandStack);
-//        System.out.println("Before Parse: " + argumentStack);
-        commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
-//        System.out.println("After Parse: " + commandStack);
-//        System.out.println("After Parse: " + argumentStack);
+        else if(checkCommand(this.getSymbol(inputCommandList.get(index)))){
+          commandStack.push(this.getSymbol(inputCommandList.get(index)));
+          argumentThreshold = argumentStack.size() + argumentChecker.getArgumentsNeeded();
+        }
+        finalCommandValue = commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }
     }
+    return finalCommandValue;
 
   }
 
+  public boolean checkCommand(String commandName){
+    try {
+      Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
+      Object o = commandClass.getDeclaredConstructors()[0].newInstance(commandDatabase);
+      argumentChecker = (Command) o;
+      return true;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+      // TODO: FIX THIS SO WE DON'T FAIL
+    }
+    return false;
+  }
+
+
   public List<String> getLinesArray(){
-//    System.out.println(linesArray);
     return linesArray;
   }
 
-  public int getCurrentLinesIndex(){
-    return currentLinesIndex;
+  public Integer getCurrentLinesIndex(){
+    return currentIndex;
   }
+
 
 }
