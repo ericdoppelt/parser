@@ -160,6 +160,7 @@ public class InfoView {
     private Background backgroundFromRGB(Integer r, Integer g, Integer b) {
         return new Background(new BackgroundFill(Color.rgb(r, g, b), CornerRadii.EMPTY, Insets.EMPTY));
     }
+
     private void passCommand(String command) {
         myParserCommand.accept(Arrays.asList(command.split(WHITESPACE)));
     }
