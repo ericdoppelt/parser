@@ -17,7 +17,7 @@ public class FileTester {
             test.saveConfig(configMap, "TestConfig");
 
             FileReader testReader = new FileReader();
-            testReader.getConfigMap("TestConfig.xml");
+            //testReader.getConfigMap("TestConfig.xml");
         } catch(XMLException e){
             popUp();
         }

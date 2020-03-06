@@ -1,5 +1,6 @@
 package slogo.View.Input;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.geometry.Pos;
 import javafx.scene.control.ColorPicker;
@@ -15,24 +16,24 @@ import java.util.ResourceBundle;
 
 public class ColorPickerInputs extends Inputs {
 
-    private static final List<String> ALL_COLOR_PICKERS = new ArrayList<>(Arrays.asList("background", "pen"));
+    private HBox myColorPickers;
+
     private static final String COLORPICKERS_BUNDLE = "colorPickers";
-    private ResourceBundle myColorPickersBundle  = ResourceBundle.getBundle(COLORPICKERS_BUNDLE);
+    private ResourceBundle myColorPickersBundle = ResourceBundle.getBundle(COLORPICKERS_BUNDLE);
 
     private static final String BACKGROUND_KEY = "background";
     private static final String PEN_KEY = "pen";
+    private static final List<String> ALL_COLOR_PICKERS = new ArrayList<>(Arrays.asList(BACKGROUND_KEY, PEN_KEY));
 
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
 
-    private HBox myColorPickers;
-
-    private static final String PROPERTIES_REGEX_SPLITTER = ", ";
-    private static final int VBOX_LABEL_INDEX = 0;
-
-    public ColorPickerInputs() {
+    public ColorPickerInputs(ObjectProperty<Color> background, ObjectProperty<Color> pen) {
         myColorPickers = new HBox();
         for (String pickerType : ALL_COLOR_PICKERS) makeColorVBox(pickerType);
+
+        myBackGroundPicker.valueProperty().bindBidirectional(background);
+        myPenPicker.valueProperty().bindBidirectional(pen);
         myColorPickers = formatButtons(myColorPickers);
     }
 
@@ -57,4 +58,6 @@ public class ColorPickerInputs extends Inputs {
         addedVBox.getChildren().addAll(addedLabel, addedColorPicker);
         myColorPickers.getChildren().add(addedVBox);
     }
+
+    // TODO: delete
 }

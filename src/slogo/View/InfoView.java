@@ -1,26 +1,31 @@
 package slogo.View;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-
-import java.awt.*;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
 
 public class InfoView {
 
@@ -88,9 +93,16 @@ public class InfoView {
         myHistory = new SimpleListProperty<>();
         myHistory.addListener(((observable, oldValue, newValue) -> {
             if (newValue.size() > 0) {
-                ((VBox) myHistoryToggle.getUserData()).getChildren().add(new Label(newValue.get(newValue.size() - 1)));
+                Label addedLabel = new Label(newValue.get(newValue.size() - 1));
+                addedLabel.setOnMouseClicked(e -> execute(addedLabel.getText()));
+                ((VBox) myHistoryToggle.getUserData()).getChildren().add(addedLabel);
             }
         }));
+    }
+
+    //TODO: fill this in
+    private void execute(String s) {
+
     }
 
     private void initButtons() {
@@ -158,21 +170,5 @@ public class InfoView {
 
     public VBox getCompletePanel() {
         return myInfoPanel;
-    }
-
-    private Map getTempVars() {
-        Map temp = new HashMap();
-        for (int i = 0; i < 100; i++) {
-            temp.put("same" + i, i);
-        }
-        return temp;
-    }
-
-    private List getTempHistory() {
-        List tempHist = new ArrayList();
-        for (int i = 0; i < 100; i++) {
-            tempHist.add("fd 50");
-        }
-        return tempHist;
     }
 }

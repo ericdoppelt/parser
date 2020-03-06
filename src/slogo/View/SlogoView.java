@@ -41,8 +41,6 @@ public class SlogoView {
         bindProperties();
     }
 
-
-
     private void initModel() {
         myModelDatabase = new ModelDatabase();
         myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtle());
@@ -79,7 +77,7 @@ public class SlogoView {
     private void bindProperties() {
         createBindableBackground();
         createBindablePen();
-        createBindableImage();
+        createBindableFile();
         createBindableLanguage();
         createBindableInfoPanel();
     }
@@ -99,8 +97,8 @@ public class SlogoView {
         myTurtleView.getPenColorProperty().getValue();
     }
 
-    private void createBindableImage() {
-        myTurtleView.getImageProperty().bind(myInputView.getTurtleImage());
+    private void createBindableFile() {
+        myTurtleView.getTurtleFile().bind(myInputView.getTurtleFile());
     }
 
     private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
