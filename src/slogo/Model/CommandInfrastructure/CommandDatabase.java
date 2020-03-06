@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Function;
-import javafx.beans.property.MapProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleMapProperty;
+
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.scene.paint.Color;
 import slogo.Model.ModelParser;
@@ -35,6 +34,7 @@ public class CommandDatabase {
 
   public CommandDatabase(TurtleData turtle) {
     targetTurtle = turtle;
+    backgroundColorProperty = new SimpleObjectProperty<Color>();
   }
 
   public TurtleData getTurtle() {
@@ -44,6 +44,10 @@ public class CommandDatabase {
   public void setBackgroundColor(List<Integer> rgbList) {
     Color color = Color.rgb(rgbList.get(0), rgbList.get(1), rgbList.get(2));
     backgroundColorProperty.setValue(color);
+  }
+
+  public void bindBackgroundColor(Property viewBackground) {
+    viewBackground.bindBidirectional(backgroundColorProperty);
   }
 
   public Number getParameterOne() {
@@ -127,9 +131,12 @@ public class CommandDatabase {
     this.COLOR_MAP.put(index, color);
   }
 
-  public MapProperty getColorMap() {
-    return this.COLOR_MAP;
+  public void bindColors(MapProperty viewColors) {
+    viewColors.bind(COLOR_MAP);
   }
 
+  public MapProperty getColorMap() {
+    return COLOR_MAP;
+  }
 
 }
