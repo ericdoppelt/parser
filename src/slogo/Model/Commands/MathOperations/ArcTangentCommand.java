@@ -22,16 +22,11 @@ public class ArcTangentCommand extends Command {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     returnArgValue = Math.atan(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
-
 
 }
 

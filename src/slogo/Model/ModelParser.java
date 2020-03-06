@@ -1,10 +1,5 @@
 package slogo.Model;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.Stack;
 import java.util.regex.Pattern;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -46,6 +40,7 @@ public class ModelParser {
   private int argumentThreshold;
   private List<String> linesArray;
   private ObjectProperty languageChosen;
+  private int currentIndex;
 
 
   public ModelParser(String language, CommandDatabase commandData){
@@ -64,7 +59,7 @@ public class ModelParser {
     setUpModelParserLanguage(languageChosen.getValue().toString());
   }
 
-  public void setUpModelParserLanguage(String language){
+  private void setUpModelParserLanguage(String language){
     mySymbols = new ArrayList<>();
     addPatterns(language);
     addPatterns(REGEX_SYNTAX);
@@ -76,7 +71,7 @@ public class ModelParser {
   /**
    * Adds the given resource file to this language's recognized types
    */
-  public void addPatterns (String syntax) {
+  private void addPatterns (String syntax) {
     ResourceBundle resources = ResourceBundle.getBundle(syntax);
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
@@ -89,7 +84,7 @@ public class ModelParser {
   /**
    * Returns language's type associated with the given text if one exists
    */
-  public String getSymbol (String text) {
+  private String getSymbol (String text) {
     final String ERROR = "NO MATCH";
     for (Entry<String, Pattern> e : mySymbols) {
       if (match(text, e.getValue())) {
@@ -100,35 +95,30 @@ public class ModelParser {
     return ERROR;
   }
 
-  // utility function that reads given file and returns its entire contents as a single string
-  public String readFileToString (String inputSource) {
-    try {
-      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
-      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
-    }
-    catch (URISyntaxException | IOException e) {
-      // NOT ideal way to handle exception, but this is just a simple test program
-      System.out.println("ERROR: Unable to read input file " + e.getMessage());
-
-      //potential error pop-up code
-//      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
-//      Alert alert = new Alert(Alert.AlertType.ERROR);
-//      alert.setTitle("Error");
-//      alert.setHeaderText(errorMessage);
-//      Platform.runLater(alert::showAndWait);
-      return "";
-    }
-  }
+//  // utility function that reads given file and returns its entire contents as a single string
+//  public String readFileToString (String inputSource) {
+//    try {
+//      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
+//      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
+//    }
+//    catch (URISyntaxException | IOException e) {
+//      // NOT ideal way to handle exception, but this is just a simple test program
+//      System.out.println("ERROR: Unable to read input file " + e.getMessage());
+//
+//      //potential error pop-up code
+////      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
+////      Alert alert = new Alert(Alert.AlertType.ERROR);
+////      alert.setTitle("Error");
+////      alert.setHeaderText(errorMessage);
+////      Platform.runLater(alert::showAndWait);
+//      return "";
+//    }
+//  }
 
   // Returns true if the given text matches the given regular expression pattern
   private boolean match (String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
     return regex.matcher(text).matches();
-  }
-
-  public void initializeNewParserTextandParse (List<String> lines) {
-    linesArray = lines;
-    parseText(lines);
   }
 
   public int findListEnd(List<String> listToCheck){
@@ -154,6 +144,7 @@ public class ModelParser {
     Stack<Number> argumentStack = new Stack<>();
     for (int index = 0; index < inputCommandList.size(); index++) {
       if (inputCommandList.get(index).trim().length() > 0) {
+        currentIndex = index;
         linesArray = inputCommandList.subList(index, inputCommandList.size());
         if(this.getSymbol(inputCommandList.get(index)).equals("Constant")){
           argumentStack.push(Double.parseDouble(inputCommandList.get(index)));
@@ -184,5 +175,10 @@ public class ModelParser {
   public List<String> getLinesArray(){
     return linesArray;
   }
+
+  public Integer getCurrentLinesIndex(){
+    return currentIndex;
+  }
+
 
 }

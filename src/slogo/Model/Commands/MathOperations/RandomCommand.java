@@ -15,23 +15,18 @@ public class RandomCommand extends Command {
 
   public RandomCommand(Number max) {
     maxRange = max;
-   }
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Integer executeAndReturnValue() {
     double randomValue = (int) Math.random() * maxRange.doubleValue();
     returnArgValue = randomValue;
     System.out.println(returnArgValue);
-  }
-
-  @Override
-  public Integer returnArgValue() {
     return (int) this.returnArgValue;
   }
-
 
 }
 

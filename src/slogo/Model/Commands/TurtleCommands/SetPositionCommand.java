@@ -28,7 +28,7 @@ public class SetPositionCommand extends Command {
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     double differenceX = newX.doubleValue() - turtleObject.getTurtleX();
     double differenceY = newY.doubleValue() - turtleObject.getTurtleY();
 
@@ -42,13 +42,8 @@ public class SetPositionCommand extends Command {
     System.out.println("return " + returnArgValue);
     //System.out.println(returnArgValue);
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Double returnArgValue() {
-
     return this.returnArgValue;
+
   }
 }
 

@@ -34,7 +34,7 @@ public class DoTimesCommand extends Command {
    * Moves the turtle backwards by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
     linesSubArray = parser.getLinesArray();
@@ -58,16 +58,12 @@ public class DoTimesCommand extends Command {
     System.out.println("Commandsublist " + commandSubList);
 
     for(int i = 1; i <= variableLimit.doubleValue(); i++){
-      commandDatabase.addToVariables(variableName, i);
+      commandDatabase.addToVariableMap(variableName, i);
       parser.parseText(commandSubList);
     }
-  }
 
-  @Override
-  public Double returnArgValue() {
     return this.returnArgValue;
   }
-
 }
 
 

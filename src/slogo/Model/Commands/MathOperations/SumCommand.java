@@ -24,21 +24,16 @@ public class SumCommand extends Command {
    * Moves the turtle forward by a pixel amount.
    */
   @Override
-  public void execute() {
+  public Double executeAndReturnValue() {
     returnArgValue = firstTerm.doubleValue() + secondTerm.doubleValue();
 //    System.out.println("1 " + this.sumResult);
 //    System.out.println("2 " + this.secondTerm);
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
-
-  }
-
-  @Override
-  public Double returnArgValue() {
-    //System.out.println("return " + this.returnArgValue);
     return this.returnArgValue;
-  }
 
+
+  }
 }
 
 
