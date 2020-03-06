@@ -30,27 +30,27 @@ public class CommandProducer {
   /**
    * Adds the given resource file to this language's recognized types
    */
-  public Number parseStacks (Stack commStack, Stack argStack, int argumentThreshold) {
+  public Number parseStacks (Stack<String> commStack, Stack<Number> argStack, int argumentThreshold) {
     argumentRunningTotal = argumentThreshold;
 //    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
       System.out.println("BeforeA" + argStack);
       System.out.println("BeforeC" + commStack);
-      int parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek().toString());
+      int parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek());
       if(parametersNeeded == zeroParametersNeeded){
-        commandHistory = commStack.peek().toString();
-        newCommand = commandDatabase.makeZeroParameterCommand(commStack.pop().toString());
+        commandHistory = commStack.peek();
+        newCommand = commandDatabase.makeZeroParameterCommand(commStack.pop());
       }
       else if(parametersNeeded == oneParametersNeeded) {
-        Number firstParameter = (Number) argStack.pop();
-        commandHistory = commStack.peek().toString() + " " + firstParameter.toString();
-        newCommand = commandDatabase.makeOneParameterCommand(commStack.pop().toString(), firstParameter);
+        Number firstParameter = argStack.pop();
+        commandHistory = commStack.peek() + " " + firstParameter.toString();
+        newCommand = commandDatabase.makeOneParameterCommand(commStack.pop(), firstParameter);
       }
       else if (parametersNeeded == twoParametersNeeded){
-        Number secondParameter = (Number) argStack.pop(); //must be in this order because the second parameter is popped off first
-        Number firstParameter = (Number) argStack.pop();
-        commandHistory = commStack.peek().toString() + " " + firstParameter.toString() + " " + secondParameter.toString();
-        newCommand = commandDatabase.makeTwoParameterCommand(commStack.pop().toString(), firstParameter, secondParameter);
+        Number secondParameter = argStack.pop(); //must be in this order because the second parameter is popped off first
+        Number firstParameter = argStack.pop();
+        commandHistory = commStack.peek() + " " + firstParameter.toString() + " " + secondParameter.toString();
+        newCommand = commandDatabase.makeTwoParameterCommand(commStack.pop(), firstParameter, secondParameter);
       }
       commandDatabase.addToHistory(commandHistory);
 //      System.out.println(newCommand.getClass());
@@ -70,6 +70,20 @@ public class CommandProducer {
 
 
     return currentCommandReturnValue;
+  }
+
+
+  public Command makeCommand(String commandName){
+    try{
+      Class commandClass = Class.forName("slogo.Model.Commands." + commandName);
+      Object command = commandClass.getDeclaredConstructor().newInstance();
+      System.out.println("test " + command);
+      return (Command) command;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+    }
+    return null;
   }
 
 }
