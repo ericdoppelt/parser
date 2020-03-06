@@ -13,6 +13,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
+import slogo.Model.Commands.Command;
 
 public class ModelParser {
 
@@ -42,7 +43,7 @@ public class ModelParser {
   private int currentIndex;
   private int argumentThreshold;
   private Number finalCommandValue;
-  private Command1 argumentChecker;
+  private Command argumentChecker;
 
 
 
@@ -184,7 +185,7 @@ public class ModelParser {
     try {
       Class commandClass = Class.forName("slogo.Model.Commands.TurtleCommands." + commandName + "Command");
       Object o = commandClass.getDeclaredConstructors()[0].newInstance(commandDatabase);
-      argumentChecker = (Command1) o;
+      argumentChecker = (Command) o;
       return true;
     }
     catch (Exception e){

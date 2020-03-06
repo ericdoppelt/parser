@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -11,9 +12,14 @@ import slogo.Model.TurtleData;
 public class IsPenDown extends Command {
 
   private double returnArgValue;
+  private static final int argumentsNeeded = 0;
+  private CommandDatabase database;
+  private TurtleData turtleObject;
 
-  public IsPenDown(TurtleData turtleObject) {
-    returnArgValue = turtleObject.getPenStatus();
+  public IsPenDown(CommandDatabase data) {
+    super(data);
+    database = data;
+
   }
 
   /**
@@ -21,9 +27,17 @@ public class IsPenDown extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
+    turtleObject = database.getTurtle();
+    returnArgValue = turtleObject.getPenStatus();
     System.out.println(returnArgValue);
     return (int) this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -13,11 +14,14 @@ public class Back extends Command {
   private TurtleData turtleObject;
   private double returnArgValue;
   private Number distanceToTravel;
+  private static final int argumentsNeeded = 1;
+  private CommandDatabase database;
 
 
-  public Back(TurtleData turtle, Number distance) {
-    turtleObject = turtle;
-    distanceToTravel = distance;
+  public Back(CommandDatabase data) {
+    super(data);
+    database = data;
+
   }
 
   /**
@@ -25,6 +29,8 @@ public class Back extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
+    turtleObject = database.getTurtle();
+    distanceToTravel = database.getParameterOne();
     returnArgValue = distanceToTravel.doubleValue();
     double turtleHeading = turtleObject.getTurtleHeading();
     double distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
@@ -38,6 +44,12 @@ public class Back extends Command {
     System.out.println("backY " + turtleObject.getTurtleY());
     return this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
+
 
 }
 

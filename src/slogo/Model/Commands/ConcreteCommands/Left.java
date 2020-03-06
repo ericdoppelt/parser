@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -13,10 +14,12 @@ public class Left extends Command {
   private TurtleData turtleObject;
   private double returnArgValue;
   private Number degreesChanged;
+  private static final int argumentsNeeded = 1;
+  private CommandDatabase database;
 
-  public Left(TurtleData turtle, Number degreeAngleChange) {
-    turtleObject = turtle;
-    degreesChanged = degreeAngleChange;
+  public Left(CommandDatabase data) {
+    super(data);
+    database = data;
 
   }
 
@@ -25,12 +28,20 @@ public class Left extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
+    turtleObject = database.getTurtle();
+    degreesChanged = database.getParameterOne();
+
     returnArgValue = degreesChanged.doubleValue();
     System.out.println(turtleObject.getTurtleHeading());
     turtleObject.rotateTurtleHeading(degreesChanged.doubleValue());
     System.out.println(turtleObject.getTurtleHeading());
     return this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
 
 
 }

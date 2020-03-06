@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -16,13 +17,12 @@ public class Home extends Command {
   private double returnArgValue;
   private static final double zeroX = 0;
   private static final double zeroY = 0;
+  private static final int argumentsNeeded = 0;
+  private CommandDatabase database;
 
-  public Home(TurtleData turtle) {
-    turtleObject = turtle;
-    double differenceX = zeroX - turtle.getTurtleX();
-    double differenceY = zeroY - turtle.getTurtleY();
-
-    returnArgValue = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
+  public Home(CommandDatabase data) {
+    super(data);
+    database = data;
 
   }
 
@@ -31,6 +31,12 @@ public class Home extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
+    turtleObject = database.getTurtle();
+    double differenceX = zeroX - turtleObject.getTurtleX();
+    double differenceY = zeroY - turtleObject.getTurtleY();
+
+    returnArgValue = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
+
     System.out.println("turtleX before " + turtleObject.getTurtleX());
     System.out.println("turtleY before " + turtleObject.getTurtleY());
     turtleObject.setXCoord(zeroX);
@@ -44,6 +50,12 @@ public class Home extends Command {
 
 
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
+
 }
 
 

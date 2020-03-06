@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -14,10 +15,13 @@ public class HideTurtle extends Command {
   private double returnArgValue;
   private static final int turtleVisibilityStatus = 0;
   private boolean isTurtleVisible = false;
+  private static final int argumentsNeeded = 0;
+  private CommandDatabase database;
 
-  public HideTurtle(TurtleData turtle) {
-    turtleObject = turtle;
-    returnArgValue = turtleVisibilityStatus;
+  public HideTurtle(CommandDatabase data) {
+    super(data);
+    database = data;
+
 
   }
 
@@ -26,6 +30,8 @@ public class HideTurtle extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
+    turtleObject = database.getTurtle();
+    returnArgValue = turtleVisibilityStatus;
     turtleObject.setPenStatus(isTurtleVisible);
     System.out.println("return " + returnArgValue);
     //System.out.println(returnArgValue);
@@ -33,6 +39,12 @@ public class HideTurtle extends Command {
     return (int) this.returnArgValue;
 
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
+
 
 }
 

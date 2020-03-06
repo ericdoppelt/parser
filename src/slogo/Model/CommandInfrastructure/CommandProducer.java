@@ -2,6 +2,7 @@ package slogo.Model.CommandInfrastructure;
 
 import java.util.Stack;
 import javafx.beans.property.ListProperty;
+import slogo.Model.Commands.Command;
 
 public class CommandProducer {
 
@@ -17,15 +18,15 @@ public class CommandProducer {
   private static final int twoParametersNeeded = 2;
   private String newCommandEntry;
   private ListProperty<String> HISTORY_LIST;
-  private ListProperty<Command1> COMMAND_LIST;
+  private ListProperty<Command> COMMAND_LIST;
   private Number currentCommandReturnValue;
-  private Command1 newCommand;
+  private Command newCommand;
   private static final String BLANK_SPACE = " ";
   private Stack<String> oldCommStack;
   private Stack<Number> oldArgStack;
 
 
-  public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory, ListProperty<Command1> commandHistory){
+  public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory, ListProperty<Command> commandHistory){
     HISTORY_LIST = stringHistory;
     COMMAND_LIST = commandHistory;
     commandDatabase = database;
@@ -85,10 +86,10 @@ public class CommandProducer {
   }
 
 
-  public Command1 makeCommand(String commandName){
+  public Command makeCommand(String commandName){
     try {
       Class commandClass = Class.forName("slogo.Model.Commands.TurtleCommands." + commandName + "Command");
-      Command1 command = (Command1) commandClass.getConstructors()[0].newInstance(commandDatabase);
+      Command command = (Command) commandClass.getConstructors()[0].newInstance(commandDatabase);
       return command;
     }
     catch (Exception e){

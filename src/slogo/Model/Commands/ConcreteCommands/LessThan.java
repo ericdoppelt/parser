@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 
 /**
@@ -14,10 +15,12 @@ public class LessThan extends Command {
   private double returnArgValue;
   private Number firstTerm;
   private Number secondTerm;
+  private static final int argumentsNeeded = 2;
+  private CommandDatabase database;
 
-  public LessThan(Number parameterOne, Number parameterTwo) {
-    firstTerm = parameterOne;
-    secondTerm = parameterTwo;
+  public LessThan(CommandDatabase data) {
+    super(data);
+    database = data;
 
   }
 
@@ -26,6 +29,9 @@ public class LessThan extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
+    firstTerm = database.getParameterOne();
+    secondTerm = database.getParameterTwo();
+
     if (firstTerm.doubleValue() - secondTerm.doubleValue() < 0) {
       returnArgValue = 1;
     } else {
@@ -36,6 +42,12 @@ public class LessThan extends Command {
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return (int) this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
+
 }
 
 

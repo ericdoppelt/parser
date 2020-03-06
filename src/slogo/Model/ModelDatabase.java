@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
+import slogo.Model.Commands.Command;
 
 public class ModelDatabase {
 
@@ -21,7 +22,7 @@ public class ModelDatabase {
   // regular expression representing any whitespace characters (space, tab, or newline)
   private String language;
   private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
-  private ListProperty<Command1> COMMAND_LIST = new SimpleListProperty<>();
+  private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
 
   private TurtleData turtle = new TurtleData("Happy", 0, 0, 0);
 
@@ -55,7 +56,7 @@ public class ModelDatabase {
     return HISTORY_LIST;
   }
 
-  public ListProperty<Command1> getCOMMAND_LIST(){
+  public ListProperty<Command> getCOMMAND_LIST(){
     return COMMAND_LIST;
   }
 

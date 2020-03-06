@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 
 /**
@@ -11,22 +12,32 @@ public class ArcTangent extends Command {
 
   private double returnArgValue;
   private Number amountOfDegrees;
+  private static final int argumentsNeeded = 1;
+  private CommandDatabase database;
 
 
-  public ArcTangent(Number degrees) {
-    amountOfDegrees = degrees;
+  public ArcTangent(CommandDatabase data) {
+    super(data);
+    database = data;
 
-   }
+
+  }
 
   /**
    * Rotates a turtle by a counterclockwise rotation of a degree amount.
    */
   @Override
   public Double executeAndReturnValue() {
+    amountOfDegrees = database.getParameterOne();
     returnArgValue = Math.atan(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
     return this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
 
 }
 

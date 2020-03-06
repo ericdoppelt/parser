@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -11,9 +12,15 @@ import slogo.Model.TurtleData;
 public class IsShowing extends Command {
 
   private double returnArgValue;
+  private static final int argumentsNeeded = 0;
+  private CommandDatabase database;
+  private TurtleData turtleObject;
 
-  public IsShowing(TurtleData turtleObject) {
-    returnArgValue = turtleObject.getTurtleVisibility();
+
+  public IsShowing(CommandDatabase data) {
+    super(data);
+    database = data;
+
   }
 
   /**
@@ -21,9 +28,16 @@ public class IsShowing extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
+    turtleObject = database.getTurtle();
+    returnArgValue = turtleObject.getTurtleVisibility();
     System.out.println(returnArgValue);
     return (int) this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
 
 
 }

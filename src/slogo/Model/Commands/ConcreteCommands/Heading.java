@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
@@ -11,9 +12,15 @@ import slogo.Model.TurtleData;
 public class Heading extends Command {
 
   private double returnArgValue;
+  private static final int argumentsNeeded = 0;
+  private CommandDatabase database;
+  private TurtleData turtleObject;
 
-  public Heading(TurtleData turtleObject) {
-    returnArgValue = turtleObject.getTurtleHeading();
+
+  public Heading(CommandDatabase data) {
+    super(data);
+    database = data;
+
   }
 
   /**
@@ -21,9 +28,17 @@ public class Heading extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
+    turtleObject = database.getTurtle();
+    returnArgValue = turtleObject.getTurtleHeading();
     System.out.println(returnArgValue);
     return this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
+
 
 }
 

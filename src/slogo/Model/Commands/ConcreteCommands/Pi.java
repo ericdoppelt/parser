@@ -1,5 +1,6 @@
 package slogo.Model.Commands.ConcreteCommands;
 
+import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 
 /**
@@ -10,8 +11,12 @@ import slogo.Model.Commands.Command;
 public class Pi extends Command {
 
   private final double returnArgValue = Math.PI;
+  private static final int argumentsNeeded = 0;
+  private CommandDatabase database;
 
-  public Pi() {
+  public Pi(CommandDatabase data) {
+    super(data);
+    database = data;
   }
 
   /**
@@ -22,6 +27,12 @@ public class Pi extends Command {
     System.out.println("pi" + returnArgValue);
     return this.returnArgValue;
   }
+  @Override
+  public int getArgumentsNeeded(){
+    return this.argumentsNeeded;
+  }
+
+
 
 
 }
