@@ -22,7 +22,6 @@ public class ForwardCommand extends Command {
   public ForwardCommand(TurtleData turtle, Number distance) {
     turtleObject = turtle;
     distanceToTravel = distance;
-//    returnArgValue = distanceToTravel.doubleValue();
     turtleHeading = turtleObject.getTurtleHeading();
 
     distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
@@ -43,6 +42,7 @@ public class ForwardCommand extends Command {
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
     System.out.println("turtle X " + turtleObject.getTurtleX());
     System.out.println("turtle Y " + turtleObject.getTurtleY());
+    returnArgValue = distanceToTravel.doubleValue();
     return this.returnArgValue;
 
   }

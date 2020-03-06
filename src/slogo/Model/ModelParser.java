@@ -37,10 +37,12 @@ public class ModelParser {
   private List<Entry<String, Pattern>> mySymbols;
   private CommandDatabase commandDatabase;
   private CommandProducer commandProducer;
-  private int argumentThreshold;
+//  private int argumentThreshold;
   private List<String> linesArray;
   private ObjectProperty languageChosen;
   private int currentIndex;
+  private Number finalCommandValue;
+
 
 
   public ModelParser(String language, CommandDatabase commandData){
@@ -139,9 +141,10 @@ public class ModelParser {
   }
 
   // given some text, prints results of parsing it using the given language
-  public void parseText (List<String> inputCommandList) {
+  public Number parseText (List<String> inputCommandList) {
     Stack<String> commandStack = new Stack<>();
     Stack<Number> argumentStack = new Stack<>();
+    int argumentThreshold = 0;
     for (int index = 0; index < inputCommandList.size(); index++) {
       if (inputCommandList.get(index).trim().length() > 0) {
         currentIndex = index;
@@ -166,9 +169,10 @@ public class ModelParser {
           index = listEnd + index;
           continue;
         }
-        commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
+        finalCommandValue = commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }
     }
+    return finalCommandValue;
 
   }
 
