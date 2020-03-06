@@ -1,8 +1,11 @@
 package slogo.View.Input;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -29,45 +32,61 @@ public class ButtonInputs extends Inputs {
     private ResourceBundle myButtonsBundle = ResourceBundle.getBundle(BUTTONS_BUNDLE);
     private static final List<String> ALL_BUTTONS = new ArrayList<>(Arrays.asList("turtle", "preferences", "save", "workspace"));
 
-    private static final String TURTLE_KEY = "turtle";
     private static final String ACCEPTABLE_TURTLE_FILE = "*.png";
     private static final String TURTLE_FILE_EXTENSION = ".png";
     private static final String TYPE_OF_TURTLE_FILE = "PNG";
-    private static final String INITIAL_TURTLE_DIRECTORY = "user.dir";
-    private final FileChooser TURTLE_FILE_CHOOSER = createFileChooser(ACCEPTABLE_TURTLE_FILE, TYPE_OF_TURTLE_FILE, INITIAL_TURTLE_DIRECTORY);
+    private static final String INITIAL_DIRECTORY = "user.dir";
     private static final String TURTLEIMAGE_PACKAGE = "turtleImages/";
+    private final FileChooser TURTLE_FILE_CHOOSER = createFileChooser(ACCEPTABLE_TURTLE_FILE, TYPE_OF_TURTLE_FILE, INITIAL_DIRECTORY);
 
-    private Property<Image> myTurtleImage;
+    private static final String ACCEPTABLE_PREF_FILE = "*.xml";
+    private static final String TYPE_OF_PREF_FILE = "XML";
+    private final FileChooser PREF_FILE_CHOOSER = createFileChooser(ACCEPTABLE_PREF_FILE, TYPE_OF_PREF_FILE, INITIAL_DIRECTORY);
 
     private static final int VBOX_LABEL_INDEX = 0;
     private static final int BUTTON_TEXT_INDEX = 1;
     private static final int BUTTON_METHOD_INDEX = 2;
     private static final String PROPERTIES_REGEX_SPLITTER = ", ";
 
-    private ColorPickerInputs myColorPickers;
-    private ComboBoxInputs myComboButtonInputs;
-
     private FileReader myReader;
     private FileWriter myWriter;
 
-    public ButtonInputs(ColorPickerInputs cp, ComboBoxInputs cb) {
+    //TODO: duplicated in InputView
+    ObjectProperty<Image> turtleProperty;
+    ObjectProperty backgroundProperty;
+    ObjectProperty penProperty;
+    ObjectProperty languageProperty;
+
+    public ButtonInputs(ObjectProperty background, ObjectProperty pen, ObjectProperty language, ObjectProperty<Image> turtle) {
+        turtleProperty = new SimpleObjectProperty<Image>();
+        turtleProperty.bindBidirectional(turtle);
+        setDefaultTurtle();
+        System.out.println(turtleProperty);
+        System.out.println("turtle" + turtle);
+
+        backgroundProperty = new SimpleObjectProperty<Color>();
+        backgroundProperty.bindBidirectional(background);
+        backgroundProperty.setValue(Color.RED);
+
+        penProperty = new SimpleObjectProperty<Color>();
+        penProperty.bindBidirectional(pen);
+        penProperty.setValue(Color.BLACK);
+
+        languageProperty = new SimpleObjectProperty<String>();
+        languageProperty.bindBidirectional(language);
+        languageProperty.setValue("English");
+
         myButtons = new HBox();
         for (String buttonType : ALL_BUTTONS) makeButtonVBox(buttonType);
         myButtons = formatButtons(myButtons);
-        myColorPickers = cp;
-        myComboButtonInputs = cb;
 
         myReader = new FileReader();
         myWriter = new FileWriter();
     }
 
-    public Property<Image> getTurtleImage() {return myTurtleImage;}
-
     public HBox getButtonsHBox() {return myButtons;}
 
     private void makeButtonVBox(String buttonType) {
-        if (buttonType.equals(TURTLE_KEY)) setDefaultTurtle();
-
         VBox addedVBox = new VBox();
         addedVBox.setAlignment(Pos.CENTER);
         String[] buttonInfo = myButtonsBundle.getString(buttonType).split(PROPERTIES_REGEX_SPLITTER);
@@ -86,12 +105,11 @@ public class ButtonInputs extends Inputs {
     }
 
     private void setDefaultTurtle() {
-        myTurtleImage = new SimpleObjectProperty<>();
         String defaultFilePath = TURTLEIMAGE_PACKAGE + "perfectTurtle" + TURTLE_FILE_EXTENSION;
         System.out.println(defaultFilePath);
         //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
         try {
-            myTurtleImage.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
+            turtleProperty.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
         } catch (Exception e) {
             String errorMessage = "INVALID TURTLE";
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -108,7 +126,7 @@ public class ButtonInputs extends Inputs {
         if (turtleFile == null) {
             return;
         }
-        myTurtleImage.setValue(new Image(turtleFile.toURI().toString()));
+        turtleProperty.setValue(new Image(turtleFile.toURI().toString()));
     }
 
     private FileChooser createFileChooser(String extension, String fileType, String directory) {
@@ -118,30 +136,31 @@ public class ButtonInputs extends Inputs {
         return returnedChooser;
     }
 
-    private void inputPrefFile() {
-       TextInputDialog prefProperties = new TextInputDialog("Duvall");
-       prefProperties.setHeaderText("What Preference Would You Like to Load?");
-       prefProperties.showAndWait();
-       ResourceBundle prefBundle = null;
-       try {
-           prefBundle = ResourceBundle.getBundle(prefProperties.getEditor().getText());
-           myColorPickers.setBackground(prefBundle.getString("background"));
-           myColorPickers.setPen(prefBundle.getString("pen"));
-           myComboButtonInputs.getLanguageProperty().setValue(prefBundle.getString("language"));
-           // TODO: duplication
-
-           String defaultFilePath = TURTLEIMAGE_PACKAGE + prefBundle.getString("turtle") + TURTLE_FILE_EXTENSION;
-           myTurtleImage.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
-       } catch (Exception e) {
-           System.out.println(e);
+    private void loadProperties() {
+       File prefFile = PREF_FILE_CHOOSER.showOpenDialog(new Stage());
+       if (prefFile == null) {
+           return;
        }
+       Map<String, String> newProperties = myReader.getConfigMap(prefFile);
+
+        backgroundProperty.setValue(Color.web(newProperties.get("background")));
+        penProperty.setValue(Color.web(newProperties.get("pen")));
+        languageProperty.setValue(newProperties.get("language"));
+        // TODO: duplication
+        String defaultFilePath = newProperties.get("turtle");
+        System.out.println(defaultFilePath);
+        turtleProperty.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
+
     }
 
     private void saveProperties() {
         Map<String, String> savedPreferences = new HashMap<String, String>();
-        savedPreferences.put("turtle", myTurtleImage.getName());
-        savedPreferences.put("background", myColorPickers)
-        myWriter.
+        System.out.println();
+        savedPreferences.put("turtle", turtleProperty.getName());
+        savedPreferences.put("background", backgroundProperty.toString());
+        savedPreferences.put("pen", penProperty.toString());
+        savedPreferences.put("language", languageProperty.toString());
+        myWriter.saveConfig(savedPreferences, "dummy");
     }
 
     private void createNewWindow() {

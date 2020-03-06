@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<configuration>
+    <turtle/>
+    <background>ObjectProperty [value: 0xff0000ff]</background>
+    <pen>ObjectProperty [value: 0x000000ff]</pen>
+    <language>ObjectProperty [value: English]</language>
+</configuration>

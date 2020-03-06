@@ -97,6 +97,7 @@ public class SlogoView {
     }
 
     private void createBindableImage() {
+        System.out.println(myInputView.getTurtleImage());
         myTurtleView.getImageProperty().bind(myInputView.getTurtleImage());
     }
 

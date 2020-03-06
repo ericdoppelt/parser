@@ -1,5 +1,6 @@
 package slogo.View.Input;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +21,6 @@ public class ComboBoxInputs extends Inputs {
     private static final List<String> ALL_COMBO_BOXES = new ArrayList<>(Arrays.asList("language"));
 
     private static final String COMBOBOXES = "comboBoxes";
-
     private ResourceBundle myComboBoxesBundle  = ResourceBundle.getBundle(COMBOBOXES);
 
     private ObservableList allLanguages = initLanguageOptions();
@@ -35,18 +35,15 @@ public class ComboBoxInputs extends Inputs {
 
     private HBox myComboBoxes;
 
-    public ComboBoxInputs() {
+    public ComboBoxInputs(ObjectProperty<String> language) {
         myComboBoxes = new HBox();
-        for (String comboBoxType : ALL_COMBO_BOXES) makeComboVBox(comboBoxType);
+        makeComboVBox(LANGUAGE_KEY);
+        myLanguageBox.valueProperty().bindBidirectional(language);
         myComboBoxes = formatButtons(myComboBoxes);
     }
 
     public HBox getComboBoxesHBox() {
         return myComboBoxes;
-    }
-
-    public Property<String> getLanguageProperty() {
-        return myLanguageBox.valueProperty();
     }
 
     private void makeComboVBox(String comboBoxType) {
