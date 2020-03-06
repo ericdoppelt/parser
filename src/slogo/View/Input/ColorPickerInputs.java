@@ -57,4 +57,14 @@ public class ColorPickerInputs extends Inputs {
         addedVBox.getChildren().addAll(addedLabel, addedColorPicker);
         myColorPickers.getChildren().add(addedVBox);
     }
+
+    // TODO: delete
+
+    public void setBackground(String hex) {
+        myBackGroundPicker.setValue(Color.web(hex));
+    }
+
+    public void setPen(String hex) {
+        myPenPicker.setValue(Color.web(hex));
+    }
 }

@@ -14,13 +14,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import slogo.Model.FileManager.FileReader;
+import slogo.Model.FileManager.FileWriter;
 import slogo.View.SlogoView;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ButtonInputs extends Inputs {
 
@@ -45,10 +44,21 @@ public class ButtonInputs extends Inputs {
     private static final int BUTTON_METHOD_INDEX = 2;
     private static final String PROPERTIES_REGEX_SPLITTER = ", ";
 
-    public ButtonInputs() {
+    private ColorPickerInputs myColorPickers;
+    private ComboBoxInputs myComboButtonInputs;
+
+    private FileReader myReader;
+    private FileWriter myWriter;
+
+    public ButtonInputs(ColorPickerInputs cp, ComboBoxInputs cb) {
         myButtons = new HBox();
         for (String buttonType : ALL_BUTTONS) makeButtonVBox(buttonType);
         myButtons = formatButtons(myButtons);
+        myColorPickers = cp;
+        myComboButtonInputs = cb;
+
+        myReader = new FileReader();
+        myWriter = new FileWriter();
     }
 
     public Property<Image> getTurtleImage() {return myTurtleImage;}
@@ -109,16 +119,15 @@ public class ButtonInputs extends Inputs {
     }
 
     private void inputPrefFile() {
-       /*
        TextInputDialog prefProperties = new TextInputDialog("Duvall");
        prefProperties.setHeaderText("What Preference Would You Like to Load?");
        prefProperties.showAndWait();
        ResourceBundle prefBundle = null;
        try {
            prefBundle = ResourceBundle.getBundle(prefProperties.getEditor().getText());
-           myBackGroundPicker.setValue(Color.web(prefBundle.getString("background")));
-           myPenPicker.setValue(Color.web(prefBundle.getString("pen")));
-           myLanguageBox.setValue(prefBundle.getString("language"));
+           myColorPickers.setBackground(prefBundle.getString("background"));
+           myColorPickers.setPen(prefBundle.getString("pen"));
+           myComboButtonInputs.getLanguageProperty().setValue(prefBundle.getString("language"));
            // TODO: duplication
 
            String defaultFilePath = TURTLEIMAGE_PACKAGE + prefBundle.getString("turtle") + TURTLE_FILE_EXTENSION;
@@ -126,11 +135,13 @@ public class ButtonInputs extends Inputs {
        } catch (Exception e) {
            System.out.println(e);
        }
-       */
     }
 
     private void saveProperties() {
-        File savedPreferences = new File("././././resources/preferences/test.properties");
+        Map<String, String> savedPreferences = new HashMap<String, String>();
+        savedPreferences.put("turtle", myTurtleImage.getName());
+        savedPreferences.put("background", myColorPickers)
+        myWriter.
     }
 
     private void createNewWindow() {

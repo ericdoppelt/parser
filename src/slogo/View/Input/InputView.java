@@ -5,6 +5,9 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import org.xml.sax.XMLReader;
+import slogo.Model.FileManager.FileReader;
+import slogo.Model.FileManager.FileWriter;
 import slogo.View.Input.ButtonInputs;
 import slogo.View.Input.ColorPickerInputs;
 import slogo.View.Input.ComboBoxInputs;
@@ -19,9 +22,9 @@ public class InputView extends Inputs {
 
     public InputView() {
         allInputs = new HBox();
-        myButtons = new ButtonInputs();
         myColorPickers = new ColorPickerInputs();
         myComboBoxes = new ComboBoxInputs();
+        myButtons = new ButtonInputs(myColorPickers, myComboBoxes);
         allInputs.getChildren().addAll(myButtons.getButtonsHBox(), myColorPickers.getColorPickersHBox(), myComboBoxes.getComboBoxesHBox());
         allInputs = formatButtons(allInputs);
     }
