@@ -29,7 +29,7 @@ public class Left extends Command {
   @Override
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
-    degreesChanged = database.getParameterOne();
+    degreesChanged = database.getParameterStack().pop();
 
     returnArgValue = degreesChanged.doubleValue();
     System.out.println(turtleObject.getTurtleHeading());
