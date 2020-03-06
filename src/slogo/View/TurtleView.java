@@ -33,13 +33,12 @@ public class TurtleView {
     public static final double CENTER_X = 385;
     public static final double CENTER_Y = 285;
     public static final double DEFAULT_ANGLE = 45.0;
+    public static final double OFFSET = 360;
 
     public static final KeyCode FORWARD = KeyCode.F;
     public static final KeyCode BACKWARD = KeyCode.B;
     public static final KeyCode RIGHT_ROTATE = KeyCode.R;
     public static final KeyCode LEFT_ROTATE = KeyCode.L;
-
-
 
     private static final String TURTLEIMAGES_DIRECTORY = "turtleImages";
     private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
@@ -116,7 +115,6 @@ public class TurtleView {
     }
 
     private void addTurtleInteraction(){
-        System.out.println("hereheheh");
         myBackground.setOnMouseClicked(event -> myBackground.requestFocus());
         myBackground.setOnKeyPressed(event -> handleMovement(event.getCode()));
         turtleView.setOnMouseClicked(event -> toggleTurtle());
@@ -177,7 +175,10 @@ public class TurtleView {
         turtleAngle = new SimpleDoubleProperty();
         Bindings.bindBidirectional(turtleAngle, backendAngle);
         turtleAngle.addListener( (observable, oldValue, newValue) ->{
-                if(turtleIsActive) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));});
+                if(turtleIsActive) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));
+                if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this, 0.0,0.0);
+                myTurtleInfo.updateHeading(OFFSET - newValue.doubleValue());
+        });
     }
 
     /**
@@ -195,7 +196,7 @@ public class TurtleView {
     }
 
     private void updatePopupPosition(){
-        if(myTurtleInfo == null) return;
+        if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this, 0.0,0.0);
         myTurtleInfo.updatePopupPosition(turtleView.getX() + turtleView.getScene().getWindow().getX() + widthOffset,
                 turtleView.getY() + turtleView.getScene().getWindow().getY() + 2*heightOffset);
     }
@@ -283,5 +284,12 @@ public class TurtleView {
     public void undoMovement(){
         // TODO move turtle back to its position and remove path
     }
+    /**
+     * Undo button to restore turtle to its last postition
+     */
+    public void redoMovement(){
+        // TODO move turtle back to its position and remove path
+    }
+
 
 }

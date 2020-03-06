@@ -17,11 +17,15 @@ public class TurtlePopUp {
     public static final String COLOR_PICKER_TITLE = "Choose Pen Color:";
     public static final String TRUE = "True";
     public static final String FALSE = "False";
-    public static final String TOGGLE = "Click To Toggle";
+    public static final String TOGGLE = "Click To Toggle Pen Property";
+    public static final String ZERO = "0.0";
+    public static final String UNDO = "Undo";
+    public static final String REDO = "Redo";
 
     private ColorPicker penColor;
     private VBox penProperties;
     private VBox infoMenu;
+    private HBox myButtons;
     private Popup myPopup;
     private TextField penWidth;
     private TurtleView myTurtle;
@@ -43,7 +47,7 @@ public class TurtlePopUp {
 
     private VBox getInfoMenu(){
         infoMenu = getNewMenu();
-        infoMenu.getChildren().addAll(turtleIDLabel(), headingLabel(), positionLabel(), getPenProperties());
+        infoMenu.getChildren().addAll(turtleIDLabel(), headingLabel(), positionLabel(), getPenProperties(), getButtons());
         infoMenu.setOnMouseEntered(event -> isActive = true);
         infoMenu.setOnMouseExited(event -> {
             isActive = false;
@@ -71,7 +75,7 @@ public class TurtlePopUp {
 
     private HBox headingLabel(){
         HBox angleLabel = new HBox();
-        turtleHeading = new Label();
+        turtleHeading = new Label(ZERO);
         angleLabel.getChildren().addAll(new Label(TURTLE_HEADING), turtleHeading);
         return angleLabel;
     }
@@ -133,6 +137,13 @@ public class TurtlePopUp {
         penProperties.getChildren().add(pColor);
     }
 
+    private HBox getButtons(){
+        myButtons = new HBox();
+        addPenToggle();
+        addUndoRedo();
+        return myButtons;
+    }
+
     private void addPenToggle(){
         Button penStatus = new Button(FALSE);
         penStatus.setOnMouseClicked(event -> {
@@ -142,9 +153,18 @@ public class TurtlePopUp {
         });
         penStatus.setTooltip(new Tooltip(TOGGLE));
 
-        penProperties.getChildren().add(penStatus);
+        myButtons.getChildren().add(penStatus);
     }
 
+    private void addUndoRedo(){
+        Button undo = new Button(UNDO);
+        Button redo = new Button(REDO);
+
+        undo.setOnAction(event -> myTurtle.undoMovement());
+        redo.setOnAction(event -> myTurtle.redoMovement());
+
+        myButtons.getChildren().addAll(undo, redo);
+    }
     /**
      * Display the turtle menu within the given window
      * @param display where to show popup
@@ -170,7 +190,19 @@ public class TurtlePopUp {
         myPopup.setY(y);
     }
 
+    /**
+     * Update the x,y coordinates of the turtle
+     * @param x new x coordinate
+     * @param y new y coordinate
+     */
     public void setTurtlePosition(Double x, Double y){
-        turtlePosition.setText("("+x+","+y+")");
+        turtlePosition.setText("("+x.intValue()+","+(-1*y.intValue())+")");
+    }
+    /**
+     *
+     */
+    public void updateHeading(Double newHeading){
+        if(newHeading == TurtleView.OFFSET) turtleHeading.setText(ZERO);
+        else turtleHeading.setText(newHeading.toString());
     }
 }
