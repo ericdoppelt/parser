@@ -16,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
+import java.awt.TextField;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -29,6 +30,7 @@ public class InfoView {
     private ListProperty<String> myHistory;
     private MapProperty<String, String> myCommands;
 
+    // TODO: duplicated with space below?
     private static final String WHITESPACE = "\\s+";
 
     private VBox myInfoPanel;
@@ -48,6 +50,14 @@ public class InfoView {
     private final ResourceBundle myBundle = ResourceBundle.getBundle(RESOURCE_LANGUAGE);
 
     private Consumer<List<String>> myParserCommand;
+
+    private static final String COMMAND_TEXT_DEFAULT = "Enter Value";
+    private static final String COMMAND_TEXT_HEADER = "Specify a New Value for the Variable";
+
+    private static final String COLON_REGEX = ":";
+    private static final int VARIABLE_NAME_INDEX = 1;
+    private static final String VARIABLE_SETUP = "make :";
+    private static final String SPACE = " ";
 
     public InfoView(Consumer<List<String>> parserCommand) {
         myParserCommand = parserCommand;
@@ -79,8 +89,12 @@ public class InfoView {
         myVariables = new SimpleMapProperty<>();
         myVariables.addListener(((observable, oldValue, newValue) -> {
             ((VBox)myVariableToggle.getUserData()).getChildren().clear();
-            for (String s : newValue.keySet()) 
-                ((VBox) myVariableToggle.getUserData()).getChildren().add(new Label(s.substring(1) + ": " + newValue.get(s)));
+            for (String s : newValue.keySet()) {
+                Label addedLabel = new Label(s.substring(1) + ": " + newValue.get(s));
+                addedLabel.setOnMouseClicked(e -> updateVariable(s));
+                ((VBox) myVariableToggle.getUserData()).getChildren().add(addedLabel);
+
+            }
         }));
 
         myCommands = new SimpleMapProperty<>();
@@ -100,10 +114,34 @@ public class InfoView {
         }));
     }
 
-    //TODO: fill this in
-    private void passCommand(String s) {
-        myParserCommand.accept(Arrays.asList(s.split(WHITESPACE)));
+    private void passCommand(String command) {
+        myParserCommand.accept(Arrays.asList(command.split(WHITESPACE)));
+    }
 
+    private void updateVariable(String varInfo) {
+        // TODO: THIS COULD BE A CLASS/METHOD
+        TextInputDialog inputVar = new TextInputDialog(COMMAND_TEXT_DEFAULT);
+        inputVar.setHeaderText(COMMAND_TEXT_HEADER);
+        inputVar.showAndWait();
+
+            int newVariableValue;
+        try {
+            newVariableValue = Integer.parseInt(inputVar.getEditor().getText());
+            //TODO: exception
+        } catch (Exception e) {
+            System.out.println("Error in updateVariable");
+            return;
+        }
+
+        String varCommand = formatVariableCommand(varInfo, newVariableValue);
+        System.out.println(varCommand);
+        passCommand(varCommand);
+    }
+
+    private String formatVariableCommand(String variableInfo, int newValue) {
+        System.out.println(variableInfo);
+        String variableName =  variableInfo.split(COLON_REGEX)[VARIABLE_NAME_INDEX];
+        return VARIABLE_SETUP + variableName + SPACE + newValue;
     }
 
     private void initButtons() {
