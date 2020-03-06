@@ -27,7 +27,7 @@ public class Random extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    maxRange = database.getParameterOne();
+    maxRange = database.getParameterStack().pop();
     double randomValue = (int) Math.random() * maxRange.doubleValue();
     returnArgValue = randomValue;
     System.out.println(returnArgValue);

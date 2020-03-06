@@ -36,8 +36,8 @@ public class SetPosition extends Command {
   @Override
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
-    newX = database.getParameterOne();
-    newY = database.getParameterTwo();
+    newX = database.getParameterStack().pop();
+    newY = database.getParameterStack().pop();
     double differenceX = newX.doubleValue() - turtleObject.getTurtleX();
     double differenceY = newY.doubleValue() - turtleObject.getTurtleY();
 

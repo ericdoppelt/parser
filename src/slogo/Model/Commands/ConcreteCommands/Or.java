@@ -29,8 +29,8 @@ public class Or extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterOne();
-    secondTerm = database.getParameterTwo();
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
 
     if (!firstTerm.equals(0) || !secondTerm.equals(0)) {
       returnArgValue = 1;
