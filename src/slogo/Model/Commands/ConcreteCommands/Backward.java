@@ -9,7 +9,7 @@ import slogo.Model.TurtleData;
  *
  * @author Frank Tang
  */
-public class Back extends Command {
+public class Backward extends Command {
 
   private TurtleData turtleObject;
   private double returnArgValue;
@@ -18,7 +18,7 @@ public class Back extends Command {
   private CommandDatabase database;
 
 
-  public Back(CommandDatabase data) {
+  public Backward(CommandDatabase data) {
     super(data);
     database = data;
 

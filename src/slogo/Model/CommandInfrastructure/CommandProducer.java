@@ -88,7 +88,7 @@ public class CommandProducer {
 
   public Command makeCommand(String commandName){
     try {
-      Class commandClass = Class.forName("slogo.Model.Commands.TurtleCommands." + commandName + "Command");
+      Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
       Command command = (Command) commandClass.getConstructors()[0].newInstance(commandDatabase);
       return command;
     }

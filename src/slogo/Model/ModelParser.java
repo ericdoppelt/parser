@@ -183,7 +183,7 @@ public class ModelParser {
 
   public boolean checkCommand(String commandName){
     try {
-      Class commandClass = Class.forName("slogo.Model.Commands.TurtleCommands." + commandName + "Command");
+      Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
       Object o = commandClass.getDeclaredConstructors()[0].newInstance(commandDatabase);
       argumentChecker = (Command) o;
       return true;
