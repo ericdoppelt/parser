@@ -13,25 +13,20 @@ public class CommandProducer {
 
   private CommandDatabase commandDatabase;
   private int argumentRunningTotal;
-  private static final int zeroParametersNeeded = 0;
-  private static final int oneParametersNeeded = 1;
-  private static final int twoParametersNeeded = 2;
   private String newCommandEntry;
+  private String argumentEntries;
   private ListProperty<String> HISTORY_LIST;
   private ListProperty<Command> COMMAND_LIST;
   private Number currentCommandReturnValue;
   private Command newCommand;
   private static final String BLANK_SPACE = " ";
-  private Stack<String> oldCommStack;
-  private Stack<Number> oldArgStack;
+  private static final String BLANK = "";
 
 
   public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory, ListProperty<Command> commandHistory){
     HISTORY_LIST = stringHistory;
     COMMAND_LIST = commandHistory;
     commandDatabase = database;
-    oldCommStack = new Stack<>();
-    oldArgStack = new Stack<>();
   }
 
   /**
@@ -46,21 +41,13 @@ public class CommandProducer {
 //      System.out.println("BeforeC" + commStack);
       newCommand = makeCommand(commStack.peek());
       int parametersNeeded = newCommand.getArgumentsNeeded();
-      if(parametersNeeded == zeroParametersNeeded){
-        newCommandEntry = commStack.peek();
+      newCommandEntry = commStack.peek();
+      argumentEntries = BLANK;
+      for (int i = 0; i < parametersNeeded; i++){
+        commandDatabase.getParameterStack().push(argStack.peek());
+        argumentEntries = BLANK_SPACE + argStack.pop().toString() + argumentEntries;
       }
-      else if(parametersNeeded == oneParametersNeeded) {
-        Number firstParameter = argStack.pop();
-        commandDatabase.setParameterOne(firstParameter);
-        newCommandEntry = commStack.peek() + BLANK_SPACE + firstParameter.toString();
-      }
-      else if (parametersNeeded == twoParametersNeeded){
-        Number secondParameter = argStack.pop(); //must be in this order because the second parameter is popped off first
-        Number firstParameter = argStack.pop();
-        commandDatabase.setParameterOne(firstParameter);
-        commandDatabase.setParameterTwo(secondParameter);
-        newCommandEntry = commStack.peek() + BLANK_SPACE + firstParameter.toString() + BLANK_SPACE + secondParameter.toString();
-      }
+      newCommandEntry = newCommandEntry + argumentEntries;
       HISTORY_LIST.getValue().add(newCommandEntry);
       makeCommand(commStack.pop());
       currentCommandReturnValue = newCommand.executeAndReturnValue();
@@ -77,13 +64,6 @@ public class CommandProducer {
     return currentCommandReturnValue;
   }
 
-  private void checkStackSizesandRefresh(Stack<String> newCommStack, Stack<Number> newArgStack){
-    if(newCommStack.size() > oldCommStack.size()){
-      argumentRunningTotal = oldArgStack.size() + makeCommand(newCommStack.peek()).getArgumentsNeeded();
-    }
-    oldCommStack = newCommStack;
-    oldArgStack = newArgStack;
-  }
 
 
   public Command makeCommand(String commandName){

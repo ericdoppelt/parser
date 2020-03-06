@@ -3,6 +3,7 @@ package slogo.Model.CommandInfrastructure;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Stack;
 import java.util.function.Function;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleMapProperty;
@@ -15,6 +16,7 @@ public class CommandDatabase {
   private String targetVariable;
   private Number parameterOne;
   private Number parameterTwo;
+  private Stack<Number> parameterStack = new Stack<>();
   private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(
       FXCollections.observableMap(new LinkedHashMap<String, Number>()));
 
@@ -38,6 +40,10 @@ public class CommandDatabase {
   }
   public Number getParameterTwo() {
     return parameterTwo;
+  }
+
+  public Stack<Number> getParameterStack(){
+    return parameterStack;
   }
 
 
