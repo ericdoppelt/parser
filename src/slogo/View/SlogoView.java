@@ -53,7 +53,7 @@ public class SlogoView {
         myTurtleView = new TurtleView(myModelDatabase.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
-        myInfoView = new InfoView();
+        myInfoView = new InfoView(c -> myModelParser.parseText(c), myInputView.getLanguage());
 
         VBox commandAndInput = new VBox();
         commandAndInput.getChildren().addAll(myInputView.getInputPanel(), myCommandLine.getCommandLine());
@@ -89,6 +89,7 @@ public class SlogoView {
             BackgroundFill fill = new BackgroundFill((Paint)myInputView.getBackgroundPropertyColor().getValue(), CornerRadii.EMPTY, Insets.EMPTY);
             return new Background(fill);
         }, myInputView.getBackgroundPropertyColor()));
+        myCommandDatabase.bindBackgroundColor(myInputView.getBackgroundPropertyColor());
     }
 
 
@@ -107,6 +108,7 @@ public class SlogoView {
         myModelDatabase.bindHistory(myInfoView.getHistoryProperty());
         myModelDatabase.bindCommands(myInfoView.getCommandProperty());
         myCommandDatabase.bindVariables(myInfoView.getVariableProperty());
+        myCommandDatabase.bindColors(myInfoView.getColorsProperty());
     }
 }
 
