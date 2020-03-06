@@ -37,20 +37,18 @@ public class ModelParser {
   private List<Entry<String, Pattern>> mySymbols;
   private CommandDatabase commandDatabase;
   private CommandProducer commandProducer;
-//  private int argumentThreshold;
   private List<String> linesArray;
   private ObjectProperty languageChosen;
   private int currentIndex;
   private Number finalCommandValue;
 
-
-
-  public ModelParser(String language, CommandDatabase commandData){
+  public ModelParser(String language, CommandDatabase commandData, CommandProducer producer){
     createBindableLanguage(language);
 
     commandDatabase = commandData;
-    commandData.addParser(this);
-    commandProducer = new CommandProducer(commandData);
+    commandProducer = producer;
+    commandDatabase.addParser(this);
+
   }
 
   private void createBindableLanguage(String language) {

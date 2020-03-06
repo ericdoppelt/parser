@@ -18,7 +18,6 @@ public class ForwardCommand extends Command {
   private double distanceProportionY;
   private double distanceProportionX;
 
-
   public ForwardCommand(TurtleData turtle, Number distance) {
     turtleObject = turtle;
     distanceToTravel = distance;
@@ -28,7 +27,6 @@ public class ForwardCommand extends Command {
     distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
 
   }
-
 
   /**
    * Moves the turtle forward by a pixel amount.

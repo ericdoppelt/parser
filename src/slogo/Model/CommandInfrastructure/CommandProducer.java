@@ -2,6 +2,7 @@ package slogo.Model.CommandInfrastructure;
 
 import java.util.Stack;
 import slogo.Model.Commands.Command;
+import slogo.Model.Commands.MathOperations.PiCommand;
 
 public class CommandProducer {
 
@@ -19,10 +20,6 @@ public class CommandProducer {
   private Number currentCommandReturnValue;
   private Command newCommand;
 
-
-
-
-
   public CommandProducer(CommandDatabase database){
     commandDatabase = database;
   }
@@ -34,9 +31,10 @@ public class CommandProducer {
     argumentRunningTotal = argumentThreshold;
 //    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
-      System.out.println("BeforeA" + argStack);
-      System.out.println("BeforeC" + commStack);
+//      System.out.println("BeforeA" + argStack);
+//      System.out.println("BeforeC" + commStack);
       int parametersNeeded = commandDatabase.getAmountOfParametersNeeded(commStack.peek());
+      makeCommand("slogo.Model.Commands.TurtleCommands.ForwardCommand");
       if(parametersNeeded == zeroParametersNeeded){
         commandHistory = commStack.peek();
         newCommand = commandDatabase.makeZeroParameterCommand(commStack.pop());
@@ -54,10 +52,10 @@ public class CommandProducer {
       }
       commandDatabase.addToHistory(commandHistory);
 //      System.out.println(newCommand.getClass());
-      currentCommandReturnValue = newCommand.executeAndReturnValue();
+      //currentCommandReturnValue = newCommand.executeAndReturnValue();
       argumentRunningTotal--;
 //      System.out.println("command " + currentCommandReturnValue);
-      System.out.println(argumentRunningTotal);
+//      System.out.println(argumentRunningTotal);
       if(commStack.size() == 0){
         break;
       }
@@ -74,11 +72,13 @@ public class CommandProducer {
 
 
   public Command makeCommand(String commandName){
-    try{
-      Class commandClass = Class.forName("slogo.Model.Commands." + commandName);
-      Object command = commandClass.getDeclaredConstructor().newInstance();
-      System.out.println("test " + command);
-      return (Command) command;
+    try {
+      Class commandClass = Class.forName(commandName);
+//      System.out.println(commandClass.getConstructors()[0].getParameters()[1]);
+//      for (int i = 0; i < commandClass.getConstructors()[0].getParameters().length; i++) {
+      System.out.println(commandClass.getConstructors()[0].getParameters()[0]);
+//      System.out.println("test " + command);
+      return new PiCommand();
     }
     catch (Exception e){
       e.printStackTrace();

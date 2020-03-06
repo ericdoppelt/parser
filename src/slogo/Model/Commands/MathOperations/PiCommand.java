@@ -19,7 +19,7 @@ public class PiCommand extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    System.out.println(returnArgValue);
+    System.out.println("pi" + returnArgValue);
     return this.returnArgValue;
   }
 

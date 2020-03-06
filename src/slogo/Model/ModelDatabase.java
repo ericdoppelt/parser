@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
+import slogo.Model.CommandInfrastructure.CommandProducer;
 
 public class ModelDatabase {
 
@@ -17,8 +18,10 @@ public class ModelDatabase {
   private String language;
   private TurtleData turtle = new TurtleData("Happy", 0, 0, 0);
 
-  private ModelParser originParser;
   private CommandDatabase originCommandDatabase;
+  private ModelParser originParser;
+  private CommandProducer originProducer;
+
 
   /**
    * Main Database for instantiating turtles and parsing data
@@ -33,7 +36,8 @@ public class ModelDatabase {
     language = "English";
 
     originCommandDatabase = new CommandDatabase(turtle);
-    originParser = new ModelParser(language, originCommandDatabase);
+    originProducer = new CommandProducer(originCommandDatabase);
+    originParser = new ModelParser(language, originCommandDatabase, originProducer);
   }
 
 //  public List<TurtleData> getTurtleListProperty() {
