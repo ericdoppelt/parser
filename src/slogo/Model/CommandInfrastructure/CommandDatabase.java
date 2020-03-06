@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -75,7 +76,7 @@ public class CommandDatabase {
   private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
   private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
 
-  private List<TurtleData> Turtle_List = new ArrayList<>();
+  private List<TurtleData> active_Turtles = new ArrayList<>();
   private TurtleData targetTurtle;
   private ModelParser originParser;
 
@@ -144,7 +145,7 @@ public class CommandDatabase {
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
-  public MapProperty getVariables() {
+  public MapProperty getVariableMap() {
     return this.VARIABLE_MAP;
   }
 
@@ -164,7 +165,7 @@ public class CommandDatabase {
     HISTORY_LIST.getValue().add(command);
   }
 
-  public void addToVariables(String command, Number expression) {
+  public void addToVariableMap(String command, Number expression) {
     this.VARIABLE_MAP.putIfAbsent(command, expression);
     this.VARIABLE_MAP.put(command, expression);
   }
@@ -219,10 +220,14 @@ public class CommandDatabase {
         entry("Not", new Pair<>(new NotCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("LessThan", new Pair<>(new LessThanCommand(parameterOne, parameterTwo), twoParametersNeeded)),
         entry("GreaterThan", new Pair<>(new GreaterThanCommand(parameterOne, parameterTwo), twoParametersNeeded)),
+        //
+        // TODO: make into reflection
+
 
 
         //Control Parameter Commands
-        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser.getLinesArray(),
+            d -> originParser.parseText(d), l -> originParser.findListEnd(l)), oneParameterNeeded)),
         entry("DoTimes", new Pair<>(new DoTimesCommand(originParser, this), zeroParameterNeeded)),
         entry("If", new Pair<>(new IfCommand(parameterOne, originParser), oneParameterNeeded)),
         entry("IfElse", new Pair<>(new IfElseCommand(parameterOne, originParser), oneParameterNeeded)),

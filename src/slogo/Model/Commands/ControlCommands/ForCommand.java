@@ -36,7 +36,7 @@ public class ForCommand extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    currentIndex = parser.getCurrentLinesIndex();
+//    currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
     linesSubArray = parser.getLinesArray();
 //    System.out.println("BigArray " + linesSubArray);
@@ -62,7 +62,7 @@ public class ForCommand extends Command {
 
     for (int i = variableStart.intValue(); i <= variableEnd.intValue();
         i = i + variableIncrement.intValue()) {
-      commandDatabase.addToVariables(variableName, i);
+      commandDatabase.addToVariableMap(variableName, i);
       parser.parseText(commandSubList);
     }
 

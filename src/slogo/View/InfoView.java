@@ -21,6 +21,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class InfoView {
 
@@ -28,6 +29,7 @@ public class InfoView {
     private ListProperty<String> myHistory;
     private MapProperty<String, String> myCommands;
 
+    private static final String WHITESPACE = "\\s+";
 
     private VBox myInfoPanel;
 
@@ -45,8 +47,11 @@ public class InfoView {
     private final String RESOURCE_LANGUAGE = "English";
     private final ResourceBundle myBundle = ResourceBundle.getBundle(RESOURCE_LANGUAGE);
 
+    private Consumer<List<String>> myParserCommand;
 
-    public InfoView() {
+    public InfoView(Consumer<List<String>> parserCommand) {
+        myParserCommand = parserCommand;
+
         initInfoPanel();
         initProperties();
         initButtons();
@@ -74,7 +79,7 @@ public class InfoView {
         myVariables = new SimpleMapProperty<>();
         myVariables.addListener(((observable, oldValue, newValue) -> {
             ((VBox)myVariableToggle.getUserData()).getChildren().clear();
-            for (String s : newValue.keySet())
+            for (String s : newValue.keySet()) 
                 ((VBox) myVariableToggle.getUserData()).getChildren().add(new Label(s.substring(1) + ": " + newValue.get(s)));
         }));
 
@@ -89,14 +94,15 @@ public class InfoView {
         myHistory.addListener(((observable, oldValue, newValue) -> {
             if (newValue.size() > 0) {
                 Label addedLabel = new Label(newValue.get(newValue.size() - 1));
-                addedLabel.setOnMouseClicked(e -> execute(addedLabel.getText()));
+                addedLabel.setOnMouseClicked(e -> passCommand(addedLabel.getText()));
                 ((VBox) myHistoryToggle.getUserData()).getChildren().add(addedLabel);
             }
         }));
     }
 
     //TODO: fill this in
-    private void execute(String s) {
+    private void passCommand(String s) {
+        myParserCommand.accept(Arrays.asList(s.split(WHITESPACE)));
 
     }
 

@@ -18,18 +18,15 @@ public class ForwardCommand extends Command {
   private double distanceProportionY;
   private double distanceProportionX;
 
-
   public ForwardCommand(TurtleData turtle, Number distance) {
     turtleObject = turtle;
     distanceToTravel = distance;
-//    returnArgValue = distanceToTravel.doubleValue();
     turtleHeading = turtleObject.getTurtleHeading();
 
     distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
     distanceProportionX = Math.cos(Math.toRadians(turtleHeading));
 
   }
-
 
   /**
    * Moves the turtle forward by a pixel amount.
@@ -43,6 +40,7 @@ public class ForwardCommand extends Command {
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
     System.out.println("turtle X " + turtleObject.getTurtleX());
     System.out.println("turtle Y " + turtleObject.getTurtleY());
+    returnArgValue = distanceToTravel.doubleValue();
     return this.returnArgValue;
 
   }

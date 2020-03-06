@@ -58,7 +58,7 @@ public class DoTimesCommand extends Command {
     System.out.println("Commandsublist " + commandSubList);
 
     for(int i = 1; i <= variableLimit.doubleValue(); i++){
-      commandDatabase.addToVariables(variableName, i);
+      commandDatabase.addToVariableMap(variableName, i);
       parser.parseText(commandSubList);
     }
 

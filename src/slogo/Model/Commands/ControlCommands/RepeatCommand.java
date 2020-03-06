@@ -1,8 +1,8 @@
 package slogo.Model.Commands.ControlCommands;
 
 import java.util.List;
+import java.util.function.Function;
 import slogo.Model.Commands.Command;
-import slogo.Model.ModelParser;
 
 /**
  * Subclass to create a BackCommand
@@ -13,17 +13,18 @@ public class RepeatCommand extends Command {
 
   private double returnArgValue = 0;
   private List<String> linesSubArray;
-  private List<String> currentSubList;
-  private int currentIndex;
   private Number amountOfIterations;
-  private ModelParser parser;
+  private Function<List<String>, Number> parseTextFunction;
+  private Function<List<String>, Number> listEndFunction;
 
 
 
-  public RepeatCommand(Number iterations, ModelParser modelParser) {
-    parser = modelParser;
+
+  public RepeatCommand(Number iterations, List<String> commandList, Function<List<String>, Number> parseFunction, Function<List<String>, Number> listFunction) {
     amountOfIterations = iterations;
-
+    parseTextFunction = parseFunction;
+    listEndFunction = listFunction;
+    linesSubArray = commandList;
   }
 
   /**
@@ -31,26 +32,15 @@ public class RepeatCommand extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    //currentIndex = parser.getCurrentLinesIndex();
-//    System.out.println("current index " + currentIndex);
-    linesSubArray = parser.getLinesArray();
-    System.out.println("shortened array from parser " + linesSubArray);
-
-    currentSubList = linesSubArray.subList(1, linesSubArray.size());
-    System.out.println("currentSublist " + currentSubList);
-    int listStart = currentSubList.indexOf("[");
-    currentSubList = currentSubList.subList(listStart, currentSubList.size());
-//    System.out.println("listStart" + listStart);
-    int listEnd = parser.findListEnd(currentSubList) + listStart;
-    linesSubArray = currentSubList.subList(listStart + 1, listEnd);
-    System.out.println("test" + linesSubArray);
-
-    for(int i = 0; i < amountOfIterations.intValue(); i++){
-      System.out.println("linessub "  + linesSubArray);
-      parser.parseText(linesSubArray);
-
+    List<String> tempList = linesSubArray.subList(linesSubArray.indexOf("["), linesSubArray.size());
+    int listEnd = listEndFunction.apply(tempList).intValue();
+    linesSubArray = tempList.subList(1, listEnd);
+    for(int i = 1; i <= amountOfIterations.intValue(); i++) {
+      returnArgValue = parseTextFunction.apply(linesSubArray).doubleValue();
     }
-    return this.returnArgValue;
+    System.out.println("out of loop");
+    System.out.println(this.returnArgValue);
+    return returnArgValue;
   }
 
 }
