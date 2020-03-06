@@ -37,6 +37,8 @@ public class ButtonInputs extends Inputs {
     private static final String TYPE_OF_TURTLE_FILE = "PNG";
     private static final String INITIAL_DIRECTORY = "user.dir";
     private static final String TURTLEIMAGE_PACKAGE = "turtleImages/";
+    private static final String DEFAULT_TURTLE = "DuvallTurtle";
+    private static final String DEFAULT_TURTLE_FILE = TURTLEIMAGE_PACKAGE + DEFAULT_TURTLE + TURTLE_FILE_EXTENSION;
     private final FileChooser TURTLE_FILE_CHOOSER = createFileChooser(ACCEPTABLE_TURTLE_FILE, TYPE_OF_TURTLE_FILE, INITIAL_DIRECTORY);
 
     private static final String ACCEPTABLE_PREF_FILE = "*.xml";
@@ -48,21 +50,22 @@ public class ButtonInputs extends Inputs {
     private static final int BUTTON_METHOD_INDEX = 2;
     private static final String PROPERTIES_REGEX_SPLITTER = ", ";
 
+    private static final String SAVE_CONFIG_DEFAULT = "Configuration File Name";
+    private static final String SAVE_CONFIG_HEADER = "Enter a Name for This Preference File";
+
     private FileReader myReader;
     private FileWriter myWriter;
 
     //TODO: duplicated in InputView
-    ObjectProperty<Image> turtleProperty;
+    ObjectProperty turtleProperty;
     ObjectProperty backgroundProperty;
     ObjectProperty penProperty;
     ObjectProperty languageProperty;
 
-    public ButtonInputs(ObjectProperty background, ObjectProperty pen, ObjectProperty language, ObjectProperty<Image> turtle) {
-        turtleProperty = new SimpleObjectProperty<Image>();
+    public ButtonInputs(ObjectProperty background, ObjectProperty pen, ObjectProperty language, ObjectProperty<File> turtle) {
+        turtleProperty = new SimpleObjectProperty<File>();
         turtleProperty.bindBidirectional(turtle);
-        setDefaultTurtle();
-        System.out.println(turtleProperty);
-        System.out.println("turtle" + turtle);
+        turtleProperty.setValue(new File(DEFAULT_TURTLE_FILE));
 
         backgroundProperty = new SimpleObjectProperty<Color>();
         backgroundProperty.bindBidirectional(background);
@@ -104,21 +107,6 @@ public class ButtonInputs extends Inputs {
         myButtons.getChildren().add(addedVBox);
     }
 
-    private void setDefaultTurtle() {
-        String defaultFilePath = TURTLEIMAGE_PACKAGE + "perfectTurtle" + TURTLE_FILE_EXTENSION;
-        System.out.println(defaultFilePath);
-        //TODO: need an exception for an invalid Turtle; in theory this could just be a FileNotFoundException
-        try {
-            turtleProperty.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
-        } catch (Exception e) {
-            String errorMessage = "INVALID TURTLE";
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(errorMessage);
-            Platform.runLater(alert::showAndWait);
-            inputTurtleFile();
-        }
-    }
 
     private void inputTurtleFile() {
         File turtleFile = TURTLE_FILE_CHOOSER.showOpenDialog(new Stage());
@@ -126,7 +114,7 @@ public class ButtonInputs extends Inputs {
         if (turtleFile == null) {
             return;
         }
-        turtleProperty.setValue(new Image(turtleFile.toURI().toString()));
+        turtleProperty.setValue(turtleFile);
     }
 
     private FileChooser createFileChooser(String extension, String fileType, String directory) {
@@ -146,21 +134,30 @@ public class ButtonInputs extends Inputs {
         backgroundProperty.setValue(Color.web(newProperties.get("background")));
         penProperty.setValue(Color.web(newProperties.get("pen")));
         languageProperty.setValue(newProperties.get("language"));
-        // TODO: duplication
-        String defaultFilePath = newProperties.get("turtle");
-        System.out.println(defaultFilePath);
-        turtleProperty.setValue(new Image(this.getClass().getClassLoader().getResourceAsStream(defaultFilePath)));
-
+        turtleProperty.setValue(new File(newProperties.get("turtle")));
     }
 
     private void saveProperties() {
         Map<String, String> savedPreferences = new HashMap<String, String>();
-        System.out.println();
-        savedPreferences.put("turtle", turtleProperty.getName());
-        savedPreferences.put("background", backgroundProperty.toString());
-        savedPreferences.put("pen", penProperty.toString());
-        savedPreferences.put("language", languageProperty.toString());
-        myWriter.saveConfig(savedPreferences, "dummy");
+        System.out.println("URL: " + turtleProperty.getValue().toString());
+
+        savedPreferences.put("turtle", turtleProperty.getValue().toString());
+        savedPreferences.put("background", backgroundProperty.getValue().toString());
+        System.out.println(backgroundProperty.getValue().toString());;
+        savedPreferences.put("pen", penProperty.getValue().toString());
+        savedPreferences.put("language", languageProperty.getValue().toString());
+
+        TextInputDialog configName = new TextInputDialog(SAVE_CONFIG_DEFAULT);
+        configName.setHeaderText(SAVE_CONFIG_HEADER);
+        configName.showAndWait();
+
+        // TODO: THROW ERROR
+        if (configName.getEditor().getText().equals(SAVE_CONFIG_DEFAULT)) {
+            System.out.println("no value entered");
+            return;
+        };
+
+        myWriter.saveConfig(savedPreferences, configName.getResult());
     }
 
     private void createNewWindow() {

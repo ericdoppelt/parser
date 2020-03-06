@@ -6,6 +6,8 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -17,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +42,7 @@ public class TurtleView {
     private ObservableList<List<Double>> positions;
     private Pane myBackground;
     private ImageView turtleView;
+    private ObjectProperty<File> myTurtleFile;
 
     private double heightOffset;
     private double widthOffset;
@@ -50,6 +54,7 @@ public class TurtleView {
 
     private int currentIndex;
     private ArrayList<Line> turtleLines;
+
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
@@ -65,10 +70,18 @@ public class TurtleView {
     }
 
     private void setUpTurtle(TurtleData turtle, Pane pane) {
-        turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
-        turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
-        pane.getChildren().add(turtleView);
+        turtleView = new ImageView(getImage("turtleImages/perfectTurtle.png"));
+        myTurtleFile = new SimpleObjectProperty<File>();
+        myTurtleFile.addListener((observable, oldValue, newValue) -> {
+            turtleView.setImage(new Image(newValue.toString()));
+        });
 
+        myTurtleFile.setValue(new File("turtleImages/perfectTurtle.png"));
+
+        System.out.println(turtleView);
+        turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
+
+        pane.getChildren().add(turtleView);
         turtleView.setY(CENTER_Y - heightOffset);
         turtleView.setX(CENTER_X - widthOffset);
 
@@ -195,8 +208,8 @@ public class TurtleView {
     /**
      * Method that allows setting a new image for the turtle
      */
-    public ObjectProperty<Image> getImageProperty(){
-        return turtleView.imageProperty();
+    public ObjectProperty<File> getTurtleFile(){
+        return myTurtleFile;
     }
 
     /**
