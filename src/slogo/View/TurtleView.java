@@ -6,8 +6,6 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -48,7 +46,7 @@ public class TurtleView {
     private double heightOffset;
     private double widthOffset;
     private ObjectProperty<Color> penColor= new SimpleObjectProperty<>(Color.BLACK);
-    private double lineWidth = 2.0;
+    private Double lineWidth = 3.0;
     private SimpleDoubleProperty paneHeightOffset = new SimpleDoubleProperty();
     private SimpleDoubleProperty paneWidthOffset = new SimpleDoubleProperty();
     private TurtlePopUp myTurtleInfo;
@@ -151,14 +149,14 @@ public class TurtleView {
     }
 
     private void showPopup(){
-        if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this);
+        if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this,0.0,0.0);
         updatePopupPosition();
         myTurtleInfo.show(turtleView.getScene().getWindow());
     }
 
     private void updatePopupPosition(){
         if(myTurtleInfo == null) return;
-        myTurtleInfo.updatePosition(turtleView.getX() + turtleView.getScene().getWindow().getX() + widthOffset,
+        myTurtleInfo.updatePopupPosition(turtleView.getX() + turtleView.getScene().getWindow().getX() + widthOffset,
                 turtleView.getY() + turtleView.getScene().getWindow().getY() + 2*heightOffset);
     }
 
@@ -170,6 +168,7 @@ public class TurtleView {
      * Update turtle position using the given new coordinates
      */
     private void updateTurtlePosition(double x, double y){
+        if(myTurtleInfo != null) myTurtleInfo.setTurtlePosition(x,y);
         turtleView.setX(x + paneWidthOffset.get()/2);
         turtleView.setY(y + paneHeightOffset.get()/2);
         currentPosition.clear();
@@ -221,6 +220,12 @@ public class TurtleView {
      */
     public ObjectProperty<Color> getPenColorProperty(){
         return penColor;
+    }
+    /**
+     *
+     */
+    public void setNewWidth(Double newWidth){
+        lineWidth = newWidth;
     }
     /**
      * Undo button to restore turtle to its second most recent postition
