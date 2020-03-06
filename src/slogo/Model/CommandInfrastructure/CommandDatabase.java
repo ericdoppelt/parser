@@ -17,6 +17,8 @@ public class CommandDatabase {
   private String targetVariable;
   private Number parameterOne;
   private Number parameterTwo;
+  private Number parameterThree;
+  private Number parameterFour;
   private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(
       FXCollections.observableMap(new LinkedHashMap<String, Number>()));
 
@@ -55,6 +57,12 @@ public class CommandDatabase {
   }
   public Number getParameterTwo() {
     return parameterTwo;
+  }
+  public Number getParameterThree() {
+    return parameterThree;
+  }
+  public Number getParameterFour() {
+    return parameterFour;
   }
 
 
@@ -99,6 +107,14 @@ public class CommandDatabase {
    */
   public void setParameterTwo(Number newValue) {
     parameterTwo = newValue;
+  }
+
+  public void setParameterThree(Number newValue) {
+    parameterThree = newValue;
+  }
+
+  public void setParameterFour(Number newValue) {
+    parameterFour = newValue;
   }
 
   /**

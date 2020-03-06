@@ -16,6 +16,7 @@ public class CommandProducer {
   private static final int zeroParametersNeeded = 0;
   private static final int oneParametersNeeded = 1;
   private static final int twoParametersNeeded = 2;
+  private static final int fourParametersNeeded = 4;
   private String newCommandEntry;
   private ListProperty<String> HISTORY_LIST;
   private ListProperty<Command> COMMAND_LIST;
@@ -60,6 +61,18 @@ public class CommandProducer {
         commandDatabase.setParameterOne(firstParameter);
         commandDatabase.setParameterTwo(secondParameter);
         newCommandEntry = commStack.peek() + BLANK_SPACE + firstParameter.toString() + BLANK_SPACE + secondParameter.toString();
+      }
+      else if (parametersNeeded == fourParametersNeeded){
+        Number fourParameter = argStack.pop();
+        Number thirdParameter = argStack.pop();
+        Number secondParameter = argStack.pop(); //must be in this order because the second parameter is popped off first
+        Number firstParameter = argStack.pop();
+        commandDatabase.setParameterOne(firstParameter);
+        commandDatabase.setParameterTwo(secondParameter);
+        commandDatabase.setParameterThree(thirdParameter);
+        commandDatabase.setParameterFour(fourParameter);
+        newCommandEntry = commStack.peek() + BLANK_SPACE + firstParameter.toString() + BLANK_SPACE + secondParameter.toString()
+                + BLANK_SPACE + thirdParameter.toString() + BLANK_SPACE + fourParameter.toString();
       }
       HISTORY_LIST.getValue().add(newCommandEntry);
       makeCommand(commStack.pop());
