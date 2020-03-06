@@ -1,12 +1,15 @@
 package slogo.Model.CommandInfrastructure;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.function.Function;
 import javafx.beans.property.MapProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
+import javafx.scene.paint.Color;
 import slogo.Model.ModelParser;
 import slogo.Model.TurtleData;
 
@@ -21,6 +24,11 @@ public class CommandDatabase {
   private Function<List<String>, Number> parseFunction;
   private Function<List<String>, Number> listFunction;
   private TurtleData targetTurtle;
+
+  private MapProperty<Integer, List<Integer>> COLOR_MAP = new SimpleMapProperty(
+          FXCollections.observableMap(new LinkedHashMap<Integer, List<Integer>>()));
+  private ObjectProperty<Color> backgroundColorProperty;
+
   private List<TurtleData> active_Turtles = new ArrayList<>();
   private ModelParser originParser;
   private List<String> currentLineArray;
@@ -31,6 +39,11 @@ public class CommandDatabase {
 
   public TurtleData getTurtle() {
     return targetTurtle;
+  }
+
+  public void setBackgroundColor(List<Integer> rgbList) {
+    Color color = Color.rgb(rgbList.get(0), rgbList.get(1), rgbList.get(2));
+    backgroundColorProperty.setValue(color);
   }
 
   public Number getParameterOne() {
@@ -103,10 +116,19 @@ public class CommandDatabase {
     displayedVariables.bind(VARIABLE_MAP);
   }
 
-
   public void addToVariableMap(String command, Number expression) {
     this.VARIABLE_MAP.putIfAbsent(command, expression);
     this.VARIABLE_MAP.put(command, expression);
+  }
+
+
+  public void addToColorMap(int index, List<Integer> color) {
+    this.COLOR_MAP.putIfAbsent(index, color);
+    this.COLOR_MAP.put(index, color);
+  }
+
+  public MapProperty getColorMap() {
+    return this.COLOR_MAP;
   }
 
 
