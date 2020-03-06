@@ -1,9 +1,6 @@
 package slogo.View;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.MapProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleMapProperty;
+import javafx.beans.property.*;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -16,7 +13,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 import java.awt.*;
-import java.awt.TextField;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -59,8 +55,18 @@ public class InfoView {
     private static final String VARIABLE_SETUP = "make :";
     private static final String SPACE = " ";
 
-    public InfoView(Consumer<List<String>> parserCommand) {
+    private Property<String> myLanguage;
+
+    private static final String NUMBER_REGEX = "^-?\\d+\\.\\d+$";
+    private static final int LENGTH_REMOVED_FROM_TRANSLATION = 1;
+    private static final String TRANSLATION_SPLITTER = "\\|";
+    private static final int DISPLAYED_TRANSLATION_INDEX = 0;
+
+    public InfoView(Consumer<List<String>> parserCommand, Property<String> language) {
         myParserCommand = parserCommand;
+        myLanguage = new SimpleObjectProperty<String>();
+        myLanguage.bind(language);
+        myLanguage.addListener((observable, oldValue, newValue) -> updateLanguage());
 
         initInfoPanel();
         initProperties();
@@ -70,9 +76,17 @@ public class InfoView {
         setButtonActions();
     }
 
-    public MapProperty getVariableProperty() { return myVariables; }
-    public ListProperty getHistoryProperty() { return myHistory; }
-    public MapProperty getCommandProperty() { return myCommands; }
+    public MapProperty getVariableProperty() {
+        return myVariables;
+    }
+
+    public ListProperty getHistoryProperty() {
+        return myHistory;
+    }
+
+    public MapProperty getCommandProperty() {
+        return myCommands;
+    }
 
     private void initInfoPanel() {
         myButtonPanel = new HBox();
@@ -88,7 +102,7 @@ public class InfoView {
     private void initProperties() {
         myVariables = new SimpleMapProperty<>();
         myVariables.addListener(((observable, oldValue, newValue) -> {
-            ((VBox)myVariableToggle.getUserData()).getChildren().clear();
+            ((VBox) myVariableToggle.getUserData()).getChildren().clear();
             for (String s : newValue.keySet()) {
                 Label addedLabel = new Label(s.substring(1) + ": " + newValue.get(s));
                 addedLabel.setOnMouseClicked(e -> updateVariable(s));
@@ -99,7 +113,7 @@ public class InfoView {
 
         myCommands = new SimpleMapProperty<>();
         myCommands.addListener((observable, oldValue, newValue) -> {
-            ((VBox)myCommandToggle.getUserData()).getChildren().clear();
+            ((VBox) myCommandToggle.getUserData()).getChildren().clear();
             for (String s : newValue.keySet())
                 ((VBox) myCommandToggle.getUserData()).getChildren().add(new Label(s.substring(1) + newValue.get(s)));
         });
@@ -124,7 +138,7 @@ public class InfoView {
         inputVar.setHeaderText(COMMAND_TEXT_HEADER);
         inputVar.showAndWait();
 
-            int newVariableValue;
+        int newVariableValue;
         try {
             newVariableValue = Integer.parseInt(inputVar.getEditor().getText());
             //TODO: exception
@@ -140,7 +154,7 @@ public class InfoView {
 
     private String formatVariableCommand(String variableInfo, int newValue) {
         System.out.println(variableInfo);
-        String variableName =  variableInfo.split(COLON_REGEX)[VARIABLE_NAME_INDEX];
+        String variableName = variableInfo.split(COLON_REGEX)[VARIABLE_NAME_INDEX];
         return VARIABLE_SETUP + variableName + SPACE + newValue;
     }
 
@@ -195,7 +209,7 @@ public class InfoView {
     private void setButtonActions() {
         for (Toggle tempToggle : myToggleGroup.getToggles()) {
             ToggleButton tempToggleButton = (ToggleButton) tempToggle;
-            tempToggleButton.setOnAction(event -> myScrollPane.setContent((Node)tempToggleButton.getUserData()));
+            tempToggleButton.setOnAction(event -> myScrollPane.setContent((Node) tempToggleButton.getUserData()));
         }
         //TODO: helpButton exceptions
         myHelpButton.setOnAction(event -> {
@@ -209,5 +223,31 @@ public class InfoView {
 
     public VBox getCompletePanel() {
         return myInfoPanel;
+    }
+
+    private void updateLanguage() {
+        updateHistoryLanguage();
+    }
+
+    private void updateHistoryLanguage() {
+        ((VBox)myHistoryToggle.getUserData()).getChildren().clear();
+
+        ResourceBundle tempLanguageBundle = ResourceBundle.getBundle(myLanguage.getValue());
+        for (String command : myHistory.getValue()) {
+            StringBuilder translatedCommand = new StringBuilder();
+            for (String commandBlock : command.split(WHITESPACE)) {
+                if (commandBlock.matches(NUMBER_REGEX)) translatedCommand.append(commandBlock + SPACE);
+                else {
+                    String fullTranslation = tempLanguageBundle.getString(commandBlock);
+                    String displayedTranslation = fullTranslation.split(TRANSLATION_SPLITTER)[DISPLAYED_TRANSLATION_INDEX];
+                    translatedCommand.append(displayedTranslation + SPACE);
+                }
+            }
+            translatedCommand.deleteCharAt(translatedCommand.length() - LENGTH_REMOVED_FROM_TRANSLATION);
+            // TODO: DUPLICATED CODE
+            Label addedLabel = new Label(translatedCommand.toString());
+            addedLabel.setOnMouseClicked(e -> passCommand(addedLabel.getText()));
+            ((VBox)myHistoryToggle.getUserData()).getChildren().add(addedLabel);
+        }
     }
 }

@@ -53,7 +53,7 @@ public class SlogoView {
         myTurtleView = new TurtleView(myModelDatabase.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
-        myInfoView = new InfoView(c -> myModelParser.parseText(c));
+        myInfoView = new InfoView(c -> myModelParser.parseText(c), myInputView.getLanguage());
 
         VBox commandAndInput = new VBox();
         commandAndInput.getChildren().addAll(myInputView.getInputPanel(), myCommandLine.getCommandLine());
