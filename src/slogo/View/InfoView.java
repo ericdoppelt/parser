@@ -25,9 +25,12 @@ public class InfoView {
     private MapProperty<String, Integer> myVariables;
     private ListProperty<String> myHistory;
     private MapProperty<String, String> myCommands;
+    private MapProperty<Integer, List<Integer>> myColors;
 
     // TODO: duplicated with space below?
     private static final String WHITESPACE = "\\s+";
+
+    private static final String HEADER_BUNDLE = "headers";
 
     private VBox myInfoPanel;
 
@@ -36,14 +39,15 @@ public class InfoView {
     private ToggleButton myHistoryToggle;
     private ToggleButton myCommandToggle;
     private ToggleButton myVariableToggle;
+    private ToggleButton myColorsToggle;
 
     private final String HELP_IMAGE_PATH = "infoGraphic.png";
     private Button myHelpButton;
 
     private ScrollPane myScrollPane;
 
-    private final String RESOURCE_LANGUAGE = "English";
-    private final ResourceBundle myBundle = ResourceBundle.getBundle(RESOURCE_LANGUAGE);
+    private ResourceBundle myLanguageBundle;
+    private ResourceBundle myHeadersBundle;
 
     private Consumer<List<String>> myParserCommand;
 
@@ -62,11 +66,18 @@ public class InfoView {
     private static final String TRANSLATION_SPLITTER = "\\|";
     private static final int DISPLAYED_TRANSLATION_INDEX = 0;
 
+    private static final int R_INDEX = 0;
+    private static final int G_INDEX = 1;
+    private static final int B_INDEX = 2;
+
     public InfoView(Consumer<List<String>> parserCommand, Property<String> language) {
         myParserCommand = parserCommand;
         myLanguage = new SimpleObjectProperty<String>();
         myLanguage.bind(language);
         myLanguage.addListener((observable, oldValue, newValue) -> updateLanguage());
+        myLanguageBundle = ResourceBundle.getBundle(language.getValue());
+
+        myHeadersBundle = ResourceBundle.getBundle(HEADER_BUNDLE);
 
         initInfoPanel();
         initProperties();
@@ -86,6 +97,10 @@ public class InfoView {
 
     public MapProperty getCommandProperty() {
         return myCommands;
+    }
+
+    public MapProperty getColorsProperty() {
+        return myColors;
     }
 
     private void initInfoPanel() {
@@ -121,13 +136,30 @@ public class InfoView {
         myHistory = new SimpleListProperty<>();
         myHistory.addListener(((observable, oldValue, newValue) -> {
             if (newValue.size() > 0) {
-                Label addedLabel = new Label(newValue.get(newValue.size() - 1));
+                String newCommand = newValue.get(newValue.size() - 1);
+                Label addedLabel = new Label(changeCommandLanguage(newCommand));
                 addedLabel.setOnMouseClicked(e -> passCommand(addedLabel.getText()));
                 ((VBox) myHistoryToggle.getUserData()).getChildren().add(addedLabel);
             }
         }));
+
+        // TODO: HERE
+        myColors = new SimpleMapProperty<>();
+        myColors.addListener((observable, oldValue, newValue) -> {
+            ((VBox) myCommandToggle.getUserData()).getChildren().clear();
+            for (Integer index : newValue.keySet()) {
+                List<Integer> RGBColors = myColors.get(index);
+                String displayedText = index + VARIABLE_SETUP + RGBColors.get(R_INDEX) + SPACE + RGBColors.get(G_INDEX) + SPACE + RGBColors.get(B_INDEX);
+                Label addedLabel = new Label(displayedText);
+                addedLabel.setBackground(backgroundFromRGB(RGBColors.get(R_INDEX), RGBColors.get(G_INDEX), RGBColors.get(B_INDEX)));
+                ((VBox) myCommandToggle.getUserData()).getChildren().add(addedLabel);
+            }
+            });
     }
 
+    private Background backgroundFromRGB(Integer r, Integer g, Integer b) {
+        return new Background(new BackgroundFill(Color.rgb(r, g, b), CornerRadii.EMPTY, Insets.EMPTY));
+    }
     private void passCommand(String command) {
         myParserCommand.accept(Arrays.asList(command.split(WHITESPACE)));
     }
@@ -159,9 +191,10 @@ public class InfoView {
     }
 
     private void initButtons() {
-        myHistoryToggle = createToggleButton(myBundle.getString("historyHeader"));
-        myCommandToggle = createToggleButton(myBundle.getString("commandHeader"));
-        myVariableToggle = createToggleButton(myBundle.getString("variableHeader"));
+        myHistoryToggle = createToggleButton(myHeadersBundle.getString("historyHeader"));
+        myCommandToggle = createToggleButton(myHeadersBundle.getString("commandHeader"));
+        myVariableToggle = createToggleButton(myHeadersBundle.getString("variableHeader"));
+        myColorsToggle = createToggleButton(myHeadersBundle.getString("colorHeader"));
         myHelpButton = createHelpButton();
     }
 
@@ -226,28 +259,30 @@ public class InfoView {
     }
 
     private void updateLanguage() {
+        myLanguageBundle = ResourceBundle.getBundle(myLanguage.getValue());
         updateHistoryLanguage();
     }
 
     private void updateHistoryLanguage() {
-        ((VBox)myHistoryToggle.getUserData()).getChildren().clear();
+        ((VBox) myHistoryToggle.getUserData()).getChildren().clear();
 
-        ResourceBundle tempLanguageBundle = ResourceBundle.getBundle(myLanguage.getValue());
         for (String command : myHistory.getValue()) {
-            StringBuilder translatedCommand = new StringBuilder();
-            for (String commandBlock : command.split(WHITESPACE)) {
-                if (commandBlock.matches(NUMBER_REGEX)) translatedCommand.append(commandBlock + SPACE);
-                else {
-                    String fullTranslation = tempLanguageBundle.getString(commandBlock);
-                    String displayedTranslation = fullTranslation.split(TRANSLATION_SPLITTER)[DISPLAYED_TRANSLATION_INDEX];
-                    translatedCommand.append(displayedTranslation + SPACE);
-                }
-            }
-            translatedCommand.deleteCharAt(translatedCommand.length() - LENGTH_REMOVED_FROM_TRANSLATION);
-            // TODO: DUPLICATED CODE
-            Label addedLabel = new Label(translatedCommand.toString());
+            Label addedLabel = new Label(changeCommandLanguage(command));
             addedLabel.setOnMouseClicked(e -> passCommand(addedLabel.getText()));
-            ((VBox)myHistoryToggle.getUserData()).getChildren().add(addedLabel);
+            ((VBox) myHistoryToggle.getUserData()).getChildren().add(addedLabel);
         }
+    }
+
+    private String changeCommandLanguage(String oldLanguage) {
+        StringBuilder translatedCommand = new StringBuilder();
+        for (String commandBlock : oldLanguage.split(WHITESPACE)) {
+            if (commandBlock.matches(NUMBER_REGEX)) translatedCommand.append(commandBlock + SPACE);
+            else {
+                String fullTranslation = myLanguageBundle.getString(commandBlock);
+                String displayedTranslation = fullTranslation.split(TRANSLATION_SPLITTER)[DISPLAYED_TRANSLATION_INDEX];
+                translatedCommand.append(displayedTranslation + SPACE);
+            }
+        }
+        return translatedCommand.toString();
     }
 }
