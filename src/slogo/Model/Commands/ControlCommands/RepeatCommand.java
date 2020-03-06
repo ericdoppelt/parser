@@ -1,6 +1,7 @@
 package slogo.Model.Commands.ControlCommands;
 
 import java.util.List;
+import java.util.function.Consumer;
 import slogo.Model.Commands.Command;
 import slogo.Model.ModelParser;
 
@@ -16,13 +17,18 @@ public class RepeatCommand extends Command {
   private List<String> currentSubList;
   private int currentIndex;
   private Number amountOfIterations;
-  private ModelParser parser;
+//  private ModelParser parser;
+  private Consumer test;
+  private Consumer listender;
 
 
 
-  public RepeatCommand(Number iterations, ModelParser modelParser) {
-    parser = modelParser;
+
+  public RepeatCommand(Number iterations, List<String> commandList, Consumer<List<String>> consumer, Consumer<List<String>> listend) {
     amountOfIterations = iterations;
+    test = consumer;
+    listender = listend;
+    linesSubArray = commandList;
   }
 
   /**
@@ -32,7 +38,7 @@ public class RepeatCommand extends Command {
   public Double executeAndReturnValue() {
     //currentIndex = parser.getCurrentLinesIndex();
 //    System.out.println("current index " + currentIndex);
-    linesSubArray = parser.getLinesArray();
+//    linesSubArray = parser.getLinesArray();
 //    System.out.println("shortened array from parser " + linesSubArray);
 
     currentSubList = linesSubArray.subList(1, linesSubArray.size());
@@ -40,13 +46,16 @@ public class RepeatCommand extends Command {
     int listStart = currentSubList.indexOf("[");
     currentSubList = currentSubList.subList(listStart, currentSubList.size());
 //    System.out.println("listStart" + listStart);
-    int listEnd = parser.findListEnd(currentSubList) + listStart;
+
+
+    int listEnd = ModelParser.findListEnd(currentSubList) + listStart;
     linesSubArray = currentSubList.subList(listStart + 1, listEnd);
 //    System.out.println("test" + linesSubArray);
 
     for(int i = 0; i < amountOfIterations.intValue(); i++){
 //      System.out.println("linessub "  + linesSubArray);
-      parser.parseText(linesSubArray);
+//      parser.parseText(linesSubArray);
+      test.accept(linesSubArray);
 
     }
     return this.returnArgValue;

@@ -121,7 +121,7 @@ public class ModelParser {
     return regex.matcher(text).matches();
   }
 
-  public int findListEnd(List<String> listToCheck){
+  public static int findListEnd(List<String> listToCheck){
     int listStartCounter = 0;
     int listEndCounter = 0;
     for(int i = 0; i < listToCheck.size(); i++){

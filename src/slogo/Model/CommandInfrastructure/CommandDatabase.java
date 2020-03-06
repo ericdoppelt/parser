@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -225,7 +226,8 @@ public class CommandDatabase {
 
 
         //Control Parameter Commands
-        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser), oneParameterNeeded)),
+        entry("Repeat", new Pair<>(new RepeatCommand(parameterOne, originParser.getLinesArray(),
+            d -> originParser.parseText(d), l -> originParser.findListEnd(l)), oneParameterNeeded)),
         entry("DoTimes", new Pair<>(new DoTimesCommand(originParser, this), zeroParameterNeeded)),
         entry("If", new Pair<>(new IfCommand(parameterOne, originParser), oneParameterNeeded)),
         entry("IfElse", new Pair<>(new IfElseCommand(parameterOne, originParser), oneParameterNeeded)),
