@@ -13,7 +13,6 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
-import slogo.Model.Commands.Command1;
 
 public class ModelParser {
 
@@ -41,8 +40,10 @@ public class ModelParser {
   private List<String> linesArray;
   private ObjectProperty languageChosen;
   private int currentIndex;
+  private int argumentThreshold;
   private Number finalCommandValue;
   private Command1 argumentChecker;
+
 
 
   public ModelParser(String language, CommandDatabase commandData, CommandProducer producer){
@@ -124,7 +125,7 @@ public class ModelParser {
     return regex.matcher(text).matches();
   }
 
-  public static int findListEnd(List<String> listToCheck){
+  public int findListEnd(List<String> listToCheck){
     int listStartCounter = 0;
     int listEndCounter = 0;
     for(int i = 0; i < listToCheck.size(); i++){
@@ -145,18 +146,16 @@ public class ModelParser {
   public Number parseText (List<String> inputCommandList) {
     Stack<String> commandStack = new Stack<>();
     Stack<Number> argumentStack = new Stack<>();
-    int argumentThreshold = 0;
+//    int argumentThreshold = 0;
     for (int index = 0; index < inputCommandList.size(); index++) {
       if (inputCommandList.get(index).trim().length() > 0) {
         currentIndex = index;
         linesArray = inputCommandList.subList(index, inputCommandList.size());
+        commandDatabase.setListArray(linesArray);
         if(this.getSymbol(inputCommandList.get(index)).equals("Constant")){
           argumentStack.push(Double.parseDouble(inputCommandList.get(index)));
         }
-         else if(checkCommandExists(this.getSymbol(inputCommandList.get(index)))){
-          commandStack.push(this.getSymbol(inputCommandList.get(index)));
-          argumentThreshold = argumentStack.size() + argumentChecker.getArgumentsNeeded();
-        }
+
         else if(this.getSymbol(inputCommandList.get(index)).equals("Variable")){
           if(commandStack.peek().equals("MakeVariable")){
             commandDatabase.setVariableName(inputCommandList.get(index));
@@ -170,6 +169,10 @@ public class ModelParser {
           index = listEnd + index;
           continue;
         }
+        else if(checkCommand(this.getSymbol(inputCommandList.get(index)))){
+          commandStack.push(this.getSymbol(inputCommandList.get(index)));
+          argumentThreshold = argumentStack.size() + argumentChecker.getArgumentsNeeded();
+        }
         finalCommandValue = commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }
     }
@@ -177,16 +180,16 @@ public class ModelParser {
 
   }
 
-  public boolean checkCommandExists(String commandName){
+  public boolean checkCommand(String commandName){
     try {
       Class commandClass = Class.forName("slogo.Model.Commands.TurtleCommands." + commandName + "Command");
-      Object o = commandClass.getConstructors()[0].newInstance(commandDatabase);
+      Object o = commandClass.getDeclaredConstructors()[0].newInstance(commandDatabase);
       argumentChecker = (Command1) o;
-      System.out.println(argumentChecker);
       return true;
     }
     catch (Exception e){
       e.printStackTrace();
+      // TODO: FIX THIS SO WE DON'T FAIL
     }
     return false;
   }

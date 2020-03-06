@@ -10,7 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
-import slogo.Model.Commands.Command1;
 
 public class ModelDatabase {
 

@@ -2,7 +2,6 @@ package slogo.Model.CommandInfrastructure;
 
 import java.util.Stack;
 import javafx.beans.property.ListProperty;
-import slogo.Model.Commands.Command1;
 
 public class CommandProducer {
 
@@ -22,11 +21,16 @@ public class CommandProducer {
   private Number currentCommandReturnValue;
   private Command1 newCommand;
   private static final String BLANK_SPACE = " ";
+  private Stack<String> oldCommStack;
+  private Stack<Number> oldArgStack;
+
 
   public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory, ListProperty<Command1> commandHistory){
     HISTORY_LIST = stringHistory;
     COMMAND_LIST = commandHistory;
     commandDatabase = database;
+    oldCommStack = new Stack<>();
+    oldArgStack = new Stack<>();
   }
 
   /**
@@ -34,10 +38,11 @@ public class CommandProducer {
    */
   public Number parseStacks (Stack<String> commStack, Stack<Number> argStack, int argumentThreshold) {
     argumentRunningTotal = argumentThreshold;
+//    checkStackSizesandRefresh(commStack, argStack);
 //    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
-      System.out.println("BeforeA" + argStack);
-      System.out.println("BeforeC" + commStack);
+//      System.out.println("BeforeA" + argStack);
+//      System.out.println("BeforeC" + commStack);
       newCommand = makeCommand(commStack.peek());
       int parametersNeeded = newCommand.getArgumentsNeeded();
       if(parametersNeeded == zeroParametersNeeded){
@@ -71,16 +76,24 @@ public class CommandProducer {
     return currentCommandReturnValue;
   }
 
+  private void checkStackSizesandRefresh(Stack<String> newCommStack, Stack<Number> newArgStack){
+    if(newCommStack.size() > oldCommStack.size()){
+      argumentRunningTotal = oldArgStack.size() + makeCommand(newCommStack.peek()).getArgumentsNeeded();
+    }
+    oldCommStack = newCommStack;
+    oldArgStack = newArgStack;
+  }
+
 
   public Command1 makeCommand(String commandName){
     try {
       Class commandClass = Class.forName("slogo.Model.Commands.TurtleCommands." + commandName + "Command");
       Command1 command = (Command1) commandClass.getConstructors()[0].newInstance(commandDatabase);
-      System.out.println(command);
       return command;
     }
     catch (Exception e){
       e.printStackTrace();
+      // TODO: FIX THIS SO WE DON'T FAIL
     }
     return null;
   }
