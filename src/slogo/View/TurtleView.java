@@ -1,13 +1,14 @@
 package slogo.View;
 
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -15,13 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Turtle View handles all turtle display methods along with its path.
