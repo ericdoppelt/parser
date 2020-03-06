@@ -1,6 +1,5 @@
 package slogo.View;
 
-import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -11,9 +10,10 @@ import javafx.stage.Stage;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
+import slogo.View.Input.InputView;
 
 
-public class SlogoView extends Application {
+public class SlogoView {
 
     private static final int SCENE_WIDTH = 1000;
     private static final int SCENE_HEIGHT = 600;
@@ -31,17 +31,11 @@ public class SlogoView extends Application {
     private TurtleView myTurtleView;
     private InfoView myInfoView;
 
-    public SlogoView() {}
 
-    public SlogoView(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public SlogoView(Stage displayedStage) {
         initModel();
         initView();
-        initStage(primaryStage);
+        initStage(displayedStage);
         bindProperties();
     }
 
@@ -80,7 +74,7 @@ public class SlogoView extends Application {
     private void bindProperties() {
         createBindableBackground();
         createBindablePen();
-        createBindableImage();
+        createBindableFile();
         createBindableLanguage();
         createBindableInfoPanel();
     }
@@ -100,8 +94,8 @@ public class SlogoView extends Application {
         myTurtleView.getPenColorProperty().getValue();
     }
 
-    private void createBindableImage() {
-        myTurtleView.getImageProperty().bind(myInputView.getTurtleImage());
+    private void createBindableFile() {
+        myTurtleView.getTurtleFile().bind(myInputView.getTurtleFile());
     }
 
     private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
