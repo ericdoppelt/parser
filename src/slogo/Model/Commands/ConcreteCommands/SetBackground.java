@@ -28,11 +28,6 @@ public class SetBackground extends Command {
 
     @Override
     public Number executeAndReturnValue() {
-//        ArrayList<Integer> testColor = new ArrayList<>();
-//        testColor.add(0);
-//        testColor.add(0);
-//        testColor.add(0);
-//        database.addToColorMap(0, testColor);
         index = database.getParameterOne().intValue();
         ArrayList<Integer> color = (ArrayList<Integer>) database.getColorMap().get(index);
         database.setBackgroundColor(color);
