@@ -11,6 +11,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -31,6 +32,14 @@ public class TurtleView {
     public static final double ANGLE_OFFSET = 90.0;
     public static final double CENTER_X = 385;
     public static final double CENTER_Y = 285;
+    public static final double DEFAULT_ANGLE = 45.0;
+
+    public static final KeyCode FORWARD = KeyCode.F;
+    public static final KeyCode BACKWARD = KeyCode.B;
+    public static final KeyCode RIGHT_ROTATE = KeyCode.R;
+    public static final KeyCode LEFT_ROTATE = KeyCode.L;
+
+
 
     private static final String TURTLEIMAGES_DIRECTORY = "turtleImages";
     private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
@@ -50,6 +59,7 @@ public class TurtleView {
     private SimpleDoubleProperty paneHeightOffset = new SimpleDoubleProperty();
     private SimpleDoubleProperty paneWidthOffset = new SimpleDoubleProperty();
     private TurtlePopUp myTurtleInfo;
+    private boolean turtleIsActive = true;
 
     private int currentIndex;
     private ArrayList<Line> turtleLines;
@@ -65,6 +75,7 @@ public class TurtleView {
         setUpTurtle(turtle, pane);
         currentPosition = setUpInitialPosition();
         bindProperties(turtle);
+        addTurtleInteraction();
         addTurtlePopup();
     }
 
@@ -104,6 +115,30 @@ public class TurtleView {
         return myList;
     }
 
+    private void addTurtleInteraction(){
+        System.out.println("hereheheh");
+        myBackground.setOnMouseClicked(event -> myBackground.requestFocus());
+        myBackground.setOnKeyPressed(event -> handleMovement(event.getCode()));
+        turtleView.setOnMouseClicked(event -> toggleTurtle());
+    }
+
+    private void handleMovement(KeyCode keyPressed){
+        if(keyPressed == FORWARD){}
+        else if(keyPressed == BACKWARD){}
+        else if(keyPressed == RIGHT_ROTATE) turtleAngle.set(turtleAngle.get() - DEFAULT_ANGLE);
+        else if(keyPressed == LEFT_ROTATE) turtleAngle.set(turtleAngle.get() + DEFAULT_ANGLE);
+    }
+
+    private void toggleTurtle(){
+        if(turtleIsActive){
+            turtleView.setOpacity(0.2);
+            turtleIsActive = false;
+        }
+        else{
+            turtleView.setOpacity(1.0);
+            turtleIsActive = true;
+        }
+    }
     /**
      * Methods used to bind the properties of all the backend turtle to the front end turtle
      * @param turtle
@@ -123,9 +158,14 @@ public class TurtleView {
     }
 
     private void newTurtlePosition(ListChangeListener.Change<? extends List<Double>> allPositions){
-        List<Double> newPosition = allPositions.getList().get(allPositions.getList().size()-1);
-        if(isPenDown.get()) addPath(getNewLine(currentPosition, newPosition));
-        updateTurtlePosition(newPosition.get(X_COORDINATE), newPosition.get(Y_COORDINATE));
+        allPositions.next();
+        if(!allPositions.wasRemoved()) {
+            if (turtleIsActive) {
+                List<Double> newPosition = allPositions.getList().get(allPositions.getList().size() - 1);
+                if (isPenDown.get()) addPath(getNewLine(currentPosition, newPosition));
+                updateTurtlePosition(newPosition.get(X_COORDINATE), newPosition.get(Y_COORDINATE));
+            } else positions.remove(allPositions.getList().size() - 1);
+        }
     }
 
     private void bindPen(SimpleBooleanProperty backendPen){
@@ -136,8 +176,8 @@ public class TurtleView {
     private void bindAngle(SimpleDoubleProperty backendAngle){
         turtleAngle = new SimpleDoubleProperty();
         Bindings.bindBidirectional(turtleAngle, backendAngle);
-        turtleAngle.addListener( (observable, oldValue, newValue) ->
-                turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET)));
+        turtleAngle.addListener( (observable, oldValue, newValue) ->{
+                if(turtleIsActive) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));});
     }
 
     /**
@@ -222,10 +262,20 @@ public class TurtleView {
         return penColor;
     }
     /**
-     *
+     * Allows other calsses to set a new width for this turtle pen
      */
     public void setNewWidth(Double newWidth){
         lineWidth = newWidth;
+    }
+    /**
+     *
+     * @return Pen Down/Up Property
+     */
+    public SimpleBooleanProperty getPenDownProperty(){
+        return isPenDown;
+    }
+    public void setPenDown(Boolean newValue){
+        isPenDown.setValue(newValue);
     }
     /**
      * Undo button to restore turtle to its second most recent postition

@@ -1,9 +1,6 @@
 package slogo.View;
 
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -18,6 +15,9 @@ public class TurtlePopUp {
     public static final String TURTLE_POSITION = "Turtle Position: ";
     public static final String PEN_WIDTH = "Modify Pen Width";
     public static final String COLOR_PICKER_TITLE = "Choose Pen Color:";
+    public static final String TRUE = "True";
+    public static final String FALSE = "False";
+    public static final String TOGGLE = "Click To Toggle";
 
     private ColorPicker penColor;
     private VBox penProperties;
@@ -100,6 +100,7 @@ public class TurtlePopUp {
         penProperties = new VBox();
         addColorPicker();
         addPenWidth();
+        addPenToggle();
         return penProperties;
     }
 
@@ -130,6 +131,18 @@ public class TurtlePopUp {
 
         pColor.getChildren().addAll(new Label(COLOR_PICKER_TITLE), penColor);
         penProperties.getChildren().add(pColor);
+    }
+
+    private void addPenToggle(){
+        Button penStatus = new Button(FALSE);
+        penStatus.setOnMouseClicked(event -> {
+            myTurtle.setPenDown(!myTurtle.getPenDownProperty().get());
+            if(myTurtle.getPenDownProperty().get()) penStatus.setText(TRUE);
+            else penStatus.setText(FALSE);
+        });
+        penStatus.setTooltip(new Tooltip(TOGGLE));
+
+        penProperties.getChildren().add(penStatus);
     }
 
     /**
