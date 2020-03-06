@@ -29,7 +29,7 @@ public class TurtleView {
     public static final int Y_COORDINATE = 1;
     public static final double ANGLE_OFFSET = 90.0;
     public static final double CENTER_X = 385;
-    public static final double CENTER_Y = 265;
+    public static final double CENTER_Y = 285;
 
     private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
 
@@ -142,7 +142,7 @@ public class TurtleView {
 
     private void updatePopupPosition(){
         if(myTurtleInfo == null) return;
-        myTurtleInfo.updatePosition(turtleView.getX() + turtleView.getScene().getWindow().getX() + 2*widthOffset,
+        myTurtleInfo.updatePosition(turtleView.getX() + turtleView.getScene().getWindow().getX() + widthOffset,
                 turtleView.getY() + turtleView.getScene().getWindow().getY() + 2*heightOffset);
     }
 

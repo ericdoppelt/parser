@@ -18,21 +18,8 @@ public class FileTester {
             configMap.put("background", "0xff");
             configMap.put("pen", "0xAB");
 
-<<<<<<< HEAD
-        FileWriter test = new FileWriter();
-        List<String> parameters = new ArrayList<>();
-        parameters.add("image");
-        parameters.add("language");
-        parameters.add("background");
-        parameters.add("pen");
-        test.saveConfig(parameters, "TEST");
 
-        FileReader testReader = new FileReader("TEST.xml");
-        String parameter = testReader.getString("image");
-        System.out.println(parameter);
-=======
             test.saveConfig(configMap, "TestConfig");
->>>>>>> 54c94d5fae3cc002b3e65a3545705bf95f9eaacd
 
             FileReader testReader = new FileReader("TestConfig.xml");
             testReader.getConfigMap();

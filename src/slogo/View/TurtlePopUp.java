@@ -105,7 +105,7 @@ public class TurtlePopUp {
      * @param y new y coordinate
      */
     public void updatePosition(Double x, Double y){
-        myPopup.setX(x - 20);
-        myPopup.setY(y + 5);
+        myPopup.setX(x);
+        myPopup.setY(y);
     }
 }
