@@ -17,8 +17,7 @@ public class FileReader {
     private Map configMap;
     private NodeList nodeList;
 
-    public FileReader(String fileName) throws XMLException{
-        setElement(fileName);
+    public FileReader() throws XMLException{
         configMap = new HashMap<String, String>();
     }
 
@@ -31,7 +30,8 @@ public class FileReader {
         }
     }
 
-    public Map<String, String> getConfigMap(){
+    public Map<String, String> getConfigMap(String fileName){
+        setElement(fileName);
         constructMap();
         return configMap;
     }
