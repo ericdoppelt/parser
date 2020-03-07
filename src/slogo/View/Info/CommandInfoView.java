@@ -10,6 +10,7 @@ import slogo.Model.Commands.Command;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -47,15 +48,7 @@ public class CommandInfoView {
         return displayedInfo;
     }
 
-    private void updateLanguage(String newLanguage) {
-        myLanguageBundle = ResourceBundle.getBundle(newLanguage);
-        displayedInfo.getChildren().clear();
-        for (String command : ((List<String>)myInfo.getValue())) {
-            Label addedLabel = new Label(changeCommandLanguage(command));
-            addedLabel.setOnMouseClicked(e -> passCommand(addedLabel.getText()));
-            displayedInfo.getChildren().add(addedLabel);
-        }
-    }
+    private void updateLanguage(String newLanguage) {}
 
     private String changeCommandLanguage(String oldLanguage) {
         StringBuilder translatedCommand = new StringBuilder();
