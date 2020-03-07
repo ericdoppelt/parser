@@ -31,7 +31,6 @@ public class CommandDatabase {
   private MapProperty<Integer, List<Integer>> COLOR_MAP = new SimpleMapProperty(
           FXCollections.observableMap(new LinkedHashMap<Integer, List<Integer>>()));
   private ObjectProperty<Color> backgroundColorProperty;
-  private ObjectProperty<Color> penColorProperty;
 
   private ModelParser originParser;
   private List<String> currentLineArray;
@@ -40,8 +39,6 @@ public class CommandDatabase {
     turtleList = turtles;
     targetTurtle = turtleList.get(0);
     backgroundColorProperty = new SimpleObjectProperty<Color>();
-    penColorProperty = new SimpleObjectProperty<Color>();
-
   }
 
   public List<TurtleData> getTurtleList() {
@@ -65,17 +62,8 @@ public class CommandDatabase {
     backgroundColorProperty.setValue(color);
   }
 
-  public void setPenColor(List<Integer> rgbList) {
-    Color color = Color.rgb(rgbList.get(0), rgbList.get(1), rgbList.get(2));
-    penColorProperty.setValue(color);
-  }
-
   public void bindBackgroundColor(Property viewBackground) {
     viewBackground.bindBidirectional(backgroundColorProperty);
-  }
-
-  public void bindPenColor(Property viewBackground) {
-    viewBackground.bindBidirectional(penColorProperty);
   }
 
   public Stack<Number> getParameterStack(){

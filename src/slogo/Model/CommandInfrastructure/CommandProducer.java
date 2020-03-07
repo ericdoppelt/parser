@@ -51,13 +51,16 @@ public class CommandProducer {
       }
       newCommandEntry = newCommandEntry + argumentEntries;
       HISTORY_LIST.getValue().add(newCommandEntry);
-      for(TurtleData turtle: commandDatabase.getTurtleList()){
-        if(turtle.getTurtleActive() == true) {
-          commandDatabase.setActiveTurtle(turtle);
-          newCommand = makeCommand(commStack.peek());
-          currentCommandReturnValue = newCommand.executeAndReturnValue();
-        }
-        }
+//      for(TurtleData turtle: commandDatabase.getTurtleList()){
+//        if(turtle.getTurtleActive() == true) {
+//          commandDatabase.setActiveTurtle(turtle);
+//          newCommand = makeCommand(commStack.peek());
+//          currentCommandReturnValue = newCommand.executeAndReturnValue();
+//        }
+//      }
+      commandDatabase.setActiveTurtle(commandDatabase.getTurtle());
+      newCommand = makeCommand(commStack.peek());
+      currentCommandReturnValue = newCommand.executeAndReturnValue();
       commStack.pop();
       argumentRunningTotal--;
       if(commStack.size() == 0){

@@ -90,7 +90,6 @@ public class SlogoView {
             return new Background(fill);
         }, myInputView.getBackgroundPropertyColor()));
         myCommandDatabase.bindBackgroundColor(myInputView.getBackgroundPropertyColor());
-        myCommandDatabase.bindPenColor(myInputView.getPenPropertyColor());
     }
 
 
