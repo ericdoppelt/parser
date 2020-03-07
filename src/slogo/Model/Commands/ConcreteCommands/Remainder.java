@@ -29,11 +29,9 @@ public class Remainder extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterStack().peek();
-    secondTerm = database.getParameterStack().peek();
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
     returnArgValue = firstTerm.doubleValue() % secondTerm.doubleValue();
-//    System.out.println("turtle X " + turtleObject.getTurtleX());
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return (int) this.returnArgValue;
   }
   @Override

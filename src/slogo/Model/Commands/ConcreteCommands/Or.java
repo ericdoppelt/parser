@@ -29,17 +29,14 @@ public class Or extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterStack().peek();
-    secondTerm = database.getParameterStack().peek();
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
 
     if (!firstTerm.equals(0) || !secondTerm.equals(0)) {
       returnArgValue = 1;
     } else {
       returnArgValue = 0;
     }
-
-    System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return (int) this.returnArgValue;
   }
   @Override

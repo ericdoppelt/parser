@@ -36,8 +36,8 @@ public class SetPosition extends Command {
   @Override
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
-    newX = database.getParameterStack().peek();
-    newY = database.getParameterStack().peek();
+    newX = database.getParameterStack().pop();
+    newY = database.getParameterStack().pop();
     double differenceX = newX.doubleValue() - turtleObject.getTurtleX();
     double differenceY = newY.doubleValue() - turtleObject.getTurtleY();
 
@@ -50,8 +50,6 @@ public class SetPosition extends Command {
     System.out.println("turtleX after " + turtleObject.getTurtleX());
     System.out.println("turtleY after " + turtleObject.getTurtleY());
     System.out.println("return " + returnArgValue);
-    //System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return this.returnArgValue;
 
   }
