@@ -35,7 +35,7 @@ public class ButtonInputs extends Inputs {
     private static final String TYPE_OF_TURTLE_FILE = "PNG";
     private static final String INITIAL_DIRECTORY = "user.dir";
     private static final String TURTLEIMAGE_PACKAGE = "turtleImages/";
-    private static final String DEFAULT_TURTLE = "DuvallTurtle";
+    private static final String DEFAULT_TURTLE = "perfectTurtle";
     private static final String DEFAULT_TURTLE_FILE = TURTLEIMAGE_PACKAGE + DEFAULT_TURTLE + TURTLE_FILE_EXTENSION;
     private final FileChooser TURTLE_FILE_CHOOSER = createFileChooser(ACCEPTABLE_TURTLE_FILE, TYPE_OF_TURTLE_FILE, INITIAL_DIRECTORY);
 
