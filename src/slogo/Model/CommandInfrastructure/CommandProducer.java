@@ -69,8 +69,6 @@ public class CommandProducer {
     return currentCommandReturnValue;
   }
 
-
-
   public Command makeCommand(String commandName){
     try {
 
