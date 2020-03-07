@@ -32,11 +32,7 @@ public class CommandProducer {
    */
   public Number parseStacks (Stack<String> commStack, Stack<Number> argStack, int argumentThreshold) {
     argumentRunningTotal = argumentThreshold;
-//    checkStackSizesandRefresh(commStack, argStack);
-//    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
-      System.out.println("BeforeA" + argStack);
-      System.out.println("BeforeC" + commStack);
       newCommand = makeCommand(commStack.peek());
       int parametersNeeded = newCommand.getArgumentsNeeded();
       newCommandEntry = commStack.peek();
@@ -55,8 +51,6 @@ public class CommandProducer {
           currentCommandReturnValue = newCommand.executeAndReturnValue();
         }
       }
-
-
 
       for(int i = 0; i < newCommand.getArgumentsNeeded(); i++){
         commandDatabase.getParameterStack().pop();
