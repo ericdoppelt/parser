@@ -110,7 +110,7 @@ public class ModelParser {
 //      // NOT ideal way to handle exception, but this is just a simple test program
 //      System.out.println("ERROR: Unable to read input file " + e.getMessage());
 //
-//      //potential error pop-up code
+//      //potential error -up code
 ////      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
 ////      Alert alert = new Alert(Alert.AlertType.ERROR);
 ////      alert.setTitle("Error");

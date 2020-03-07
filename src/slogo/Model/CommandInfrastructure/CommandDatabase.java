@@ -33,11 +33,16 @@ public class CommandDatabase {
   private ObjectProperty<Color> backgroundColorProperty;
   private ObjectProperty<Color> penColorProperty;
 
-
-
-  private List<TurtleData> active_Turtles = new ArrayList<>();
   private ModelParser originParser;
   private List<String> currentLineArray;
+
+  public CommandDatabase(List<TurtleData> turtles) {
+    turtleList = turtles;
+    targetTurtle = turtleList.get(0);
+    backgroundColorProperty = new SimpleObjectProperty<Color>();
+    penColorProperty = new SimpleObjectProperty<Color>();
+
+  }
 
   public List<TurtleData> getTurtleList() {
     return turtleList;
@@ -47,11 +52,8 @@ public class CommandDatabase {
     turtleList = newTurtleList;
   }
 
-  public CommandDatabase(TurtleData turtle) {
-    targetTurtle = turtle;
-    backgroundColorProperty = new SimpleObjectProperty<Color>();
-    penColorProperty = new SimpleObjectProperty<Color>();
-    turtleList = new ArrayList<>();
+  public void setActiveTurtle(TurtleData activeTurtle){
+      targetTurtle = activeTurtle;
   }
 
   public TurtleData getTurtle() {

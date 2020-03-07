@@ -43,14 +43,14 @@ public class SlogoView {
 
     private void initModel() {
         myModelDatabase = new ModelDatabase();
-        myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtle());
+        myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtles());
         myCommandProducer = new CommandProducer(myCommandDatabase, myModelDatabase.getHISTORY_LIST(), myModelDatabase.getCOMMAND_LIST());
         myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase, myCommandProducer);
     }
 
     private void initView() {
         myBackgroundPane = new Pane();
-        myTurtleView = new TurtleView(myModelDatabase.getMyTurtle(), myBackgroundPane);
+        myTurtleView = new TurtleView(myModelDatabase.getMyTurtles().get(0), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
         myInfoView = new InfoView(c -> myModelParser.parseText(c), myInputView.getLanguage());
