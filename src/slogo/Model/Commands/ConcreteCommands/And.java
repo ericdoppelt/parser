@@ -28,8 +28,8 @@ public class And extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterStack().peek();
-    secondTerm = database.getParameterStack().peek();
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
 
     if (!firstTerm.equals(0) && !secondTerm.equals(0)) {
       returnArgValue = 1;

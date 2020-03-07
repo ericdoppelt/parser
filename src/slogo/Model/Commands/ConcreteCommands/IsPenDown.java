@@ -29,7 +29,6 @@ public class IsPenDown extends Command {
   public Integer executeAndReturnValue() {
     turtleObject = database.getTurtle();
     returnArgValue = turtleObject.getPenStatus();
-    System.out.println(returnArgValue);
     return (int) this.returnArgValue;
   }
   @Override

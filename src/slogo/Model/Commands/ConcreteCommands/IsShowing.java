@@ -30,7 +30,6 @@ public class IsShowing extends Command {
   public Integer executeAndReturnValue() {
     turtleObject = database.getTurtle();
     returnArgValue = turtleObject.getTurtleVisibility();
-    System.out.println(returnArgValue);
     return (int) this.returnArgValue;
   }
   @Override

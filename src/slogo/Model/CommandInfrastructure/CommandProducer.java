@@ -44,19 +44,10 @@ public class CommandProducer {
       }
       newCommandEntry = newCommandEntry + argumentEntries;
       HISTORY_LIST.getValue().add(newCommandEntry);
+      
+      newCommand = makeCommand(commStack.pop());
+      currentCommandReturnValue = newCommand.executeAndReturnValue();
 
-      for(int i = 0; i < commandDatabase.getTurtleList().size(); i++){
-        if(commandDatabase.getTurtleList().get(i).getTurtleActive()) {
-          commandDatabase.setActiveTurtle(commandDatabase.getTurtleList().get(i));
-          newCommand = makeCommand(commStack.peek());
-          currentCommandReturnValue = newCommand.executeAndReturnValue();
-        }
-      }
-
-      for(int i = 0; i < newCommand.getArgumentsNeeded(); i++){
-        commandDatabase.getParameterStack().pop();
-      }
-      commStack.pop();
       argumentRunningTotal--;
       if(commStack.size() == 0){
         break;

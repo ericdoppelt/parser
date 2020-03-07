@@ -30,7 +30,7 @@ public class Backward extends Command {
   @Override
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
-    distanceToTravel = database.getParameterStack().peek();
+    distanceToTravel = database.getParameterStack().pop();
     returnArgValue = distanceToTravel.doubleValue();
     double turtleHeading = turtleObject.getTurtleHeading();
     double distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
@@ -38,10 +38,7 @@ public class Backward extends Command {
 
     turtleObject.moveXCoord(-distanceToTravel.doubleValue() * distanceProportionX);
     turtleObject.moveYCoord(-distanceToTravel.doubleValue() * distanceProportionY);
-    // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
-    System.out.println("backX " + turtleObject.getTurtleX());
-    System.out.println("backY " + turtleObject.getTurtleY());
     return this.returnArgValue;
   }
   @Override

@@ -17,6 +17,7 @@ public class Equal extends Command {
   private Number secondTerm;
   private static final int argumentsNeeded = 2;
   private CommandDatabase database;
+  private static final double zeroMargin = 0.00001;
 
   public Equal(CommandDatabase data) {
     super(data);
@@ -30,9 +31,9 @@ public class Equal extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterStack().peek();
-    secondTerm = database.getParameterStack().peek();
-    if (Math.abs(firstTerm.doubleValue() - secondTerm.doubleValue()) < 0.00001) {
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
+    if (Math.abs(firstTerm.doubleValue() - secondTerm.doubleValue()) < zeroMargin) {
       returnArgValue = 1;
     } else {
       returnArgValue = 0;

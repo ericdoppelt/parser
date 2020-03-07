@@ -27,9 +27,8 @@ public class Cosine extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    amountOfDegrees = database.getParameterStack().peek();
+    amountOfDegrees = database.getParameterStack().pop();
     returnArgValue = Math.cos(Math.toRadians(amountOfDegrees.doubleValue()));
-    System.out.println(returnArgValue);
     return this.returnArgValue;
   }
   @Override

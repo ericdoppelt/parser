@@ -53,14 +53,6 @@ public class Ask extends Command {
         database.setTurtleList(turtleList);
 
         setTurtleIds();
-        for(TurtleData turtle: turtleList){
-            System.out.println(turtle.getTurtleID());
-            System.out.println(turtle.getTurtleActive());
-
-        }
-        System.out.println(returnArgValue);
-      System.out.println(turtleList);
-
         return returnArgValue;
     }
 

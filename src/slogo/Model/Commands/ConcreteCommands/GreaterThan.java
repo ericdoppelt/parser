@@ -31,8 +31,8 @@ public class GreaterThan extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterStack().peek();
-    secondTerm = database.getParameterStack().peek();
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
     if (firstTerm.doubleValue() - secondTerm.doubleValue() > 0) {
       returnArgValue = 1;
     } else {
