@@ -30,7 +30,7 @@ public class MakeVariable extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    expression = database.getParameterStack().pop();
+    expression = database.getParameterStack().peek();
     variable = database.getVariableName();
     database.addToVariableMap(variable, expression.doubleValue());
     returnArgValue = expression.doubleValue();

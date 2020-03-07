@@ -29,8 +29,8 @@ public class Product extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    firstTerm = database.getParameterStack().pop();
-    secondTerm = database.getParameterStack().pop();
+    firstTerm = database.getParameterStack().peek();
+    secondTerm = database.getParameterStack().peek();
     returnArgValue = firstTerm.doubleValue() * secondTerm.doubleValue();
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());

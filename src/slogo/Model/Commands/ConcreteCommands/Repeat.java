@@ -30,7 +30,7 @@ public class Repeat extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    amountOfIterations = database.getParameterStack().pop();
+    amountOfIterations = database.getParameterStack().peek();
     parseTextFunction = database.getParseFunction();
     listEndFunction = database.getListFunction();
     linesSubArray = database.getCurrentLineArray();

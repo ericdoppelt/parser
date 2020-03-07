@@ -27,7 +27,7 @@ public class NaturalLog extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    firstTerm = database.getParameterStack().pop();
+    firstTerm = database.getParameterStack().peek();
     returnArgValue = Math.log(firstTerm.doubleValue());
     System.out.println(returnArgValue);
     return this.returnArgValue;

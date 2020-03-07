@@ -35,7 +35,7 @@ public class SetHeading extends Command {
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
     originalTurtleDirection = turtleObject.getTurtleHeading();
-    newTurtleDirection = database.getParameterStack().pop();
+    newTurtleDirection = database.getParameterStack().peek();
     returnArgValue = newTurtleDirection.doubleValue() - originalTurtleDirection;
     //System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     turtleObject.setTurtleDirection(newTurtleDirection.doubleValue());

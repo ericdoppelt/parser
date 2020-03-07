@@ -31,8 +31,8 @@ public class Sum extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    firstTerm = database.getParameterStack().pop();
-    secondTerm = database.getParameterStack().pop();
+    firstTerm = database.getParameterStack().peek();
+    secondTerm = database.getParameterStack().peek();
     returnArgValue = firstTerm.doubleValue() + secondTerm.doubleValue();
 //    System.out.println("1 " + this.sumResult);
 //    System.out.println("2 " + this.secondTerm);

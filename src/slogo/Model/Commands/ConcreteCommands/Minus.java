@@ -27,7 +27,7 @@ public class Minus extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    firstTerm = database.getParameterStack().pop();
+    firstTerm = database.getParameterStack().peek();
     returnArgValue = -firstTerm.doubleValue();
 //    System.out.println(turtleObject.getTurtleHeading());
     return this.returnArgValue;

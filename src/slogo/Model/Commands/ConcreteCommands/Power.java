@@ -29,8 +29,8 @@ public class Power extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    baseNumber = database.getParameterStack().pop();
-    exponentNumber = database.getParameterStack().pop();
+    baseNumber = database.getParameterStack().peek();
+    exponentNumber = database.getParameterStack().peek();
     returnArgValue = Math.pow(baseNumber.doubleValue(), exponentNumber.doubleValue());
     System.out.println(returnArgValue);
     return this.returnArgValue;

@@ -25,10 +25,10 @@ public class SetPalette extends Command {
 
     @Override
     public Number executeAndReturnValue() {
-        index = database.getParameterStack().pop().intValue();
-        rgb.add(database.getParameterStack().pop().intValue());
-        rgb.add(database.getParameterStack().pop().intValue());
-        rgb.add(database.getParameterStack().pop().intValue());
+        index = database.getParameterStack().peek().intValue();
+        rgb.add(database.getParameterStack().peek().intValue());
+        rgb.add(database.getParameterStack().peek().intValue());
+        rgb.add(database.getParameterStack().peek().intValue());
 
         System.out.println(rgb.get(0) + " " + rgb.get(1) + " " + rgb.get(2));
 

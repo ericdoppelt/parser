@@ -36,7 +36,7 @@ public class If extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    expression = database.getParameterStack().pop();
+    expression = database.getParameterStack().peek();
     parseTextFunction = database.getParseFunction();
     listEndFunction = database.getListFunction();
     linesSubArray = database.getCurrentLineArray();

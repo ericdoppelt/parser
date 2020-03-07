@@ -29,8 +29,8 @@ public class NotEqual extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterStack().pop();
-    secondTerm = database.getParameterStack().pop();
+    firstTerm = database.getParameterStack().peek();
+    secondTerm = database.getParameterStack().peek();
 
     if (!firstTerm.equals(secondTerm)) {
       returnArgValue = 1;
