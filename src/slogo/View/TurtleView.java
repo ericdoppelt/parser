@@ -31,7 +31,7 @@ public class TurtleView {
     public static final int X_COORDINATE = 0;
     public static final int Y_COORDINATE = 1;
     public static final double ANGLE_OFFSET = 90.0;
-    public static final double CENTER_X = 385;
+    public static final double CENTER_X = 400;
     public static final double CENTER_Y = 285;
     public static final double DEFAULT_ANGLE = 45.0;
     public static final double OFFSET = 360;
@@ -65,6 +65,9 @@ public class TurtleView {
     private HashMap<Integer, Line> turtleLines;
     private HashMap<Integer, Double> turtleRotations = new HashMap<>();
 
+    private SimpleDoubleProperty xCoor = new SimpleDoubleProperty();
+    private SimpleDoubleProperty yCoor = new SimpleDoubleProperty();
+
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
@@ -91,6 +94,7 @@ public class TurtleView {
 
         paneWidthOffset.bind(pane.widthProperty());
         paneHeightOffset.bind(pane.heightProperty());
+        turtleRotations.put(currentIndex, turtleView.getRotate());
     }
 
     private void setUpTurtleFile(){
@@ -149,6 +153,8 @@ public class TurtleView {
         bindPen(turtle.getPenDownProperty());
         bindAngle(turtle.directionProperty());
         Bindings.bindBidirectional(turtleIsActive,turtle.getActiveProperty());
+        Bindings.bindBidirectional(xCoor, turtle.getTurtleXProperty());
+        Bindings.bindBidirectional(yCoor, turtle.getTurtleYProperty());
         turtleView.visibleProperty().bind(turtle.turtleVisibility());
     }
 
@@ -163,7 +169,8 @@ public class TurtleView {
         if(!allPositions.wasRemoved()) {
             //if (turtleIsActive) {
                 List<Double> newPosition = allPositions.getList().get(allPositions.getList().size() - 1);
-                currentIndex = allPositions.getList().size()-1;
+                currentIndex++;
+                System.out.println("PRINTING INDEX :" + currentIndex);
                 if (isPenDown.get()) addPath(getNewLine(currentPosition, newPosition));
                 updateTurtlePosition(newPosition.get(X_COORDINATE), newPosition.get(Y_COORDINATE));
             //} else positions.remove(allPositions.getList().size() - 1);
@@ -173,6 +180,7 @@ public class TurtleView {
     private void bindPen(SimpleBooleanProperty backendPen){
         isPenDown = new SimpleBooleanProperty();
         Bindings.bindBidirectional(isPenDown, backendPen);
+        isPenDown.addListener((observable, oldValue, newValue) -> setPenDown(newValue));
     }
 
     private void bindAngle(SimpleDoubleProperty backendAngle){
@@ -226,14 +234,13 @@ public class TurtleView {
      * Methods for adding a new line/path for the turtle and keeping track of them
      * @param newPath
      */
-
     private void addPath(Line newPath){
         myBackground.getChildren().add(newPath);
         if(turtleLines == null) turtleLines = new HashMap<>();
 
         if(undoButtonClicked()) clearOldPath();
         turtleLines.put(currentIndex, newPath);
-        currentIndex = turtleLines.size();
+        //currentIndex = turtleLines.size();
     }
 
     private boolean undoButtonClicked(){
@@ -241,6 +248,10 @@ public class TurtleView {
     }
     private void clearOldPath(){
         //TODO REMOVE LINES OF OLD PATH;
+        for(int i = currentIndex+1; i< positions.size(); i++){
+            positions.remove(i);
+            i--;
+        }
     }
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
@@ -288,10 +299,16 @@ public class TurtleView {
      * Undo button to restore turtle to its second most recent postition
      */
     public void undoMovement(){
+        System.out.println("Current Index: " + currentIndex);
         if(turtleLines.containsKey(currentIndex)) myBackground.getChildren().remove(turtleLines.get(currentIndex));
         currentIndex--;
         updateTurtlePosition(positions.get(currentIndex).get(X_COORDINATE), positions.get(currentIndex).get(Y_COORDINATE));
-        if(turtleRotations.containsKey(currentIndex)) turtleView.setRotate(turtleRotations.get(currentIndex));
+        xCoor.set(positions.get(currentIndex).get(X_COORDINATE));
+        yCoor.set(positions.get(currentIndex).get(Y_COORDINATE));
+        if(turtleRotations.containsKey(currentIndex)) {
+            turtleView.setRotate(turtleRotations.get(currentIndex));
+            turtleAngle.set(turtleRotations.get(currentIndex)-ANGLE_OFFSET);
+        }
     }
     /**
      * Undo button to restore turtle to its last postition
@@ -300,6 +317,11 @@ public class TurtleView {
         currentIndex++;
         if(turtleLines.containsKey(currentIndex)) myBackground.getChildren().add(turtleLines.get(currentIndex));
         updateTurtlePosition(positions.get(currentIndex).get(X_COORDINATE), positions.get(currentIndex).get(Y_COORDINATE));
-        if(turtleRotations.containsKey(currentIndex)) turtleView.setRotate(turtleRotations.get(currentIndex));
+        xCoor.set(positions.get(currentIndex).get(X_COORDINATE));
+        yCoor.set(positions.get(currentIndex).get(Y_COORDINATE));
+        if(turtleRotations.containsKey(currentIndex)) {
+            turtleView.setRotate(turtleRotations.get(currentIndex));
+            turtleAngle.set(turtleRotations.get(currentIndex)-ANGLE_OFFSET);
+        }
     }
 }

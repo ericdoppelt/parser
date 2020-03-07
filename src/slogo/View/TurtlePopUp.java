@@ -29,6 +29,7 @@ public class TurtlePopUp {
     private Popup myPopup;
     private TextField penWidth;
     private TurtleView myTurtle;
+    private Button penStatus;
     private boolean isActive;
     private boolean choosingColor;
 
@@ -145,15 +146,19 @@ public class TurtlePopUp {
     }
 
     private void addPenToggle(){
-        Button penStatus = new Button(FALSE);
+        penStatus = new Button(FALSE);
         penStatus.setOnMouseClicked(event -> {
             myTurtle.setPenDown(!myTurtle.getPenDownProperty().get());
             if(myTurtle.getPenDownProperty().get()) penStatus.setText(TRUE);
             else penStatus.setText(FALSE);
         });
         penStatus.setTooltip(new Tooltip(TOGGLE));
-
         myButtons.getChildren().add(penStatus);
+    }
+
+    public void setPenStatus(boolean status){
+        if(status) penStatus.setText(TRUE);
+        else penStatus.setText(FALSE);
     }
 
     private void addUndoRedo(){
