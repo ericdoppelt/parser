@@ -22,6 +22,7 @@ public class TurtleData {
 
   private static final int fullRevolution = 360;
   private static final int zeroAngle = 0;
+  private boolean active = false;
   private List<Collection> historyList;
   private ObservableList<List<Double>> coordList = FXCollections.observableArrayList();
   private List<Double> coord = new ArrayList<>();
@@ -32,7 +33,6 @@ public class TurtleData {
     yCoord.set(initY);
     headingDirection.set(initHeading);
     turtleID = ID;
-
     coord.add(initX);
     coord.add(initY);
     coordList.add(coord);
@@ -44,6 +44,14 @@ public class TurtleData {
 
   public double getTurtleY(){
     return this.yCoord.get();
+  }
+
+  public boolean getTurtleActive(){
+    return active;
+  }
+
+  public void setTurtleActive(boolean b){
+    active = b;
   }
 
   public SimpleDoubleProperty getTurtleXProperty(){

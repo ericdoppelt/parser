@@ -29,8 +29,8 @@ public class Quotient extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    firstTerm = database.getParameterOne();
-    secondTerm = database.getParameterTwo();
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
     returnArgValue = firstTerm.doubleValue() / secondTerm.doubleValue();
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());

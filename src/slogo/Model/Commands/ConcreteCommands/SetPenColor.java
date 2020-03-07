@@ -4,36 +4,28 @@ import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class SetPalette extends Command {
+public class SetPenColor extends Command {
 
     private CommandDatabase database;
-    private static final int argumentsNeeded = 4;
+    private static final int argumentsNeeded = 1;
     private int index;
-    private List<Integer> rgb;
+
     /**
      * Superconstructor for a Turtle Command
      *
      * @param data
      */
-    public SetPalette(CommandDatabase data) {
+    public SetPenColor(CommandDatabase data) {
         super(data);
         database = data;
-        rgb = new ArrayList<>();
     }
 
     @Override
     public Number executeAndReturnValue() {
         index = database.getParameterStack().pop().intValue();
-        rgb.add(database.getParameterStack().pop().intValue());
-        rgb.add(database.getParameterStack().pop().intValue());
-        rgb.add(database.getParameterStack().pop().intValue());
-
-        System.out.println(rgb.get(0) + " " + rgb.get(1) + " " + rgb.get(2));
-
-        database.addToColorMap(index, rgb);
-
+        ArrayList<Integer> color = (ArrayList<Integer>) database.getColorMap().get(index);
+        database.setPenColor(color);
         return index;
     }
 
