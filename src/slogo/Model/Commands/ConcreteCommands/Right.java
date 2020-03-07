@@ -33,7 +33,7 @@ public class Right extends Command {
     degreesChanged = database.getParameterOne();
     returnArgValue = degreesChanged.doubleValue();
     System.out.println("turtle heading " + turtleObject.getTurtleHeading());
-    turtleObject.rotateTurtleHeading(-degreesChanged.doubleValue());
+    turtleObject.rotateTurtleHeading(degreesChanged.doubleValue());
     System.out.println("turtle heading " + turtleObject.getTurtleHeading());
 //    System.out.println("turtle X " + turtleObject.getTurtleX());
 //    System.out.println("turtle Y " + turtleObject.getTurtleY());

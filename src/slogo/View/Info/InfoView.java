@@ -1,4 +1,4 @@
-package slogo.View;
+package slogo.View.Info;
 
 import javafx.beans.property.*;
 import javafx.geometry.Insets;

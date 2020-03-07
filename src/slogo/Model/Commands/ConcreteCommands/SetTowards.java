@@ -53,7 +53,6 @@ public class SetTowards extends Command {
     else{
       newTurtleDirection = towardsAngle;
     }
-    constrainAngle();
     originalTurtleDirection = turtleObject.getTurtleHeading();
     returnArgValue = newTurtleDirection - originalTurtleDirection;
 
@@ -70,11 +69,6 @@ public class SetTowards extends Command {
 
   }
 
-  private void constrainAngle(){
-    if(newTurtleDirection < zero) {
-      newTurtleDirection += fullRevolution;
-    }
-  }
   @Override
   public int getArgumentsNeeded(){
     return this.argumentsNeeded;

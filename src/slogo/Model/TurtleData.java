@@ -130,14 +130,7 @@ public class TurtleData {
   }
 
   public void rotateTurtleHeading(double angleAmount){
-//    System.out.println(this.yCoord);
-    this.headingDirection.set(this.headingDirection.get() + angleAmount);
-    if(this.headingDirection.get() >= fullRevolution){
-      this.headingDirection.set(this.headingDirection.get() - fullRevolution);
-    }
-    else if (this.headingDirection.get() < zeroAngle){
-      this.headingDirection.set(this.headingDirection.get() + fullRevolution);
-    }
+    this.headingDirection.set(headingDirection.getValue()+ angleAmount);
   }
 
   public void setTurtleDirection(double angle){
@@ -146,7 +139,6 @@ public class TurtleData {
   }
 
   public int getTurtleVisibility(){
-//    System.out.println(this.yCoord);
     if(this.turtleVisibility.get()){
       int turtleIsVisible = 1;
       return turtleIsVisible;
@@ -168,5 +160,4 @@ public class TurtleData {
       return penUp;
     }
   }
-
 }

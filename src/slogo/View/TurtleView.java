@@ -1,9 +1,8 @@
 package slogo.View;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -17,7 +16,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 import slogo.Model.TurtleData;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Turtle View handles all turtle display methods along with its path.
@@ -76,6 +84,7 @@ public class TurtleView {
         myTurtleFile.setValue(new File("turtleImages/perfectTurtle.png"));
 
         System.out.println(turtleView);
+        System.out.println("new" + turtle.getTurtleHeading());
         turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
 
         pane.getChildren().add(turtleView);
@@ -118,6 +127,7 @@ public class TurtleView {
         positions.addListener((ListChangeListener<List<Double>>) c -> newTurtlePosition(c));
     }
 
+    // TODO ANIMATION
     private void newTurtlePosition(ListChangeListener.Change<? extends List<Double>> allPositions){
         List<Double> newPosition = allPositions.getList().get(allPositions.getList().size()-1);
         if(isPenDown.get()) addPath(getNewLine(currentPosition, newPosition));
@@ -132,8 +142,17 @@ public class TurtleView {
     private void bindAngle(SimpleDoubleProperty backendAngle){
         turtleAngle = new SimpleDoubleProperty();
         Bindings.bindBidirectional(turtleAngle, backendAngle);
-        turtleAngle.addListener( (observable, oldValue, newValue) ->
-                turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET)));
+
+        turtleAngle.addListener((observable, oldValue, newValue) -> {
+            System.out.println(ANGLE_OFFSET);
+            RotateTransition rotationAnimation = new RotateTransition();
+            rotationAnimation.setFromAngle((double)oldValue + ANGLE_OFFSET);
+            rotationAnimation.setToAngle((double)newValue + ANGLE_OFFSET);
+            rotationAnimation.setDuration(Duration.millis(1000));
+            rotationAnimation.setNode(turtleView);
+            rotationAnimation.play();
+            turtleView.getRotate();
+        });
     }
 
     /**
@@ -164,8 +183,22 @@ public class TurtleView {
      * Update turtle position using the given new coordinates
      */
     private void updateTurtlePosition(double x, double y){
-        turtleView.setX(x + paneWidthOffset.get()/2);
-        turtleView.setY(y + paneHeightOffset.get()/2);
+
+        PathTransition pathAnimation = new PathTransition();
+        Path animatedPath = new Path();
+        MoveTo newLocationMove = new MoveTo(x + paneWidthOffset.get()/2, y + paneHeightOffset.get()/2);
+        animatedPath.getElements().addAll(newLocationMove);
+        pathAnimation.setPath(animatedPath);
+
+        pathAnimation.setDuration(Duration.seconds(1));
+        pathAnimation.setNode(turtleView);
+        System.out.println(turtleView.getX() +", " +  turtleView.getY());
+        System.out.println("node" + pathAnimation.getPath());
+        pathAnimation.setCycleCount(5);
+        pathAnimation.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+
+        pathAnimation.play();
+
         currentPosition.clear();
         currentPosition.add(X_COORDINATE, turtleView.getX());
         currentPosition.add(Y_COORDINATE, turtleView.getY());
