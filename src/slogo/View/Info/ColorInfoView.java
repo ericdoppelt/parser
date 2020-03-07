@@ -1,7 +1,6 @@
 package slogo.View.Info;
 
 import javafx.beans.property.MapProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleMapProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -12,11 +11,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class ColorInfoView  {
-
-    private Consumer<List<String>> myParserCommand;
 
     private MapProperty<Integer, List> myInfo;
 

@@ -33,6 +33,7 @@ public class VariableInfoView  {
         myVariables.addListener(((observable, oldValue, newValue) -> {
             displayedInfo.getChildren().clear();
             for (String s : newValue.keySet()) {
+
                 Label addedLabel = new Label(s.substring(1) + ": " + newValue.get(s));
                 addedLabel.setOnMouseClicked(e -> updateVariable(s));
                 displayedInfo.getChildren().add(addedLabel);
