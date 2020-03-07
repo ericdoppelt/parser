@@ -18,10 +18,12 @@ public class TurtleData {
   private SimpleBooleanProperty penDown = new SimpleBooleanProperty();
   private SimpleBooleanProperty turtleVisibility = new SimpleBooleanProperty(true);
   private SimpleBooleanProperty turtleShowTrails = new SimpleBooleanProperty(true);
+  private SimpleBooleanProperty isTurtleActive = new SimpleBooleanProperty(true);
   private String turtleID;
 
   private static final int fullRevolution = 360;
   private static final int zeroAngle = 0;
+  private boolean active = false;
   private List<Collection> historyList;
   private ObservableList<List<Double>> coordList = FXCollections.observableArrayList();
   private List<Double> coord = new ArrayList<>();
@@ -32,7 +34,6 @@ public class TurtleData {
     yCoord.set(initY);
     headingDirection.set(initHeading);
     turtleID = ID;
-
     coord.add(initX);
     coord.add(initY);
     coordList.add(coord);
@@ -44,6 +45,14 @@ public class TurtleData {
 
   public double getTurtleY(){
     return this.yCoord.get();
+  }
+
+  public boolean getTurtleActive(){
+    return active;
+  }
+
+  public void setTurtleActive(boolean b){
+    active = b;
   }
 
   public SimpleDoubleProperty getTurtleXProperty(){
@@ -66,6 +75,8 @@ public class TurtleData {
     return turtleVisibility;
   }
 
+  public SimpleBooleanProperty getActiveProperty(){return isTurtleActive;}
+
   public double getTurtleHeading(){
     return this.headingDirection.get();
   }
@@ -84,10 +95,13 @@ public class TurtleData {
   }
 
   public void addCoord(double x, double y){
-    coord = new ArrayList<>();
-    coord.add(x);
-    coord.add(y);
-    coordList.add(coord);
+    if(isTurtleActive.get()){
+      coord = new ArrayList<>();
+      coord.add(x);
+      coord.add(y);
+      coordList.add(coord);
+    }
+
   }
 
   public ObservableList<List<Double>> getCoordHistory(){
@@ -96,22 +110,22 @@ public class TurtleData {
 
   public void moveXCoord(double distance){
     //System.out.println(this.xCoord);
-    this.xCoord.set(xCoord.get() + distance);
+    if(isTurtleActive.get())this.xCoord.set(xCoord.get() + distance);
   }
 
   public void moveYCoord(double distance){
 //    System.out.println(this.yCoord);
-    this.yCoord.set(yCoord.get() + distance);
+    if(isTurtleActive.get())this.yCoord.set(yCoord.get() + distance);
   }
 
   public void setXCoord(double newX){
     //System.out.println(this.xCoord);
-    this.xCoord.set(newX);
+    if(isTurtleActive.get())this.xCoord.set(newX);
   }
 
   public void setYCoord(double newY){
 //    System.out.println(this.yCoord);
-    this.yCoord.set(newY);
+    if(isTurtleActive.get())this.yCoord.set(newY);
   }
 
   public void setPenStatus(boolean isPenDown){
@@ -160,4 +174,5 @@ public class TurtleData {
       return penUp;
     }
   }
+
 }

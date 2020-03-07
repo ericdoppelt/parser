@@ -30,7 +30,7 @@ public class Right extends Command {
   @Override
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
-    degreesChanged = database.getParameterOne();
+    degreesChanged = database.getParameterStack().pop();
     returnArgValue = degreesChanged.doubleValue();
     System.out.println("turtle heading " + turtleObject.getTurtleHeading());
     turtleObject.rotateTurtleHeading(degreesChanged.doubleValue());

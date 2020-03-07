@@ -33,7 +33,7 @@ public class Forward extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    distanceToTravel = database.getParameterOne().doubleValue();
+    distanceToTravel = database.getParameterStack().pop();
     turtleHeading = turtleObject.getTurtleHeading();
 
     distanceProportionY = Math.sin(Math.toRadians(turtleHeading));
@@ -43,6 +43,7 @@ public class Forward extends Command {
 
     // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
+    System.out.println("turtle ID "+ turtleObject.getTurtleID());
     System.out.println("turtle X " + turtleObject.getTurtleX());
     System.out.println("turtle Y " + turtleObject.getTurtleY());
     returnArgValue = distanceToTravel.doubleValue();

@@ -3,14 +3,12 @@ package slogo.Model;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.MapProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
-import slogo.Model.Commands.Command;
 
 public class ModelDatabase {
 
@@ -22,9 +20,9 @@ public class ModelDatabase {
   // regular expression representing any whitespace characters (space, tab, or newline)
   private String language;
   private ListProperty<String> HISTORY_LIST = new SimpleListProperty(FXCollections.observableList(new ArrayList<>()));
-  private ListProperty<Command> COMMAND_LIST = new SimpleListProperty<>();
 
-  private TurtleData turtle = new TurtleData("Happy", 0, 0, 0);
+
+  private List<TurtleData> turtles = new ArrayList<>();
 
   private CommandDatabase originCommandDatabase;
   private ModelParser originParser;
@@ -38,26 +36,22 @@ public class ModelDatabase {
    */
 
   public ModelDatabase() {
-    TurtleData originTurtle = new TurtleData("1", 0, 0, 0);
-    turtleListProperty.getValue().add(originTurtle);
-
+    TurtleData happyTurtle = new TurtleData("happy", 0, 0, 0);
+    happyTurtle.setTurtleActive(true);
+    turtles.add(happyTurtle);
     language = "English";
 
-    originCommandDatabase = new CommandDatabase(turtle);
-    originProducer = new CommandProducer(originCommandDatabase, HISTORY_LIST, COMMAND_LIST);
+    originCommandDatabase = new CommandDatabase(turtles);
+    originProducer = new CommandProducer(originCommandDatabase, HISTORY_LIST);
     originParser = new ModelParser(language, originCommandDatabase, originProducer);
   }
 
-  public TurtleData getMyTurtle() {
-    return turtle;
+  public List<TurtleData> getMyTurtles() {
+    return turtles;
   }
 
   public ListProperty<String> getHISTORY_LIST(){
     return HISTORY_LIST;
-  }
-
-  public ListProperty<Command> getCOMMAND_LIST(){
-    return COMMAND_LIST;
   }
 
 
@@ -72,8 +66,6 @@ public class ModelDatabase {
     displayedHistory.bind(HISTORY_LIST);
   }
 
-  public void bindCommands(MapProperty displayedCommands) {
-    displayedCommands.bind(COMMAND_LIST);
-  }
+
 
 }

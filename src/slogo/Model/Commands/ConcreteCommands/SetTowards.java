@@ -39,8 +39,8 @@ public class SetTowards extends Command {
   @Override
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
-    towardsX = database.getParameterOne();
-    towardsY = database.getParameterTwo();
+    towardsX = database.getParameterStack().pop();
+    towardsY = database.getParameterStack().pop();
     double differenceX = towardsX.doubleValue() - turtleObject.getTurtleX();
     double differenceY = towardsY.doubleValue() - turtleObject.getTurtleY();
     double towardsAngle = Math.toDegrees(Math.atan(differenceY/differenceX));

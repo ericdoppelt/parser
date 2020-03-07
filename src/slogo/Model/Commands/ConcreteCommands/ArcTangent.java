@@ -28,7 +28,7 @@ public class ArcTangent extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    amountOfDegrees = database.getParameterOne();
+    amountOfDegrees = database.getParameterStack().pop();
     returnArgValue = Math.atan(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
     return this.returnArgValue;
