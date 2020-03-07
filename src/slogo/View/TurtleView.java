@@ -26,10 +26,7 @@ import slogo.Model.TurtleData;
 
 import java.io.File;
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.HashMap;
-=======
->>>>>>> 2a75a4d948631102b67cdc75083c108d068ef251
 import java.util.List;
 
 /**
