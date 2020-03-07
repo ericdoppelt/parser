@@ -19,16 +19,6 @@ import slogo.Model.Commands.Command;
 
 public class ModelParser {
 
-  private enum ParserEnum{
-    Constant,
-    Variable,
-    Command,
-    List,
-    Comment
-  }
-
-  private ParserEnum symbolName;
-
   /**
    * Simple parser based on regular expressions that matches input strings to kinds of program elements.
    * Based off of ProgramParser by Robert Duvall
@@ -45,6 +35,22 @@ public class ModelParser {
   private int argumentThreshold;
   private Number finalCommandValue;
   private Command argumentChecker;
+  private static final int zero = 0;
+  private static final Integer defaultVariableValue = 0;
+  private static final Integer toNumberValue = 1;
+  private String symbolName;
+  private String parseTerm;
+  private static final String LIST_START = "ListStart";
+  private static final String COMMAND = "Command";
+  private static final String toCommand = "MakeUserInstruction";
+  private static final String VARIABLE = "Variable";
+  private static final String COMMENT = "Comment";
+  private static final String variableCommand = "makeVariable";
+  private static final String CONSTANT = "Constant";
+  private static final String CONCRETE_COMMAND_CLASS = "slogo.Model.Commands.ConcreteCommands.";
+  private static final String WHITESPACE = "\\s+";
+
+
 
 
 
@@ -96,19 +102,18 @@ public class ModelParser {
         return e.getKey();
       }
     }
-    // FIXME: perhaps throw an exception instead
+    new DisplayError("NoMatch");
     return ERROR;
   }
 
   // Returns true if the given text matches the given regular expression pattern
   private boolean match (String text, Pattern regex) {
-    // THIS IS THE IMPORTANT LINE
     return regex.matcher(text).matches();
   }
 
   public int findListEnd(List<String> listToCheck){
-    int listStartCounter = 0;
-    int listEndCounter = 0;
+    int listStartCounter = zero;
+    int listEndCounter = zero;
     for(int i = 0; i < listToCheck.size(); i++){
       if(listToCheck.get(i).equals("]")){
         listEndCounter++;
@@ -120,65 +125,62 @@ public class ModelParser {
         return i;
       }
     }
-    return 0;
+    return zero;
   }
 
   // given some text, prints results of parsing it using the given language
   public Number parseText (List<String> inputCommandList) {
     Stack<String> commandStack = new Stack<>();
     Stack<Number> argumentStack = new Stack<>();
-//    int argumentThreshold = 0;
     for (int index = 0; index < inputCommandList.size(); index++) {
       if (inputCommandList.get(index).trim().length() > 0) {
         linesArray = inputCommandList.subList(index, inputCommandList.size());
         commandDatabase.setListArray(linesArray);
-        if(this.getSymbol(inputCommandList.get(index)).equals("Constant")){
-          argumentStack.push(Double.parseDouble(inputCommandList.get(index)));
+        parseTerm = inputCommandList.get(index);
+        symbolName = this.getSymbol(parseTerm);
+        
+        if(symbolName.equals(CONSTANT)){
+          argumentStack.push(Double.parseDouble(parseTerm));
         }
-
-        else if(this.getSymbol(inputCommandList.get(index)).equals("Variable")){
-          if(commandStack.peek().equals("MakeVariable")){
-            commandDatabase.setVariableName(inputCommandList.get(index));
+        else if(symbolName.equals(VARIABLE)){
+          if(commandStack.peek().equals(variableCommand)){
+            commandDatabase.setVariableName(parseTerm);
           }
-          else if (commandDatabase.getVariableMap().containsKey(inputCommandList.get(index))){
-            argumentStack.push((Number) commandDatabase.getVariableMap().get(inputCommandList.get(index)));
+          else if (commandDatabase.getVariableMap().containsKey(parseTerm)){
+            argumentStack.push((Number) commandDatabase.getVariableMap().get(parseTerm));
           }
           else{
-            argumentStack.push(0.0);
+            argumentStack.push(defaultVariableValue);
           }
         }
-        else if(this.getSymbol(inputCommandList.get(index)).equals("Command")){
-          if(commandStack.size() != 0 && commandStack.peek().equals("MakeUserInstruction")){
-            commandDatabase.setVariableName(inputCommandList.get(index));
-            argumentStack.push(1.0);
-            System.out.println("command");
+        else if(symbolName.equals(COMMAND)){
+          if(commandStack.size() != 0 && commandStack.peek().equals(toCommand)){
+            commandDatabase.setVariableName(parseTerm);
+            argumentStack.push(toNumberValue);
           }
-          else if (commandDatabase.getCOMMAND_LIST().getValue().containsKey(inputCommandList.get(index))){
-            System.out.println("help");
+          else if (commandDatabase.getCOMMAND_LIST().getValue().containsKey(parseTerm)){
             this.parseText(
-                Arrays.asList(commandDatabase.getCOMMAND_LIST().getValue().get(inputCommandList.get(index)).split("\\s+")));
+                Arrays.asList(commandDatabase.getCOMMAND_LIST().getValue().get(parseTerm).split(WHITESPACE)));
           }
         }
-        else if(this.getSymbol(inputCommandList.get(index)).equals("ListStart")){
+        else if(symbolName.equals(LIST_START)){
           int listEnd = findListEnd(linesArray);
           index = listEnd + index;
           continue;
         }
-        else if(checkCommand(this.getSymbol(inputCommandList.get(index)))){
-          commandStack.push(this.getSymbol(inputCommandList.get(index)));
+        else if(checkCommand(symbolName)){
+          commandStack.push(symbolName);
           argumentThreshold = argumentStack.size() + argumentChecker.getArgumentsNeeded();
-
         }
         finalCommandValue = commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }
     }
     return finalCommandValue;
-
   }
 
   private boolean checkCommand(String commandName){
     try {
-      Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
+      Class commandClass = Class.forName(CONCRETE_COMMAND_CLASS + commandName);
       Object o = commandClass.getDeclaredConstructors()[0].newInstance(commandDatabase);
       argumentChecker = (Command) o;
       return true;

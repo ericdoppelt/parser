@@ -48,7 +48,7 @@ public class CommandProducer {
       
       newCommand = makeCommand(commStack.pop());
       currentCommandReturnValue = newCommand.executeAndReturnValue();
-      
+
       argumentRunningTotal--;
       if (commStack.size() == 0) {
         break;
