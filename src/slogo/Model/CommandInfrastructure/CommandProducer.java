@@ -14,20 +14,17 @@ public class CommandProducer {
 
   private CommandDatabase commandDatabase;
   private int argumentRunningTotal;
-
   private String newCommandEntry;
   private String argumentEntries;
   private ListProperty<String> HISTORY_LIST;
-  private ListProperty<Command> COMMAND_LIST;
   private Number currentCommandReturnValue;
   private Command newCommand;
   private static final String BLANK_SPACE = " ";
   private static final String BLANK = "";
 
 
-  public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory, ListProperty<Command> commandHistory){
+  public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory){
     HISTORY_LIST = stringHistory;
-    COMMAND_LIST = commandHistory;
     commandDatabase = database;
   }
 
@@ -76,6 +73,7 @@ public class CommandProducer {
 
   public Command makeCommand(String commandName){
     try {
+
       Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
       Command command = (Command) commandClass.getConstructors()[0].newInstance(commandDatabase);
       return command;

@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -37,7 +38,6 @@ public class CommandBox {
     private Button clearButton;
     private Button expandButton;
     private HBox myCommandLine;
-    private VBox myCommandButtons;
     private ArrayList<String> myCommands;
     private String myCurrentCommand;
     private boolean commandLineIsExtended;
@@ -64,20 +64,6 @@ public class CommandBox {
     public Node getCommandLine() {
         return myCommandLine;
     }
-    /**
-     * Returns all user fed command instructions
-     */
-    public List<String> getAllCommands(){
-        if(myCommands == null) return Collections.unmodifiableList(new ArrayList<>());
-        return Collections.unmodifiableList(myCommands);
-    }
-    /**
-     * Returns the most recent user written command
-     */
-    public String getCommand(){
-        return myCurrentCommand;
-    }
-
     /**
      * Methods created to deal with button actions.
      */
@@ -134,6 +120,9 @@ public class CommandBox {
     private void setUpCommandLine(){
         myCommandLine = new HBox();
         myCommandLine.getChildren().addAll(myCommandField,runButton, clearButton, expandButton);
+        myCommandLine.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) retrieveText();
+        });
     }
     // Switches the visible command line to minimize or expand
     private void switchCommandLine(TextInputControl currentField, TextInputControl newField, String newLabel){
