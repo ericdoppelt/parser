@@ -5,6 +5,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.Function;
+
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
@@ -142,7 +144,6 @@ public class CommandDatabase {
     return this.COMMAND_MAP;
   }
 
-
   public void addToColorMap(int index, List<Integer> color) {
     this.COLOR_MAP.putIfAbsent(index, color);
     this.COLOR_MAP.put(index, color);
@@ -155,5 +156,4 @@ public class CommandDatabase {
   public MapProperty getColorMap() {
     return COLOR_MAP;
   }
-
 }

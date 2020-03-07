@@ -1,8 +1,12 @@
 package slogo.View;
 
 
+import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
+import java.io.File;
+import java.util.*;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,7 +30,11 @@ import slogo.Model.TurtleData;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+import java.util.function.Consumer;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +57,11 @@ public class TurtleView {
 
     private static final String TURTLEIMAGES_DIRECTORY = "turtleImages";
     private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
+    public static final String FORWARD_COMMAND = "fd 50";
+    public static final String BACKWARD_COMMAND = "bk 50";
+    public static final String WHITESPACE = "\\s+";
 
+    private String turtleID;
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
     private List<Double> currentPosition;
@@ -74,13 +86,18 @@ public class TurtleView {
     private SimpleDoubleProperty xCoor = new SimpleDoubleProperty();
     private SimpleDoubleProperty yCoor = new SimpleDoubleProperty();
 
+    private Consumer<List<String>> parser;
+
+
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
      * @param turtle Backend Turtle To Bind
      * @param pane Platform to display Turtle
      */
-    public TurtleView(TurtleData turtle, Pane pane){
+    public TurtleView(TurtleData turtle, Pane pane, Consumer<List<String>> parserCommand){
+        turtleID = turtle.getTurtleID();
+        parser = parserCommand;
         myBackground = pane;
         setUpTurtle(turtle, pane);
         currentPosition = setUpInitialPosition();
@@ -92,9 +109,6 @@ public class TurtleView {
     private void setUpTurtle(TurtleData turtle, Pane pane) {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
         setUpTurtleFile();
-
-        System.out.println(turtleView);
-        System.out.println("new" + turtle.getTurtleHeading());
         turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         turtleView.setY(CENTER_Y - heightOffset);
         turtleView.setX(CENTER_X - widthOffset);
@@ -135,8 +149,8 @@ public class TurtleView {
     }
 
     private void handleMovement(KeyCode keyPressed){
-        if(keyPressed == FORWARD){}
-        else if(keyPressed == BACKWARD){}
+        if(keyPressed == FORWARD){ parser.accept(Arrays.asList(FORWARD_COMMAND.split(WHITESPACE)));}
+        else if(keyPressed == BACKWARD){parser.accept(Arrays.asList(BACKWARD_COMMAND.split(WHITESPACE)));}
         else if(keyPressed == RIGHT_ROTATE) turtleAngle.set(turtleAngle.get() - DEFAULT_ANGLE);
         else if(keyPressed == LEFT_ROTATE) turtleAngle.set(turtleAngle.get() + DEFAULT_ANGLE);
     }
@@ -169,10 +183,11 @@ public class TurtleView {
     private void bindPositions(ObservableList<List<Double>> turtlepos){
         positions = FXCollections.observableArrayList();
         Bindings.bindContentBidirectional(positions, turtlepos);
-        positions.addListener((ListChangeListener<List<Double>>) c -> newTurtlePosition(c));
+        positions.addListener((ListChangeListener<List<Double>>) c -> {
+            newTurtlePosition(c);
+        });
     }
 
-    // TODO ANIMATION
     private void newTurtlePosition(ListChangeListener.Change<? extends List<Double>> allPositions){
         allPositions.next();
         if(!allPositions.wasRemoved()) {
@@ -180,8 +195,8 @@ public class TurtleView {
                 List<Double> newPosition = allPositions.getList().get(allPositions.getList().size() - 1);
                 currentIndex++;
                 System.out.println("PRINTING INDEX :" + currentIndex);
-                if (isPenDown.get()) addPath(getNewLine(currentPosition, newPosition));
-                updateTurtlePosition(newPosition.get(X_COORDINATE), newPosition.get(Y_COORDINATE));
+            if (isPenDown.get()) addPath(getNewLine(currentPosition, newPosition));
+            updateTurtlePosition(newPosition.get(X_COORDINATE), newPosition.get(Y_COORDINATE));
             //} else positions.remove(allPositions.getList().size() - 1);
         }
     }
@@ -204,6 +219,13 @@ public class TurtleView {
             rotationAnimation.setNode(turtleView);
             rotationAnimation.play();
             turtleView.getRotate();
+
+        });
+        turtleAngle.addListener( (observable, oldValue, newValue) ->{
+                if(turtleIsActive.get()) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));
+                turtleRotations.put(currentIndex, turtleView.getRotate());
+                if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this, 0.0,0.0);
+                myTurtleInfo.updateHeading(OFFSET - newValue.doubleValue());
         });
     }
 
@@ -235,29 +257,31 @@ public class TurtleView {
      * Update turtle position using the given new coordinates
      */
     private void updateTurtlePosition(double x, double y){
-        PathTransition pathAnimation = new PathTransition();
         Path animatedPath = new Path();
-        MoveTo newLocationMove = new MoveTo(x + paneWidthOffset.get()/2, y + paneHeightOffset.get()/2);
-        animatedPath.getElements().addAll(newLocationMove);
-        pathAnimation.setPath(animatedPath);
 
-        pathAnimation.setDuration(Duration.seconds(1));
-        pathAnimation.setNode(turtleView);
-        System.out.println(turtleView.getX() +", " +  turtleView.getY());
-        System.out.println("node" + pathAnimation.getPath());
-        pathAnimation.setCycleCount(5);
-        pathAnimation.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        MoveTo startingPoint = new MoveTo(currentPosition.get(X_COORDINATE), currentPosition.get(Y_COORDINATE));
+        LineTo animatedLine = new LineTo(x + paneWidthOffset.getValue()/2, y + paneHeightOffset.getValue()/2);
 
-        pathAnimation.play();
+        animatedPath.getElements().addAll(startingPoint, animatedLine);
+
+        PathTransition animation = new PathTransition();
+        animation.setPath(animatedPath);
+        animation.setDuration(Duration.seconds(1));
+        animation.setNode(turtleView);
+        animation.setInterpolator(Interpolator.LINEAR);
+        System.out.println(animation);
+        animation.play();
+
         currentPosition.clear();
-        currentPosition.add(X_COORDINATE, turtleView.getX());
-        currentPosition.add(Y_COORDINATE, turtleView.getY());
+        currentPosition.add(X_COORDINATE, x + paneWidthOffset.get()/2);
+        currentPosition.add(Y_COORDINATE, y + paneHeightOffset.get()/2);
     }
 
     /**
      * Methods for adding a new line/path for the turtle and keeping track of them
      * @param newPath
      */
+
     private void addPath(Line newPath){
         myBackground.getChildren().add(newPath);
         if(turtleLines == null) turtleLines = new HashMap<>();
@@ -280,10 +304,10 @@ public class TurtleView {
 
     private Line getNewLine(List<Double> oldValues, List<Double> newValues){
         Line newPath = new Line();
-        newPath.setStartX(oldValues.get(X_COORDINATE) + widthOffset);
-        newPath.setStartY(oldValues.get(Y_COORDINATE) + heightOffset);
-        newPath.setEndX(newValues.get(X_COORDINATE) + widthOffset + paneWidthOffset.get()/2);
-        newPath.setEndY(newValues.get(Y_COORDINATE) + heightOffset + paneHeightOffset.get()/2);
+        newPath.setStartX(oldValues.get(X_COORDINATE));
+        newPath.setStartY(oldValues.get(Y_COORDINATE));
+        newPath.setEndX(newValues.get(X_COORDINATE) + paneWidthOffset.get()/2);
+        newPath.setEndY(newValues.get(Y_COORDINATE) + paneHeightOffset.get()/2);
         newPath.setStroke(penColor.getValue());
         newPath.setStrokeWidth(lineWidth);
         return newPath;
@@ -318,6 +342,10 @@ public class TurtleView {
     }
     public void setPenDown(Boolean newValue){
         isPenDown.setValue(newValue);
+    }
+
+    public String getID(){
+        return turtleID;
     }
     /**
      * Undo button to restore turtle to its second most recent postition

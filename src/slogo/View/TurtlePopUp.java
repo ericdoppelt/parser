@@ -68,7 +68,7 @@ public class TurtlePopUp {
 
     private HBox turtleIDLabel(){
         HBox idLabel = new HBox();
-        turtleID = new Label();
+        turtleID = new Label(myTurtle.getID());
         idLabel.getChildren().addAll(new Label(TURTLE_ID), turtleID);
 
         return idLabel;

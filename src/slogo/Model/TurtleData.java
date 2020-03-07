@@ -155,7 +155,6 @@ public class TurtleData {
   }
 
   public void rotateTurtleHeading(double angleAmount){
-
     this.headingDirection.set(headingDirection.getValue()+ angleAmount);
   }
 
@@ -186,4 +185,5 @@ public class TurtleData {
       return penUp;
     }
   }
+
 }
