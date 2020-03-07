@@ -37,15 +37,10 @@ public class Home extends Command {
 
     returnArgValue = Math.sqrt(differenceX * differenceX + differenceY * differenceY);
 
-    System.out.println("turtleX before " + turtleObject.getTurtleX());
-    System.out.println("turtleY before " + turtleObject.getTurtleY());
+
     turtleObject.setXCoord(zeroX);
     turtleObject.setYCoord(zeroY);
-    System.out.println("turtleX after " + turtleObject.getTurtleX());
-    System.out.println("turtleY after " + turtleObject.getTurtleY());
-    System.out.println("return " + returnArgValue);
-    //System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
+    turtleObject.addCoord(zeroX, zeroY);
     return this.returnArgValue;
 
 

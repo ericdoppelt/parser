@@ -1,10 +1,9 @@
 package slogo.Model;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +28,7 @@ public class TurtleData {
   private List<Double> coord = new ArrayList<>();
   private SimpleObjectProperty<ObservableList<List<Double>>> coordHistory;
 
+
   public TurtleData(String ID, double initX, double initY, double initHeading){
     xCoord.set(initX);
     yCoord.set(initY);
@@ -38,6 +38,7 @@ public class TurtleData {
     coord.add(initY);
     coordList.add(coord);
   }
+
 
   public double getTurtleX(){
     return this.xCoord.get();
@@ -144,15 +145,7 @@ public class TurtleData {
   }
 
   public void rotateTurtleHeading(double angleAmount){
-//    System.out.println(this.yCoord);
-    double test = this.headingDirection.get() + angleAmount;
-    if(test >= fullRevolution){
-      test -= fullRevolution;
-    }
-    else if (test < zeroAngle){
-      test += fullRevolution;
-    }
-    this.setTurtleDirection(test);
+    this.headingDirection.set(headingDirection.getValue()+ angleAmount);
   }
 
   public void setTurtleDirection(double angle){
@@ -161,7 +154,6 @@ public class TurtleData {
   }
 
   public int getTurtleVisibility(){
-//    System.out.println(this.yCoord);
     if(this.turtleVisibility.get()){
       int turtleIsVisible = 1;
       return turtleIsVisible;

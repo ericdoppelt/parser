@@ -41,7 +41,7 @@ public class ModelDatabase {
     turtles.add(happyTurtle);
     language = "English";
 
-    originCommandDatabase = new CommandDatabase(turtle);
+    originCommandDatabase = new CommandDatabase(turtles);
     originProducer = new CommandProducer(originCommandDatabase, HISTORY_LIST);
     originParser = new ModelParser(language, originCommandDatabase, originProducer);
   }
@@ -54,18 +54,11 @@ public class ModelDatabase {
     return HISTORY_LIST;
   }
 
-
   public String getCommand() {
     return commandProperty.get();
   }
 
-//  public void addToHistory(String command) {
-//    HISTORY_LIST.getValue().add(command);
-//  }
   public void bindHistory(ListProperty displayedHistory) {
     displayedHistory.bind(HISTORY_LIST);
   }
-
-
-
 }

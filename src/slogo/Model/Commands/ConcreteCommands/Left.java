@@ -33,7 +33,7 @@ public class Left extends Command {
 
     returnArgValue = degreesChanged.doubleValue();
     System.out.println(turtleObject.getTurtleHeading());
-    turtleObject.rotateTurtleHeading(degreesChanged.doubleValue());
+    turtleObject.rotateTurtleHeading(-degreesChanged.doubleValue());
     System.out.println(turtleObject.getTurtleHeading());
     return this.returnArgValue;
   }

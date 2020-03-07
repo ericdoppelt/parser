@@ -1,4 +1,4 @@
-package slogo.View;
+package slogo.View.Info;
 
 import javafx.beans.property.*;
 import javafx.geometry.Insets;
@@ -122,15 +122,18 @@ public class InfoView {
                 Label addedLabel = new Label(s.substring(1) + ": " + newValue.get(s));
                 addedLabel.setOnMouseClicked(e -> updateVariable(s));
                 ((VBox) myVariableToggle.getUserData()).getChildren().add(addedLabel);
-
             }
         }));
 
         myCommands = new SimpleMapProperty<>();
         myCommands.addListener((observable, oldValue, newValue) -> {
             ((VBox) myCommandToggle.getUserData()).getChildren().clear();
-            for (String s : newValue.keySet())
-                ((VBox) myCommandToggle.getUserData()).getChildren().add(new Label(s + COLON_REGEX + SPACE + newValue.get(s)));
+            for (String commandName : newValue.keySet()) {
+                String translatedCommand = changeCommandLanguage(commandName);
+                Label addedLabel = new Label(translatedCommand + COLON_REGEX + SPACE + newValue.get(translatedCommand));
+                addedLabel.setOnMouseClicked(e -> passCommand(translatedCommand));
+                ((VBox) myCommandToggle.getUserData()).getChildren().add(addedLabel);
+            }
         });
 
         myHistory = new SimpleListProperty<>();
@@ -143,16 +146,16 @@ public class InfoView {
             }
         }));
 
-        // TODO: HERE
         myColors = new SimpleMapProperty<>();
         myColors.addListener((observable, oldValue, newValue) -> {
-            ((VBox) myCommandToggle.getUserData()).getChildren().clear();
+
+            ((VBox) myColorsToggle.getUserData()).getChildren().clear();
             for (Integer index : newValue.keySet()) {
                 List<Integer> RGBColors = myColors.get(index);
-                String displayedText = index + VARIABLE_SETUP + RGBColors.get(R_INDEX) + SPACE + RGBColors.get(G_INDEX) + SPACE + RGBColors.get(B_INDEX);
+                String displayedText = index + COLON_REGEX + SPACE + RGBColors.get(R_INDEX) + SPACE + RGBColors.get(G_INDEX) + SPACE + RGBColors.get(B_INDEX);
                 Label addedLabel = new Label(displayedText);
                 addedLabel.setBackground(backgroundFromRGB(RGBColors.get(R_INDEX), RGBColors.get(G_INDEX), RGBColors.get(B_INDEX)));
-                ((VBox) myCommandToggle.getUserData()).getChildren().add(addedLabel);
+                ((VBox) myColorsToggle.getUserData()).getChildren().add(addedLabel);
             }
             });
     }
@@ -223,6 +226,7 @@ public class InfoView {
         setHistoryInfo();
         setCommandInfo();
         setVariableInfo();
+        setColorInfo();
     }
 
     private void setHistoryInfo() {
@@ -238,6 +242,11 @@ public class InfoView {
     private void setCommandInfo() {
         VBox commandToggleInfo = new VBox();
         myCommandToggle.setUserData(commandToggleInfo);
+    }
+
+    private void setColorInfo() {
+        VBox colorToggleInfo = new VBox();
+        myColorsToggle.setUserData(colorToggleInfo);
     }
 
     private void setButtonActions() {

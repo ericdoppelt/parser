@@ -32,8 +32,6 @@ public class Product extends Command {
     firstTerm = database.getParameterStack().pop();
     secondTerm = database.getParameterStack().pop();
     returnArgValue = firstTerm.doubleValue() * secondTerm.doubleValue();
-//    System.out.println("turtle X " + turtleObject.getTurtleX());
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return this.returnArgValue;
   }
 

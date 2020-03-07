@@ -50,8 +50,6 @@ public class SetPosition extends Command {
     System.out.println("turtleX after " + turtleObject.getTurtleX());
     System.out.println("turtleY after " + turtleObject.getTurtleY());
     System.out.println("return " + returnArgValue);
-    //System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return this.returnArgValue;
 
   }

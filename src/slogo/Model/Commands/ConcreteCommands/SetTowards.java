@@ -44,7 +44,6 @@ public class SetTowards extends Command {
     double differenceX = towardsX.doubleValue() - turtleObject.getTurtleX();
     double differenceY = towardsY.doubleValue() - turtleObject.getTurtleY();
     double towardsAngle = Math.toDegrees(Math.atan(differenceY/differenceX));
-//    System.out.println("a " + towardsAngle);
 
 
     if(differenceX < zero){
@@ -53,7 +52,6 @@ public class SetTowards extends Command {
     else{
       newTurtleDirection = towardsAngle;
     }
-    constrainAngle();
     originalTurtleDirection = turtleObject.getTurtleHeading();
     returnArgValue = newTurtleDirection - originalTurtleDirection;
 
@@ -62,19 +60,12 @@ public class SetTowards extends Command {
     System.out.println("turtle heading after " + turtleObject.getTurtleHeading());
     System.out.println("3 " + newTurtleDirection);
     System.out.println("return " + returnArgValue);
-    //System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     // TODO THIS IS TESTER CODE
     turtleObject.addCoord(turtleObject.getTurtleX(), turtleObject.getTurtleY());
     return this.returnArgValue;
 
   }
 
-  private void constrainAngle(){
-    if(newTurtleDirection < zero) {
-      newTurtleDirection += fullRevolution;
-    }
-  }
   @Override
   public int getArgumentsNeeded(){
     return this.argumentsNeeded;

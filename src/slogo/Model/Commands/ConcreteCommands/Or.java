@@ -37,9 +37,6 @@ public class Or extends Command {
     } else {
       returnArgValue = 0;
     }
-
-    System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return (int) this.returnArgValue;
   }
   @Override
