@@ -11,6 +11,7 @@ import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
+import slogo.View.Info.InfoView;
 import slogo.View.Input.InputView;
 
 

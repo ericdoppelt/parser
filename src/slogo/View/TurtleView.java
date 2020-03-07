@@ -1,9 +1,8 @@
 package slogo.View;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.animation.PathTransition;
+import javafx.animation.RotateTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,11 +17,19 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 import slogo.Model.TurtleData;
 
 import java.io.File;
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.HashMap;
+=======
+>>>>>>> 2a75a4d948631102b67cdc75083c108d068ef251
 import java.util.List;
 
 /**
@@ -89,6 +96,8 @@ public class TurtleView {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
         setUpTurtleFile();
 
+        System.out.println(turtleView);
+        System.out.println("new" + turtle.getTurtleHeading());
         turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         turtleView.setY(CENTER_Y - heightOffset);
         turtleView.setX(CENTER_X - widthOffset);
@@ -166,6 +175,7 @@ public class TurtleView {
         positions.addListener((ListChangeListener<List<Double>>) c -> newTurtlePosition(c));
     }
 
+    // TODO ANIMATION
     private void newTurtlePosition(ListChangeListener.Change<? extends List<Double>> allPositions){
         allPositions.next();
         if(!allPositions.wasRemoved()) {
@@ -188,11 +198,15 @@ public class TurtleView {
     private void bindAngle(SimpleDoubleProperty backendAngle){
         turtleAngle = new SimpleDoubleProperty();
         Bindings.bindBidirectional(turtleAngle, backendAngle);
-        turtleAngle.addListener( (observable, oldValue, newValue) ->{
-                if(turtleIsActive.get()) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));
-                turtleRotations.put(currentIndex, turtleView.getRotate());
-                if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this, 0.0,0.0);
-                myTurtleInfo.updateHeading(OFFSET - newValue.doubleValue());
+        turtleAngle.addListener((observable, oldValue, newValue) -> {
+            System.out.println(ANGLE_OFFSET);
+            RotateTransition rotationAnimation = new RotateTransition();
+            rotationAnimation.setFromAngle((double)oldValue + ANGLE_OFFSET);
+            rotationAnimation.setToAngle((double)newValue + ANGLE_OFFSET);
+            rotationAnimation.setDuration(Duration.millis(1000));
+            rotationAnimation.setNode(turtleView);
+            rotationAnimation.play();
+            turtleView.getRotate();
         });
     }
 
@@ -224,9 +238,20 @@ public class TurtleView {
      * Update turtle position using the given new coordinates
      */
     private void updateTurtlePosition(double x, double y){
-        if(myTurtleInfo != null) myTurtleInfo.setTurtlePosition(x,y);
-        turtleView.setX(x + paneWidthOffset.get()/2);
-        turtleView.setY(y + paneHeightOffset.get()/2);
+        PathTransition pathAnimation = new PathTransition();
+        Path animatedPath = new Path();
+        MoveTo newLocationMove = new MoveTo(x + paneWidthOffset.get()/2, y + paneHeightOffset.get()/2);
+        animatedPath.getElements().addAll(newLocationMove);
+        pathAnimation.setPath(animatedPath);
+
+        pathAnimation.setDuration(Duration.seconds(1));
+        pathAnimation.setNode(turtleView);
+        System.out.println(turtleView.getX() +", " +  turtleView.getY());
+        System.out.println("node" + pathAnimation.getPath());
+        pathAnimation.setCycleCount(5);
+        pathAnimation.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+
+        pathAnimation.play();
         currentPosition.clear();
         currentPosition.add(X_COORDINATE, turtleView.getX());
         currentPosition.add(Y_COORDINATE, turtleView.getY());
