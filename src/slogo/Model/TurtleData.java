@@ -27,7 +27,6 @@ public class TurtleData {
   private ObservableList<List<Double>> coordList = FXCollections.observableArrayList();
   private List<Double> coord = new ArrayList<>();
   private SimpleObjectProperty<ObservableList<List<Double>>> coordHistory;
-  private ObjectProperty<Color> penColorProperty;
 
 
   public TurtleData(String ID, double initX, double initY, double initHeading){
@@ -38,17 +37,8 @@ public class TurtleData {
     coord.add(initX);
     coord.add(initY);
     coordList.add(coord);
-    penColorProperty = new SimpleObjectProperty<Color>();
   }
 
-  public void setPenColor(List<Integer> rgbList) {
-    Color color = Color.rgb(rgbList.get(0), rgbList.get(1), rgbList.get(2));
-    penColorProperty.setValue(color);
-  }
-
-  public void bindPenColor(Property viewBackground) {
-    viewBackground.bindBidirectional(penColorProperty);
-  }
 
   public double getTurtleX(){
     return this.xCoord.get();

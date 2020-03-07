@@ -9,7 +9,7 @@ public class SetPenColor extends Command {
 
     private CommandDatabase database;
     private static final int argumentsNeeded = 1;
-    private int index;
+    private Number index;
 
     /**
      * Superconstructor for a Turtle Command
@@ -24,8 +24,8 @@ public class SetPenColor extends Command {
     @Override
     public Number executeAndReturnValue() {
         index = database.getParameterStack().pop().intValue();
-        ArrayList<Integer> color = (ArrayList<Integer>) database.getColorMap().get(index);
-        database.getTurtle().setPenColor(color);
+        ArrayList<Integer> color = (ArrayList<Integer>) database.getColorMap().get(index.intValue());
+        database.setPenColor(color);
         return index;
     }
 
