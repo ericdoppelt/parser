@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
+import slogo.DisplayError;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 import slogo.Model.Commands.Command;
@@ -41,7 +42,6 @@ public class ModelParser {
   private CommandProducer commandProducer;
   private List<String> linesArray;
   private ObjectProperty languageChosen;
-  private int currentIndex;
   private int argumentThreshold;
   private Number finalCommandValue;
   private Command argumentChecker;
@@ -82,7 +82,6 @@ public class ModelParser {
     for (String key : Collections.list(resources.getKeys())) {
       String regex = resources.getString(key);
       mySymbols.add(new SimpleEntry<>(key,
-          // THIS IS THE IMPORTANT LINE
           Pattern.compile(regex, Pattern.CASE_INSENSITIVE)));
     }
   }
@@ -131,7 +130,6 @@ public class ModelParser {
 //    int argumentThreshold = 0;
     for (int index = 0; index < inputCommandList.size(); index++) {
       if (inputCommandList.get(index).trim().length() > 0) {
-        currentIndex = index;
         linesArray = inputCommandList.subList(index, inputCommandList.size());
         commandDatabase.setListArray(linesArray);
         if(this.getSymbol(inputCommandList.get(index)).equals("Constant")){
@@ -186,8 +184,7 @@ public class ModelParser {
       return true;
     }
     catch (Exception e){
-      e.printStackTrace();
-      // TODO: FIX THIS SO WE DON'T FAIL
+      new DisplayError("NullCommand");
     }
     return false;
   }
