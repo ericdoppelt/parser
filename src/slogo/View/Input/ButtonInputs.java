@@ -93,7 +93,7 @@ public class ButtonInputs extends Inputs {
             try {
                 this.getClass().getDeclaredMethod(buttonInfo[BUTTON_METHOD_INDEX], null).invoke(this);
             } catch(Exception ex) {
-                System.out.println(ex);
+                System.out.println("a" + ex);
             }
         });
         addedVBox.getChildren().addAll(addedLabel, addedButton);
@@ -135,9 +135,7 @@ public class ButtonInputs extends Inputs {
 
         savedPreferences.put("turtle", turtleProperty.getValue().toString());
         savedPreferences.put("background", backgroundProperty.getValue().toString());
-        System.out.println(backgroundProperty.getValue().toString());;
         savedPreferences.put("language", languageProperty.getValue().toString());
-
         TextInputDialog configName = new TextInputDialog(SAVE_CONFIG_DEFAULT);
         configName.setHeaderText(SAVE_CONFIG_HEADER);
         configName.showAndWait();
