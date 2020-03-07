@@ -41,7 +41,7 @@ public class ModelDatabase {
     turtles.add(happyTurtle);
     language = "English";
 
-    originCommandDatabase = new CommandDatabase(turtle);
+    originCommandDatabase = new CommandDatabase(turtles);
     originProducer = new CommandProducer(originCommandDatabase, HISTORY_LIST);
     originParser = new ModelParser(language, originCommandDatabase, originProducer);
   }
