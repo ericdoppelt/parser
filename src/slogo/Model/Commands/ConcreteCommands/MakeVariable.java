@@ -16,8 +16,6 @@ public class MakeVariable extends Command {
   private static final int argumentsNeeded = 1;
   private CommandDatabase database;
 
-
-
   public MakeVariable(CommandDatabase data) {
     super(data);
     database = data;

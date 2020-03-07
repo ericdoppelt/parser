@@ -30,7 +30,6 @@ public class Heading extends Command {
   public Double executeAndReturnValue() {
     turtleObject = database.getTurtle();
     returnArgValue = turtleObject.getTurtleHeading();
-    System.out.println(returnArgValue);
     return this.returnArgValue;
   }
   @Override

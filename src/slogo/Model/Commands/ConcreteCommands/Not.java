@@ -21,8 +21,6 @@ public class Not extends Command {
   public Not(CommandDatabase data) {
     super(data);
     database = data;
-
-
   }
 
   /**
@@ -37,9 +35,6 @@ public class Not extends Command {
     } else {
       returnArgValue = 0;
     }
-
-    System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return (int) this.returnArgValue;
   }
   @Override

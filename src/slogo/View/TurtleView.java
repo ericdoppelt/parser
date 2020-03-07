@@ -109,7 +109,6 @@ public class TurtleView {
     private void setUpTurtle(TurtleData turtle, Pane pane) {
         turtleView = new ImageView(getImage(DEFAULT_IMAGE_PATH));
         setUpTurtleFile();
-
         turtleView.setRotate(turtle.getTurtleHeading() + ANGLE_OFFSET);
         turtleView.setY(CENTER_Y - heightOffset);
         turtleView.setX(CENTER_X - widthOffset);
@@ -211,7 +210,6 @@ public class TurtleView {
     private void bindAngle(SimpleDoubleProperty backendAngle){
         turtleAngle = new SimpleDoubleProperty();
         Bindings.bindBidirectional(turtleAngle, backendAngle);
-
         turtleAngle.addListener((observable, oldValue, newValue) -> {
             System.out.println(ANGLE_OFFSET);
             RotateTransition rotationAnimation = new RotateTransition();
@@ -221,6 +219,7 @@ public class TurtleView {
             rotationAnimation.setNode(turtleView);
             rotationAnimation.play();
             turtleView.getRotate();
+
         });
         turtleAngle.addListener( (observable, oldValue, newValue) ->{
                 if(turtleIsActive.get()) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));

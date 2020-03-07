@@ -60,9 +60,10 @@ public class ModelDatabase {
 //  public void addToHistory(String command) {
 //    HISTORY_LIST.getValue().add(command);
 //  }
-  public void bindHistory(Property displayedHistory) {
-    displayedHistory.bind(HISTORY_LIST);
-  }
+  public void bindHistory(ListProperty displayedHistory) {
+  displayedHistory.bind(HISTORY_LIST);
+}
+
 
 
 

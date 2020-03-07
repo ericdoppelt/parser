@@ -39,7 +39,6 @@ public class LessThan extends Command {
     }
 
     System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return (int) this.returnArgValue;
   }
   @Override

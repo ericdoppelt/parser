@@ -1,10 +1,9 @@
 package slogo.Model;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +28,7 @@ public class TurtleData {
   private List<Double> coord = new ArrayList<>();
   private SimpleObjectProperty<ObservableList<List<Double>>> coordHistory;
 
+
   public TurtleData(String ID, double initX, double initY, double initHeading){
     xCoord.set(initX);
     yCoord.set(initY);
@@ -38,6 +38,7 @@ public class TurtleData {
     coord.add(initY);
     coordList.add(coord);
   }
+
 
   public double getTurtleX(){
     return this.xCoord.get();

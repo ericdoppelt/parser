@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.function.Function;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
-import slogo.Model.ModelParser;
 
 /**
  * Subclass to create a BackCommand
@@ -15,10 +14,7 @@ public class If extends Command {
 
   private double returnArgValue = 0;
   private List<String> linesSubArray;
-  private List<String> currentSubList;
-  private int currentIndex;
   private Number expression;
-  private ModelParser parser;
   private static final int argumentsNeeded = 1;
   private CommandDatabase database;
   private Function<List<String>, Number> parseTextFunction;

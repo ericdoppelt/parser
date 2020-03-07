@@ -2,24 +2,21 @@ package slogo.Model.Commands.ConcreteCommands;
 
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
-import slogo.Model.TurtleData;
 
 /**
  * Subclass to create a LeftCommand
  *
  * @author Frank Tang
  */
-public class IsShowing extends Command {
-
-  private double returnArgValue;
+public class Turtles extends Command {
   private static final int argumentsNeeded = 0;
   private CommandDatabase database;
-  private TurtleData turtleObject;
 
 
-  public IsShowing(CommandDatabase data) {
+  public Turtles(CommandDatabase data) {
     super(data);
     database = data;
+
 
   }
 
@@ -28,17 +25,15 @@ public class IsShowing extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    turtleObject = database.getTurtle();
-    returnArgValue = turtleObject.getTurtleVisibility();
-    return (int) this.returnArgValue;
+    System.out.println("Turtles made: " + database.getTurtleList().size());
+    return database.getTurtleList().size();
   }
+
   @Override
   public int getArgumentsNeeded(){
     return this.argumentsNeeded;
   }
-
-
-
 }
+
 
 

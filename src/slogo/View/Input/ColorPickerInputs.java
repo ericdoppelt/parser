@@ -22,8 +22,8 @@ public class ColorPickerInputs extends Inputs {
     private ResourceBundle myColorPickersBundle = ResourceBundle.getBundle(COLORPICKERS_BUNDLE);
 
     private static final String BACKGROUND_KEY = "background";
-    private static final String PEN_KEY = "pen";
-    private static final List<String> ALL_COLOR_PICKERS = new ArrayList<>(Arrays.asList(BACKGROUND_KEY, PEN_KEY));
+    // private static final String PEN_KEY = "pen";
+    private static final List<String> ALL_COLOR_PICKERS = new ArrayList<>(Arrays.asList(BACKGROUND_KEY));
 
     private ColorPicker myBackGroundPicker;
     private ColorPicker myPenPicker;
@@ -33,7 +33,7 @@ public class ColorPickerInputs extends Inputs {
         for (String pickerType : ALL_COLOR_PICKERS) makeColorVBox(pickerType);
 
         myBackGroundPicker.valueProperty().bindBidirectional(background);
-        myPenPicker.valueProperty().bindBidirectional(pen);
+        // myPenPicker.valueProperty().bindBidirectional(pen);
         myColorPickers = formatButtons(myColorPickers);
     }
 
@@ -53,7 +53,7 @@ public class ColorPickerInputs extends Inputs {
         ColorPicker addedColorPicker = new ColorPicker();
 
         if (pickerType.equals(BACKGROUND_KEY)) myBackGroundPicker = addedColorPicker;
-        else if (pickerType.equals(PEN_KEY)) myPenPicker = addedColorPicker;
+        // else if (pickerType.equals(PEN_KEY)) myPenPicker = addedColorPicker;
 
         addedVBox.getChildren().addAll(addedLabel, addedColorPicker);
         myColorPickers.getChildren().add(addedVBox);
