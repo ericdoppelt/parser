@@ -2,10 +2,8 @@ package slogo.Model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
@@ -62,7 +60,7 @@ public class ModelDatabase {
 //  public void addToHistory(String command) {
 //    HISTORY_LIST.getValue().add(command);
 //  }
-  public void bindHistory(ListProperty displayedHistory) {
+  public void bindHistory(Property displayedHistory) {
     displayedHistory.bind(HISTORY_LIST);
   }
 
