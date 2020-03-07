@@ -23,6 +23,9 @@ public class CommandProducer {
   private Command newCommand;
   private static final String BLANK_SPACE = " ";
   private static final String BLANK = "";
+  private static final String CommandCreationError = "CommandCreationError";
+  private static final String CONCRETE_COMMAND_CLASS = "slogo.Model.Commands.ConcreteCommands.";
+
 
 
   public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory) {
@@ -48,7 +51,7 @@ public class CommandProducer {
       
       newCommand = makeCommand(commStack.pop());
       currentCommandReturnValue = newCommand.executeAndReturnValue();
-      
+
       argumentRunningTotal--;
       if (commStack.size() == 0) {
         break;
@@ -62,11 +65,11 @@ public class CommandProducer {
   public Command makeCommand(String commandName) {
     try {
 
-      Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
+      Class commandClass = Class.forName(CONCRETE_COMMAND_CLASS + commandName);
       Command command = (Command) commandClass.getConstructors()[0].newInstance(commandDatabase);
       return command;
     } catch (Exception e) {
-      new DisplayError("CommandCreationError");
+      new DisplayError(CommandCreationError);
     }
     return null;
   }
