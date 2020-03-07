@@ -10,20 +10,20 @@ import slogo.Model.Commands.Command;
  *
  * @author Frank Tang
  */
-public class DoTimes extends Command {
+public class MakeUserInstruction extends Command {
 
   private double returnArgValue = 0;
+  private Number expression;
+  private String variable;
   private List<String> linesSubArray;
-  private Number variableLimit;
-  private String variableName;
-  private static final int argumentsNeeded = 0;
+  private static final int argumentsNeeded = 1;
   private CommandDatabase database;
   private Function<List<String>, Number> parseTextFunction;
   private Function<List<String>, Number> listEndFunction;
 
 
 
-  public DoTimes(CommandDatabase data) {
+  public MakeUserInstruction(CommandDatabase data) {
     super(data);
     database = data;
 
@@ -37,25 +37,27 @@ public class DoTimes extends Command {
     parseTextFunction = database.getParseFunction();
     listEndFunction = database.getListFunction();
     linesSubArray = database.getCurrentLineArray();
+    variable = database.getVariableName();
+    database.getParameterStack().pop();
 
     List<String> variableList = linesSubArray.subList(linesSubArray.indexOf("["), linesSubArray.size());
     int listEnd = listEndFunction.apply(variableList).intValue();
     variableList = variableList.subList(1, listEnd);
-
-    variableName = variableList.get(0);
-    variableLimit = Integer.parseInt(variableList.get(1));
+    parseTextFunction.apply(variableList);
 
     List<String> commandList = linesSubArray.subList(listEnd + 2, linesSubArray.size());
     commandList = commandList.subList(commandList.indexOf("["), commandList.size());
     listEnd = listEndFunction.apply(commandList).intValue();
     commandList = commandList.subList(1, listEnd);
+    System.out.println(variable);
 
-    for (int i = 1; i <= variableLimit.intValue();
-        i++) {
-      database.addToVariableMap(variableName, i);
-      returnArgValue = parseTextFunction.apply(commandList).doubleValue();
+    String commandLine = "";
+    for(String e : commandList){
+      commandLine += e + " ";
+      System.out.println(commandLine);
     }
-
+    database.addToCommandMap(variable, commandLine);
+    returnArgValue = 1;
     return this.returnArgValue;
   }
   @Override

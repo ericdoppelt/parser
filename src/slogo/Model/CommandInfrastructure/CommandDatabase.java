@@ -1,13 +1,15 @@
 package slogo.Model.CommandInfrastructure;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.Function;
-
-import javafx.beans.property.*;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleMapProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.scene.paint.Color;
 import slogo.Model.ModelParser;
@@ -19,6 +21,9 @@ public class CommandDatabase {
   private Stack<Number> parameterStack = new Stack<>();
   private MapProperty<String, Number> VARIABLE_MAP = new SimpleMapProperty(
       FXCollections.observableMap(new LinkedHashMap<String, Number>()));
+
+  private MapProperty<String, String> COMMAND_MAP = new SimpleMapProperty(
+      FXCollections.observableMap(new LinkedHashMap<String, String>()));
 
   private Function<List<String>, Number> parseFunction;
   private Function<List<String>, Number> listFunction;
@@ -105,6 +110,22 @@ public class CommandDatabase {
   public void addToVariableMap(String command, Number expression) {
     this.VARIABLE_MAP.putIfAbsent(command, expression);
     this.VARIABLE_MAP.put(command, expression);
+  }
+  public String getVariableName() {
+    return targetVariable;
+  }
+
+  public void addToCommandMap(String command, String commandLine) {
+    this.COMMAND_MAP.putIfAbsent(command, commandLine);
+    this.COMMAND_MAP.put(command, commandLine);
+  }
+
+  public void bindCommands(MapProperty displayedCommands) {
+    displayedCommands.bind(COMMAND_MAP);
+  }
+
+  public MapProperty<String, String> getCOMMAND_LIST(){
+    return this.COMMAND_MAP;
   }
 
 

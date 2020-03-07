@@ -2,6 +2,7 @@ package slogo.Model;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -161,8 +162,23 @@ public class ModelParser {
           if(commandStack.peek().equals("MakeVariable")){
             commandDatabase.setVariableName(inputCommandList.get(index));
           }
-          else{
+          else if (commandDatabase.getVariableMap().containsKey(inputCommandList.get(index))){
             argumentStack.push((Number) commandDatabase.getVariableMap().get(inputCommandList.get(index)));
+          }
+          else{
+            argumentStack.push(0.0);
+          }
+        }
+        else if(this.getSymbol(inputCommandList.get(index)).equals("Command")){
+          if(commandStack.size() != 0 && commandStack.peek().equals("MakeUserInstruction")){
+            commandDatabase.setVariableName(inputCommandList.get(index));
+            argumentStack.push(1.0);
+            System.out.println("command");
+          }
+          else if (commandDatabase.getCOMMAND_LIST().getValue().containsKey(inputCommandList.get(index))){
+            System.out.println("help");
+            this.parseText(
+                Arrays.asList(commandDatabase.getCOMMAND_LIST().getValue().get(inputCommandList.get(index)).split("\\s+")));
           }
         }
         else if(this.getSymbol(inputCommandList.get(index)).equals("ListStart")){
@@ -173,6 +189,7 @@ public class ModelParser {
         else if(checkCommand(this.getSymbol(inputCommandList.get(index)))){
           commandStack.push(this.getSymbol(inputCommandList.get(index)));
           argumentThreshold = argumentStack.size() + argumentChecker.getArgumentsNeeded();
+
         }
         finalCommandValue = commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }

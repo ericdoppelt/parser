@@ -131,13 +131,14 @@ public class TurtleData {
 
   public void rotateTurtleHeading(double angleAmount){
 //    System.out.println(this.yCoord);
-    this.headingDirection.set(this.headingDirection.get() + angleAmount);
-    if(this.headingDirection.get() >= fullRevolution){
-      this.headingDirection.set(this.headingDirection.get() - fullRevolution);
+    double test = this.headingDirection.get() + angleAmount;
+    if(test >= fullRevolution){
+      test -= fullRevolution;
     }
-    else if (this.headingDirection.get() < zeroAngle){
-      this.headingDirection.set(this.headingDirection.get() + fullRevolution);
+    else if (test < zeroAngle){
+      test += fullRevolution;
     }
+    this.setTurtleDirection(test);
   }
 
   public void setTurtleDirection(double angle){

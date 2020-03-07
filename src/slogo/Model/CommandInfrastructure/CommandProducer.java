@@ -16,16 +16,14 @@ public class CommandProducer {
   private String newCommandEntry;
   private String argumentEntries;
   private ListProperty<String> HISTORY_LIST;
-  private ListProperty<Command> COMMAND_LIST;
   private Number currentCommandReturnValue;
   private Command newCommand;
   private static final String BLANK_SPACE = " ";
   private static final String BLANK = "";
 
 
-  public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory, ListProperty<Command> commandHistory){
+  public CommandProducer(CommandDatabase database, ListProperty<String> stringHistory){
     HISTORY_LIST = stringHistory;
-    COMMAND_LIST = commandHistory;
     commandDatabase = database;
   }
 
@@ -37,8 +35,8 @@ public class CommandProducer {
 //    checkStackSizesandRefresh(commStack, argStack);
 //    System.out.println(argumentRunningTotal);
     while (commStack.size() > 0 && argStack.size() >= argumentRunningTotal){
-//      System.out.println("BeforeA" + argStack);
-//      System.out.println("BeforeC" + commStack);
+      System.out.println("BeforeA" + argStack);
+      System.out.println("BeforeC" + commStack);
       newCommand = makeCommand(commStack.peek());
       int parametersNeeded = newCommand.getArgumentsNeeded();
       newCommandEntry = commStack.peek();
@@ -68,6 +66,7 @@ public class CommandProducer {
 
   public Command makeCommand(String commandName){
     try {
+
       Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
       Command command = (Command) commandClass.getConstructors()[0].newInstance(commandDatabase);
       return command;
