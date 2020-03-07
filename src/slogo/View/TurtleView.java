@@ -2,8 +2,8 @@ package slogo.View;
 
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -22,8 +22,8 @@ import slogo.Model.TurtleData;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Turtle View handles all turtle display methods along with its path.
@@ -45,6 +45,8 @@ public class TurtleView {
 
     private static final String TURTLEIMAGES_DIRECTORY = "turtleImages";
     private static final String DEFAULT_IMAGE_PATH = "turtleImages/perfectTurtle.png";
+    public static final String FORWARD_COMMAND = "fd 50";
+    public static final String BACKWARD_COMMAND = "bk 50";
 
     private SimpleBooleanProperty isPenDown;
     private SimpleDoubleProperty turtleAngle;
@@ -70,13 +72,17 @@ public class TurtleView {
     private SimpleDoubleProperty xCoor = new SimpleDoubleProperty();
     private SimpleDoubleProperty yCoor = new SimpleDoubleProperty();
 
+    private Consumer<List<String>> parser;
+
+
 
     /**
      * Constructor used to build a new Turtle Display. One per backend Turtle.
      * @param turtle Backend Turtle To Bind
      * @param pane Platform to display Turtle
      */
-    public TurtleView(TurtleData turtle, Pane pane){
+    public TurtleView(TurtleData turtle, Pane pane, Consumer<List<String>> parserCommand){
+        parser = parserCommand;
         myBackground = pane;
         setUpTurtle(turtle, pane);
         currentPosition = setUpInitialPosition();
@@ -129,8 +135,8 @@ public class TurtleView {
     }
 
     private void handleMovement(KeyCode keyPressed){
-        if(keyPressed == FORWARD){}
-        else if(keyPressed == BACKWARD){}
+        if(keyPressed == FORWARD){ parser.accept(Arrays.asList(FORWARD_COMMAND.trim()));}
+        else if(keyPressed == BACKWARD){parser.accept(Arrays.asList(BACKWARD_COMMAND.trim()));}
         else if(keyPressed == RIGHT_ROTATE) turtleAngle.set(turtleAngle.get() - DEFAULT_ANGLE);
         else if(keyPressed == LEFT_ROTATE) turtleAngle.set(turtleAngle.get() + DEFAULT_ANGLE);
     }
