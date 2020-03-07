@@ -30,7 +30,7 @@ public class Sine extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    amountOfDegrees = database.getParameterStack().peek();
+    amountOfDegrees = database.getParameterStack().pop();
     returnArgValue = Math.sin(Math.toRadians(amountOfDegrees.doubleValue()));
     System.out.println(returnArgValue);
     return this.returnArgValue;

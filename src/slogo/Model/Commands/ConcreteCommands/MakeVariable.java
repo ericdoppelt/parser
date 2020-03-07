@@ -16,8 +16,6 @@ public class MakeVariable extends Command {
   private static final int argumentsNeeded = 1;
   private CommandDatabase database;
 
-
-
   public MakeVariable(CommandDatabase data) {
     super(data);
     database = data;
@@ -30,7 +28,7 @@ public class MakeVariable extends Command {
    */
   @Override
   public Double executeAndReturnValue() {
-    expression = database.getParameterStack().peek();
+    expression = database.getParameterStack().pop();
     variable = database.getVariableName();
     database.addToVariableMap(variable, expression.doubleValue());
     returnArgValue = expression.doubleValue();

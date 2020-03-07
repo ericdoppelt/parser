@@ -29,8 +29,8 @@ public class LessThan extends Command {
    */
   @Override
   public Integer executeAndReturnValue() {
-    firstTerm = database.getParameterStack().peek();
-    secondTerm = database.getParameterStack().peek();
+    firstTerm = database.getParameterStack().pop();
+    secondTerm = database.getParameterStack().pop();
 
     if (firstTerm.doubleValue() - secondTerm.doubleValue() < 0) {
       returnArgValue = 1;
@@ -39,7 +39,6 @@ public class LessThan extends Command {
     }
 
     System.out.println(returnArgValue);
-//    System.out.println("turtle Y " + turtleObject.getTurtleY());
     return (int) this.returnArgValue;
   }
   @Override

@@ -54,18 +54,11 @@ public class ModelDatabase {
     return HISTORY_LIST;
   }
 
-
   public String getCommand() {
     return commandProperty.get();
   }
 
-//  public void addToHistory(String command) {
-//    HISTORY_LIST.getValue().add(command);
-//  }
   public void bindHistory(ListProperty displayedHistory) {
     displayedHistory.bind(HISTORY_LIST);
   }
-
-
-
 }

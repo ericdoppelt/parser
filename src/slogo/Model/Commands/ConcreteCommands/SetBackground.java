@@ -21,7 +21,7 @@ public class SetBackground extends Command {
 
     @Override
     public Number executeAndReturnValue() {
-        index = database.getParameterStack().peek();
+        index = database.getParameterStack().pop();
         ArrayList<Integer> color = (ArrayList<Integer>) database.getColorMap().get(index.intValue());
         database.setBackgroundColor(color);
         return index;

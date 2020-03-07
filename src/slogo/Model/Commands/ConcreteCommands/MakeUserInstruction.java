@@ -38,7 +38,7 @@ public class MakeUserInstruction extends Command {
     listEndFunction = database.getListFunction();
     linesSubArray = database.getCurrentLineArray();
     variable = database.getVariableName();
-    database.getParameterStack().peek();
+    database.getParameterStack().pop();
 
     List<String> variableList = linesSubArray.subList(linesSubArray.indexOf("["), linesSubArray.size());
     int listEnd = listEndFunction.apply(variableList).intValue();
