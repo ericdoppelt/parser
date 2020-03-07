@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 import slogo.Model.CommandInfrastructure.CommandDatabase;
+import slogo.Model.CommandInfrastructure.CommandProducer;
 import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
 import slogo.View.Input.InputView;
@@ -25,6 +26,7 @@ public class SlogoView {
     private BorderPane myBorderPane;
     private ModelDatabase myModelDatabase;
     private CommandDatabase myCommandDatabase;
+    private CommandProducer myCommandProducer;
     private ModelParser myModelParser;
     private InputView myInputView;
     private Pane myBackgroundPane;
@@ -42,7 +44,8 @@ public class SlogoView {
     private void initModel() {
         myModelDatabase = new ModelDatabase();
         myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtle());
-        myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase);
+        myCommandProducer = new CommandProducer(myCommandDatabase, myModelDatabase.getHISTORY_LIST(), myModelDatabase.getCOMMAND_LIST());
+        myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase, myCommandProducer);
     }
 
     private void initView() {
@@ -50,7 +53,7 @@ public class SlogoView {
         myTurtleView = new TurtleView(myModelDatabase.getMyTurtle(), myBackgroundPane);
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
-        myInfoView = new InfoView();
+        myInfoView = new InfoView(c -> myModelParser.parseText(c), myInputView.getLanguage());
 
         VBox commandAndInput = new VBox();
         commandAndInput.getChildren().addAll(myInputView.getInputPanel(), myCommandLine.getCommandLine());
@@ -86,6 +89,8 @@ public class SlogoView {
             BackgroundFill fill = new BackgroundFill((Paint)myInputView.getBackgroundPropertyColor().getValue(), CornerRadii.EMPTY, Insets.EMPTY);
             return new Background(fill);
         }, myInputView.getBackgroundPropertyColor()));
+        myCommandDatabase.bindBackgroundColor(myInputView.getBackgroundPropertyColor());
+        myCommandDatabase.bindPenColor(myInputView.getPenPropertyColor());
     }
 
 
@@ -101,9 +106,10 @@ public class SlogoView {
     private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
 
     private void createBindableInfoPanel() {
-        myCommandDatabase.bindHistory(myInfoView.getHistoryProperty());
-        myCommandDatabase.bindCommands(myInfoView.getCommandProperty());
+        myModelDatabase.bindHistory(myInfoView.getHistoryProperty());
+        myModelDatabase.bindCommands(myInfoView.getCommandProperty());
         myCommandDatabase.bindVariables(myInfoView.getVariableProperty());
+        myCommandDatabase.bindColors(myInfoView.getColorsProperty());
     }
 }
 

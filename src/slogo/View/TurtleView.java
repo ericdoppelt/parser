@@ -1,6 +1,9 @@
 package slogo.View;
 
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -14,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-
 import javafx.scene.shape.Line;
 import slogo.Model.TurtleData;
 
