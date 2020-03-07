@@ -2,6 +2,7 @@ package slogo.Model.CommandInfrastructure;
 
 import java.util.Stack;
 import javafx.beans.property.ListProperty;
+import slogo.DisplayError;
 import slogo.Model.Commands.Command;
 
 public class CommandProducer {
@@ -77,8 +78,7 @@ public class CommandProducer {
       return command;
     }
     catch (Exception e){
-      e.printStackTrace();
-      // TODO: FIX THIS SO WE DON'T FAIL
+      new DisplayError("NullCommand");
     }
     return null;
   }
