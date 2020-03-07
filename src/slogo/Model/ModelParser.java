@@ -49,6 +49,7 @@ public class ModelParser {
   private static final String CONSTANT = "Constant";
   private static final String CONCRETE_COMMAND_CLASS = "slogo.Model.Commands.ConcreteCommands.";
   private static final String WHITESPACE = "\\s+";
+  private static final String NullCommandError = "NullCommand";
 
 
 
@@ -138,7 +139,7 @@ public class ModelParser {
         commandDatabase.setListArray(linesArray);
         parseTerm = inputCommandList.get(index);
         symbolName = this.getSymbol(parseTerm);
-        
+
         if(symbolName.equals(CONSTANT)){
           argumentStack.push(Double.parseDouble(parseTerm));
         }
@@ -186,7 +187,7 @@ public class ModelParser {
       return true;
     }
     catch (Exception e){
-      new DisplayError("NullCommand");
+      new DisplayError(NullCommandError);
     }
     return false;
   }
