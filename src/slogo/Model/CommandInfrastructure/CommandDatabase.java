@@ -1,11 +1,9 @@
 package slogo.Model.CommandInfrastructure;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Stack;
 import java.util.function.Function;
-
 import javafx.beans.property.MapProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
@@ -133,8 +131,8 @@ public class CommandDatabase {
     }
 
     public void addToVariableMap(String command, Number expression) {
-        this.VARIABLE_MAP.putIfAbsent(command, expression);
-        this.VARIABLE_MAP.put(command, expression);
+        this.VARIABLE_MAP.getValue().putIfAbsent(command, expression);
+        this.VARIABLE_MAP.getValue().put(command, expression);
     }
 
     public String getVariableName() {
@@ -142,8 +140,8 @@ public class CommandDatabase {
     }
 
     public void addToCommandMap(String command, String commandLine) {
-        this.COMMAND_MAP.putIfAbsent(command, commandLine);
-        this.COMMAND_MAP.put(command, commandLine);
+        this.COMMAND_MAP.getValue().putIfAbsent(command, commandLine);
+        this.COMMAND_MAP.getValue().put(command, commandLine);
     }
 
     public void bindCommands(MapProperty displayedCommands) {

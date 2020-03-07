@@ -55,7 +55,8 @@ public class CommandProducer {
       argumentRunningTotal--;
       if (commStack.size() == 0) {
         break;
-      } else if (argStack.size() <= argumentRunningTotal || argStack.size() == 0) {
+      }
+      else if (argStack.size() <= argumentRunningTotal || argStack.size() == 0) {
         argStack.push(currentCommandReturnValue);
       }
     }

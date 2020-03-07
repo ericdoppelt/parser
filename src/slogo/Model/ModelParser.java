@@ -36,8 +36,8 @@ public class ModelParser {
   private Number finalCommandValue;
   private Command argumentChecker;
   private static final int zero = 0;
-  private static final Integer defaultVariableValue = 0;
-  private static final Integer toNumberValue = 1;
+  private static final Number defaultVariableValue = 0.0;
+  private static final Number toNumberValue = 1.0;
   private String symbolName;
   private String parseTerm;
   private static final String LIST_START = "ListStart";
@@ -45,7 +45,7 @@ public class ModelParser {
   private static final String toCommand = "MakeUserInstruction";
   private static final String VARIABLE = "Variable";
   private static final String COMMENT = "Comment";
-  private static final String variableCommand = "makeVariable";
+  private static final String variableCommand = "MakeVariable";
   private static final String CONSTANT = "Constant";
   private static final String CONCRETE_COMMAND_CLASS = "slogo.Model.Commands.ConcreteCommands.";
   private static final String WHITESPACE = "\\s+";
