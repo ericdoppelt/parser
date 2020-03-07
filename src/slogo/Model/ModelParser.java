@@ -2,6 +2,7 @@ package slogo.Model;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -100,26 +101,6 @@ public class ModelParser {
     return ERROR;
   }
 
-//  // utility function that reads given file and returns its entire contents as a single string
-//  public String readFileToString (String inputSource) {
-//    try {
-//      // this one line is dense, hard to read, and throws exceptions so better to wrap in method
-//      return new String(Files.readAllBytes(Paths.get(new URI(inputSource))));
-//    }
-//    catch (URISyntaxException | IOException e) {
-//      // NOT ideal way to handle exception, but this is just a simple test program
-//      System.out.println("ERROR: Unable to read input file " + e.getMessage());
-//
-//      //potential error -up code
-////      String errorMessage = "ERROR: Unable to read input f ile " + e.getMessage();
-////      Alert alert = new Alert(Alert.AlertType.ERROR);
-////      alert.setTitle("Error");
-////      alert.setHeaderText(errorMessage);
-////      Platform.runLater(alert::showAndWait);
-//      return "";
-//    }
-//  }
-
   // Returns true if the given text matches the given regular expression pattern
   private boolean match (String text, Pattern regex) {
     // THIS IS THE IMPORTANT LINE
@@ -161,8 +142,23 @@ public class ModelParser {
           if(commandStack.peek().equals("MakeVariable")){
             commandDatabase.setVariableName(inputCommandList.get(index));
           }
-          else{
+          else if (commandDatabase.getVariableMap().containsKey(inputCommandList.get(index))){
             argumentStack.push((Number) commandDatabase.getVariableMap().get(inputCommandList.get(index)));
+          }
+          else{
+            argumentStack.push(0.0);
+          }
+        }
+        else if(this.getSymbol(inputCommandList.get(index)).equals("Command")){
+          if(commandStack.size() != 0 && commandStack.peek().equals("MakeUserInstruction")){
+            commandDatabase.setVariableName(inputCommandList.get(index));
+            argumentStack.push(1.0);
+            System.out.println("command");
+          }
+          else if (commandDatabase.getCOMMAND_LIST().getValue().containsKey(inputCommandList.get(index))){
+            System.out.println("help");
+            this.parseText(
+                Arrays.asList(commandDatabase.getCOMMAND_LIST().getValue().get(inputCommandList.get(index)).split("\\s+")));
           }
         }
         else if(this.getSymbol(inputCommandList.get(index)).equals("ListStart")){
@@ -173,6 +169,7 @@ public class ModelParser {
         else if(checkCommand(this.getSymbol(inputCommandList.get(index)))){
           commandStack.push(this.getSymbol(inputCommandList.get(index)));
           argumentThreshold = argumentStack.size() + argumentChecker.getArgumentsNeeded();
+
         }
         finalCommandValue = commandProducer.parseStacks(commandStack, argumentStack, argumentThreshold);
       }
@@ -181,7 +178,7 @@ public class ModelParser {
 
   }
 
-  public boolean checkCommand(String commandName){
+  private boolean checkCommand(String commandName){
     try {
       Class commandClass = Class.forName("slogo.Model.Commands.ConcreteCommands." + commandName);
       Object o = commandClass.getDeclaredConstructors()[0].newInstance(commandDatabase);
@@ -194,15 +191,5 @@ public class ModelParser {
     }
     return false;
   }
-
-
-  public List<String> getLinesArray(){
-    return linesArray;
-  }
-
-  public Integer getCurrentLinesIndex(){
-    return currentIndex;
-  }
-
 
 }

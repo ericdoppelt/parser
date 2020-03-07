@@ -1,17 +1,18 @@
 package slogo.View.Input;
 
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -20,9 +21,6 @@ import javafx.stage.Stage;
 import slogo.Model.FileManager.FileReader;
 import slogo.Model.FileManager.FileWriter;
 import slogo.View.SlogoView;
-
-import java.io.File;
-import java.util.*;
 
 public class ButtonInputs extends Inputs {
 
@@ -37,7 +35,7 @@ public class ButtonInputs extends Inputs {
     private static final String TYPE_OF_TURTLE_FILE = "PNG";
     private static final String INITIAL_DIRECTORY = "user.dir";
     private static final String TURTLEIMAGE_PACKAGE = "turtleImages/";
-    private static final String DEFAULT_TURTLE = "DuvallTurtle";
+    private static final String DEFAULT_TURTLE = "perfectTurtle";
     private static final String DEFAULT_TURTLE_FILE = TURTLEIMAGE_PACKAGE + DEFAULT_TURTLE + TURTLE_FILE_EXTENSION;
     private final FileChooser TURTLE_FILE_CHOOSER = createFileChooser(ACCEPTABLE_TURTLE_FILE, TYPE_OF_TURTLE_FILE, INITIAL_DIRECTORY);
 
@@ -61,7 +59,6 @@ public class ButtonInputs extends Inputs {
     ObjectProperty backgroundProperty;
     ObjectProperty penProperty;
     ObjectProperty languageProperty;
-
 
     public ButtonInputs(ObjectProperty background, ObjectProperty pen, ObjectProperty language, ObjectProperty<File> turtle) {
         turtleProperty = new SimpleObjectProperty<File>();
