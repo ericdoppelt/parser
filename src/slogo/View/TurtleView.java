@@ -20,6 +20,7 @@ import slogo.Model.TurtleData;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -58,10 +59,11 @@ public class TurtleView {
     private SimpleDoubleProperty paneHeightOffset = new SimpleDoubleProperty();
     private SimpleDoubleProperty paneWidthOffset = new SimpleDoubleProperty();
     private TurtlePopUp myTurtleInfo;
-    private boolean turtleIsActive = true;
+    private SimpleBooleanProperty turtleIsActive = new SimpleBooleanProperty(true);
 
     private int currentIndex;
-    private ArrayList<Line> turtleLines;
+    private HashMap<Integer, Line> turtleLines;
+    private HashMap<Integer, Double> turtleRotations = new HashMap<>();
 
 
     /**
@@ -128,13 +130,13 @@ public class TurtleView {
     }
 
     private void toggleTurtle(){
-        if(turtleIsActive){
+        if(turtleIsActive.get()){
             turtleView.setOpacity(0.2);
-            turtleIsActive = false;
+            turtleIsActive.setValue(false);
         }
         else{
             turtleView.setOpacity(1.0);
-            turtleIsActive = true;
+            turtleIsActive.setValue(true);
         }
     }
     /**
@@ -146,6 +148,7 @@ public class TurtleView {
         bindPositions(turtle.getCoordHistory());
         bindPen(turtle.getPenDownProperty());
         bindAngle(turtle.directionProperty());
+        Bindings.bindBidirectional(turtleIsActive,turtle.getActiveProperty());
         turtleView.visibleProperty().bind(turtle.turtleVisibility());
     }
 
@@ -158,11 +161,12 @@ public class TurtleView {
     private void newTurtlePosition(ListChangeListener.Change<? extends List<Double>> allPositions){
         allPositions.next();
         if(!allPositions.wasRemoved()) {
-            if (turtleIsActive) {
+            //if (turtleIsActive) {
                 List<Double> newPosition = allPositions.getList().get(allPositions.getList().size() - 1);
+                currentIndex = allPositions.getList().size()-1;
                 if (isPenDown.get()) addPath(getNewLine(currentPosition, newPosition));
                 updateTurtlePosition(newPosition.get(X_COORDINATE), newPosition.get(Y_COORDINATE));
-            } else positions.remove(allPositions.getList().size() - 1);
+            //} else positions.remove(allPositions.getList().size() - 1);
         }
     }
 
@@ -175,7 +179,8 @@ public class TurtleView {
         turtleAngle = new SimpleDoubleProperty();
         Bindings.bindBidirectional(turtleAngle, backendAngle);
         turtleAngle.addListener( (observable, oldValue, newValue) ->{
-                if(turtleIsActive) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));
+                if(turtleIsActive.get()) turtleView.setRotate((newValue.doubleValue()+ ANGLE_OFFSET));
+                turtleRotations.put(currentIndex, turtleView.getRotate());
                 if(myTurtleInfo == null) myTurtleInfo = new TurtlePopUp(this, 0.0,0.0);
                 myTurtleInfo.updateHeading(OFFSET - newValue.doubleValue());
         });
@@ -224,9 +229,10 @@ public class TurtleView {
 
     private void addPath(Line newPath){
         myBackground.getChildren().add(newPath);
-        if(turtleLines == null) turtleLines = new ArrayList<>();
+        if(turtleLines == null) turtleLines = new HashMap<>();
+
         if(undoButtonClicked()) clearOldPath();
-        turtleLines.add(newPath);
+        turtleLines.put(currentIndex, newPath);
         currentIndex = turtleLines.size();
     }
 
@@ -282,14 +288,18 @@ public class TurtleView {
      * Undo button to restore turtle to its second most recent postition
      */
     public void undoMovement(){
-        // TODO move turtle back to its position and remove path
+        if(turtleLines.containsKey(currentIndex)) myBackground.getChildren().remove(turtleLines.get(currentIndex));
+        currentIndex--;
+        updateTurtlePosition(positions.get(currentIndex).get(X_COORDINATE), positions.get(currentIndex).get(Y_COORDINATE));
+        if(turtleRotations.containsKey(currentIndex)) turtleView.setRotate(turtleRotations.get(currentIndex));
     }
     /**
      * Undo button to restore turtle to its last postition
      */
     public void redoMovement(){
-        // TODO move turtle back to its position and remove path
+        currentIndex++;
+        if(turtleLines.containsKey(currentIndex)) myBackground.getChildren().add(turtleLines.get(currentIndex));
+        updateTurtlePosition(positions.get(currentIndex).get(X_COORDINATE), positions.get(currentIndex).get(Y_COORDINATE));
+        if(turtleRotations.containsKey(currentIndex)) turtleView.setRotate(turtleRotations.get(currentIndex));
     }
-
-
 }

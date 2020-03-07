@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -119,6 +120,9 @@ public class CommandBox {
     private void setUpCommandLine(){
         myCommandLine = new HBox();
         myCommandLine.getChildren().addAll(myCommandField,runButton, clearButton, expandButton);
+        myCommandLine.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) retrieveText();
+        });
     }
     // Switches the visible command line to minimize or expand
     private void switchCommandLine(TextInputControl currentField, TextInputControl newField, String newLabel){

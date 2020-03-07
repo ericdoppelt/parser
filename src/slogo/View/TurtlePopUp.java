@@ -15,8 +15,8 @@ public class TurtlePopUp {
     public static final String TURTLE_POSITION = "Turtle Position: ";
     public static final String PEN_WIDTH = "Modify Pen Width";
     public static final String COLOR_PICKER_TITLE = "Choose Pen Color:";
-    public static final String TRUE = "True";
-    public static final String FALSE = "False";
+    public static final String TRUE = "DOWN";
+    public static final String FALSE = "UP";
     public static final String TOGGLE = "Click To Toggle Pen Property";
     public static final String ZERO = "0.0";
     public static final String UNDO = "Undo";
@@ -104,13 +104,13 @@ public class TurtlePopUp {
         penProperties = new VBox();
         addColorPicker();
         addPenWidth();
-        addPenToggle();
         return penProperties;
     }
 
     private void addPenWidth() {
         penWidth = new TextField();
         penWidth.setTextFormatter(new TextFormatter<>(new NumberStringConverter()));
+        penWidth.setPrefWidth(3);
         penWidth.setPromptText(PEN_WIDTH);
         penProperties.getChildren().add(penWidth);
         penWidth.setOnKeyPressed(event -> handleWidthInput(event.getCode()));
