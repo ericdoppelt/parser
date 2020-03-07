@@ -47,6 +47,7 @@ public class CommandProducer {
       }
       newCommandEntry = newCommandEntry + argumentEntries;
       HISTORY_LIST.getValue().add(newCommandEntry);
+
       for(int i = 0; i < commandDatabase.getTurtleList().size(); i++){
         if(commandDatabase.getTurtleList().get(i).getTurtleActive()) {
           commandDatabase.setActiveTurtle(commandDatabase.getTurtleList().get(i));
@@ -55,11 +56,12 @@ public class CommandProducer {
         }
       }
 
+
+
       for(int i = 0; i < newCommand.getArgumentsNeeded(); i++){
         commandDatabase.getParameterStack().pop();
       }
       commStack.pop();
-      System.out.println("hellp");
       argumentRunningTotal--;
       if(commStack.size() == 0){
         break;
