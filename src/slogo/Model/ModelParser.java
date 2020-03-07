@@ -36,8 +36,8 @@ public class ModelParser {
   private Number finalCommandValue;
   private Command argumentChecker;
   private static final int zero = 0;
-  private static final Number defaultVariableValue = 0.0;
-  private static final Number toNumberValue = 1.0;
+  private static final Double defaultVariableValue = 0.0;
+  private static final Double toNumberValue = 1.0;
   private String symbolName;
   private String parseTerm;
   private static final String LIST_START = "ListStart";

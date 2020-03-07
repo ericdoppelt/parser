@@ -1,6 +1,8 @@
 package slogo.View;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.MapProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -11,7 +13,7 @@ import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.CommandInfrastructure.CommandProducer;
 import slogo.Model.ModelDatabase;
 import slogo.Model.ModelParser;
-import slogo.View.Info.InfoView;
+import slogo.View.Info.InfoViews;
 import slogo.View.Input.InputView;
 
 
@@ -32,7 +34,7 @@ public class SlogoView {
     private InputView myInputView;
     private Pane myBackgroundPane;
     private TurtleView myTurtleView;
-    private InfoView myInfoView;
+    private InfoViews myInfoView;
 
 
     public SlogoView(Stage displayedStage) {
@@ -54,7 +56,7 @@ public class SlogoView {
         myTurtleView = new TurtleView(myModelDatabase.getMyTurtles().get(0), myBackgroundPane,c -> myModelParser.parseText(c));
         CommandBox myCommandLine = new CommandBox(myModelParser, myTurtleView);
         myInputView = new InputView();
-        myInfoView = new InfoView(c -> myModelParser.parseText(c), myInputView.getLanguage());
+        myInfoView = new InfoViews(c -> myModelParser.parseText(c), myInputView.getLanguage());
 
         VBox commandAndInput = new VBox();
         commandAndInput.getChildren().addAll(myInputView.getInputPanel(), myCommandLine.getCommandLine());
@@ -107,11 +109,9 @@ public class SlogoView {
     private void createBindableLanguage() {myModelParser.getParserLanguageProperty().bind(myInputView.getLanguage());}
 
     private void createBindableInfoPanel() {
-        myModelDatabase.bindHistory(myInfoView.getHistoryProperty());
-        myCommandDatabase.bindCommands(myInfoView.getCommandProperty());
-        myCommandDatabase.bindVariables(myInfoView.getVariableProperty());
+        myModelDatabase.bindHistory((ListProperty) myInfoView.getHistoryProperty());
+        myCommandDatabase.bindCommands((MapProperty) myInfoView.getCommandProperty());
+        myCommandDatabase.bindVariables((MapProperty) myInfoView.getVariableProperty());
         myCommandDatabase.bindColors(myInfoView.getColorsProperty());
     }
 }
-
-
