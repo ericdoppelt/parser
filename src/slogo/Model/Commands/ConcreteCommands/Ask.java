@@ -7,7 +7,7 @@ import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
-public class Tell extends Command {
+public class Ask extends Command {
 
     private int returnArgValue;
     private static final int argumentsNeeded = 0;
@@ -22,7 +22,7 @@ public class Tell extends Command {
      *
      * @param data
      */
-    public Tell(CommandDatabase data) {
+    public Ask(CommandDatabase data) {
         super(data);
         turtleIdList = new ArrayList<>();
         database = data;
