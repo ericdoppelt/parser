@@ -29,6 +29,22 @@ public class SetPenColor extends Command {
         return index;
     }
 
+    public void defaultMap() {
+        ArrayList<Integer> dummyColor1 = new ArrayList<>();
+        dummyColor1.add(255);
+        dummyColor1.add(0);
+        dummyColor1.add(0);
+        ArrayList<Integer> dummyColor2 = new ArrayList<>();
+        dummyColor1.add(0);
+        dummyColor1.add(255);
+        dummyColor1.add(0);
+        ArrayList<Integer> dummyColor3 = new ArrayList<>();
+        dummyColor1.add(0);
+        dummyColor1.add(0);
+        dummyColor1.add(255);
+        database.addToColorMap(0,dummyColor1);
+    }
+
     @Override
     public int getArgumentsNeeded() {
         return this.argumentsNeeded;

@@ -1,5 +1,6 @@
 package slogo.Model.CommandInfrastructure;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Stack;
@@ -44,7 +45,6 @@ public class CommandDatabase {
         targetTurtle = turtleList.get(0);
         backgroundColorProperty = new SimpleObjectProperty<Color>();
         penColorProperty = new SimpleObjectProperty<Color>();
-
     }
 
     public void setPenColor(List<Integer> rgbList) {
@@ -164,6 +164,8 @@ public class CommandDatabase {
     }
 
     public MapProperty getColorMap() {
+
         return COLOR_MAP;
     }
+
 }
