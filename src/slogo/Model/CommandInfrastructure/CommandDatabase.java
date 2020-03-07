@@ -10,6 +10,7 @@ import java.util.function.Function;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.scene.paint.Color;
+import jdk.dynalink.linker.support.TypeUtilities;
 import slogo.Model.ModelParser;
 import slogo.Model.TurtleData;
 
@@ -25,18 +26,32 @@ public class CommandDatabase {
   private Function<List<String>, Number> parseFunction;
   private Function<List<String>, Number> listFunction;
   private TurtleData targetTurtle;
+  private List<TurtleData> turtleList;
 
   private MapProperty<Integer, List<Integer>> COLOR_MAP = new SimpleMapProperty(
           FXCollections.observableMap(new LinkedHashMap<Integer, List<Integer>>()));
   private ObjectProperty<Color> backgroundColorProperty;
+  private ObjectProperty<Color> penColorProperty;
+
+
 
   private List<TurtleData> active_Turtles = new ArrayList<>();
   private ModelParser originParser;
   private List<String> currentLineArray;
 
+  public List<TurtleData> getTurtleList() {
+    return turtleList;
+  }
+
+  public void setTurtleList(List<TurtleData> newTurtleList) {
+    turtleList = newTurtleList;
+  }
+
   public CommandDatabase(TurtleData turtle) {
     targetTurtle = turtle;
     backgroundColorProperty = new SimpleObjectProperty<Color>();
+    penColorProperty = new SimpleObjectProperty<Color>();
+    turtleList = new ArrayList<>();
   }
 
   public TurtleData getTurtle() {
@@ -48,8 +63,17 @@ public class CommandDatabase {
     backgroundColorProperty.setValue(color);
   }
 
+  public void setPenColor(List<Integer> rgbList) {
+    Color color = Color.rgb(rgbList.get(0), rgbList.get(1), rgbList.get(2));
+    penColorProperty.setValue(color);
+  }
+
   public void bindBackgroundColor(Property viewBackground) {
     viewBackground.bindBidirectional(backgroundColorProperty);
+  }
+
+  public void bindPenColor(Property viewBackground) {
+    viewBackground.bindBidirectional(penColorProperty);
   }
 
   public Stack<Number> getParameterStack(){
@@ -99,7 +123,7 @@ public class CommandDatabase {
   public void setParameterTwo(Number newValue) {
     parameterTwo = newValue;
   }
-  
+
   /**
    * Prompt the user to make a bet from a menu of choices.
    */
