@@ -43,7 +43,7 @@ public class SlogoView {
 
     private void initModel() {
         myModelDatabase = new ModelDatabase();
-        myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtle());
+        myCommandDatabase = new CommandDatabase(myModelDatabase.getMyTurtles());
         myCommandProducer = new CommandProducer(myCommandDatabase, myModelDatabase.getHISTORY_LIST());
         myModelParser = new ModelParser(MODELPARSER_LANGUAGE, myCommandDatabase, myCommandProducer);
     }
