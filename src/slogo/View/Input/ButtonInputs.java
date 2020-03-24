@@ -91,6 +91,7 @@ public class ButtonInputs extends Inputs {
         // FIXME: this is bad code
         addedButton.setOnAction(e -> {
             try {
+                System.out.println(buttonInfo[BUTTON_METHOD_INDEX]);
                 this.getClass().getDeclaredMethod(buttonInfo[BUTTON_METHOD_INDEX], null).invoke(this);
             } catch(Exception ex) {
                 System.out.println("a" + ex);
@@ -129,14 +130,15 @@ public class ButtonInputs extends Inputs {
         turtleProperty.setValue(new File(newProperties.get("turtle")));
     }
 
-    private void saveProperties() {
+     void saveProperties() {
         Map<String, String> savedPreferences = new HashMap<String, String>();
         System.out.println("URL: " + turtleProperty.getValue().toString());
 
         savedPreferences.put("turtle", turtleProperty.getValue().toString());
-        savedPreferences.put("background", backgroundProperty.getValue().toString());
         savedPreferences.put("language", languageProperty.getValue().toString());
-        TextInputDialog configName = new TextInputDialog(SAVE_CONFIG_DEFAULT);
+        savedPreferences.put("background", backgroundProperty.getValue().toString());
+
+         TextInputDialog configName = new TextInputDialog(SAVE_CONFIG_DEFAULT);
         configName.setHeaderText(SAVE_CONFIG_HEADER);
         configName.showAndWait();
 
