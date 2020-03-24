@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <configuration>
     <turtle>turtleImages\perfectTurtle.png</turtle>
-    <background>0xe6b3ccff</background>
-    <pen>0xcc99ccff</pen>
+    <background>0xffcc99ff</background>
     <language>Italian</language>
 </configuration>

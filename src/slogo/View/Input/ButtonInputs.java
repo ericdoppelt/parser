@@ -57,7 +57,6 @@ public class ButtonInputs extends Inputs {
     //TODO: duplicated in InputView
     ObjectProperty turtleProperty;
     ObjectProperty backgroundProperty;
-    ObjectProperty penProperty;
     ObjectProperty languageProperty;
 
     public ButtonInputs(ObjectProperty background, ObjectProperty pen, ObjectProperty language, ObjectProperty<File> turtle) {
@@ -68,10 +67,6 @@ public class ButtonInputs extends Inputs {
         backgroundProperty = new SimpleObjectProperty<Color>();
         backgroundProperty.bindBidirectional(background);
         backgroundProperty.setValue(Color.RED);
-
-        penProperty = new SimpleObjectProperty<Color>();
-        penProperty.bindBidirectional(pen);
-        penProperty.setValue(Color.BLACK);
 
         languageProperty = new SimpleObjectProperty<String>();
         languageProperty.bindBidirectional(language);
@@ -98,7 +93,7 @@ public class ButtonInputs extends Inputs {
             try {
                 this.getClass().getDeclaredMethod(buttonInfo[BUTTON_METHOD_INDEX], null).invoke(this);
             } catch(Exception ex) {
-                System.out.println(ex);
+                System.out.println("a" + ex);
             }
         });
         addedVBox.getChildren().addAll(addedLabel, addedButton);
@@ -130,7 +125,6 @@ public class ButtonInputs extends Inputs {
        Map<String, String> newProperties = myReader.getConfigMap(prefFile);
 
         backgroundProperty.setValue(Color.web(newProperties.get("background")));
-        penProperty.setValue(Color.web(newProperties.get("pen")));
         languageProperty.setValue(newProperties.get("language"));
         turtleProperty.setValue(new File(newProperties.get("turtle")));
     }
@@ -141,10 +135,7 @@ public class ButtonInputs extends Inputs {
 
         savedPreferences.put("turtle", turtleProperty.getValue().toString());
         savedPreferences.put("background", backgroundProperty.getValue().toString());
-        System.out.println(backgroundProperty.getValue().toString());;
-        savedPreferences.put("pen", penProperty.getValue().toString());
         savedPreferences.put("language", languageProperty.getValue().toString());
-
         TextInputDialog configName = new TextInputDialog(SAVE_CONFIG_DEFAULT);
         configName.setHeaderText(SAVE_CONFIG_HEADER);
         configName.showAndWait();
