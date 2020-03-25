@@ -7,6 +7,10 @@ import slogo.Model.CommandInfrastructure.CommandDatabase;
 import slogo.Model.Commands.Command;
 import slogo.Model.TurtleData;
 
+/**
+ * Sets turtles that will follow commands when invoked
+ */
+
 public class Tell extends Command {
 
     private int returnArgValue;
@@ -28,6 +32,11 @@ public class Tell extends Command {
         database = data;
     }
 
+    /**
+     * Creates new turtles with id's as noted on the inputted commands
+     * Activate each new turtle as true or existing turtle from false to true
+     * @return value of last turtle in list
+     */
     @Override
     public Number executeAndReturnValue() {
         setTurtleIds();

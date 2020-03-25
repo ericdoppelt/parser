@@ -16,10 +16,20 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.Map;
 
+/**
+ * File writer takes the current configuration and saves the config as an xml file
+ */
+
 public class FileWriter{
 
     public FileWriter(){ }
 
+    /**
+     * Creates an xml configuration file with the configMap named configName
+     * ConfigMap contains names of parameters mapped to string values (ie langauge -> Italian)
+     * @param configMap map containing parameter and value information to be saved
+     * @param configName name of the configuration
+     */
     public void saveConfig(Map<String, String> configMap, String configName){
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

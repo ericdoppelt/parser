@@ -5,6 +5,10 @@ import slogo.Model.Commands.Command;
 
 import java.util.ArrayList;
 
+/**
+ * SetPenColor is the class for the command to set the pen to a specific color given an index
+ */
+
 public class SetPenColor extends Command {
 
     private CommandDatabase database;
@@ -21,6 +25,12 @@ public class SetPenColor extends Command {
         database = data;
     }
 
+    /**
+     * Gets the index inputted in the command
+     * Finds the corresponding color based on the index in the colormap
+     * Sets the pen to the found color
+     * @return the index inputted in the command
+     */
     @Override
     public Number executeAndReturnValue() {
         index = database.getParameterStack().pop().intValue();

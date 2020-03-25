@@ -11,6 +11,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * FileReader class is used to read a config file in order to load up a specific configuration
+ */
 public class FileReader {
 
     private Element fileElement;
@@ -30,6 +33,12 @@ public class FileReader {
         }
     }
 
+    /**
+     * Getter method to get the config map
+     * Config map maps a parameter to a value (ie language -> english)
+     * @param file the specific config file to be loaded
+     * @return the configuration map
+     */
     public Map<String, String> getConfigMap(File file){
         setElement(file);
         constructMap();
@@ -42,7 +51,7 @@ public class FileReader {
         return node.getNodeValue();
     }
 
-    public boolean setElement(File file) throws XMLException {
+    private boolean setElement(File file) throws XMLException {
 
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -64,6 +73,11 @@ public class FileReader {
         }
     }
 
+    /**
+     * Retrieves an integer value given a specific parameter
+     * @param parameter
+     * @return
+     */
     public int getIntValue(String parameter) {
         try {
             return Integer.parseInt(getValue(parameter, fileElement));
@@ -72,6 +86,11 @@ public class FileReader {
         }
     }
 
+    /**
+     * Retrieves an double value given a specific parameter
+     * @param parameter
+     * @return
+     */
     public double getDoubleValue(String parameter) {
         try {
             return Double.parseDouble(getValue(parameter, fileElement));
@@ -80,6 +99,11 @@ public class FileReader {
         }
     }
 
+    /**
+     * Retrieves an String value given a specific parameter
+     * @param parameter
+     * @return
+     */
     public String getString(String parameter) {
         try {
             return getValue(parameter, fileElement);

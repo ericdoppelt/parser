@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import slogo.Model.ModelParser;
 import slogo.Model.TurtleData;
 
+
 public class CommandDatabase {
 
     private String targetVariable;
@@ -152,15 +153,28 @@ public class CommandDatabase {
         return this.COMMAND_MAP;
     }
 
+    /**
+     * Simple method to add a color to the color map, invoked when setpalette command is used
+     * @param index
+     * @param color
+     */
     public void addToColorMap(int index, List<Integer> color) {
         this.COLOR_MAP.putIfAbsent(index, color);
         this.COLOR_MAP.put(index, color);
     }
 
+    /**
+     * Bind the color map to the view to be displayed in the UI
+     * @param viewColors
+     */
     public void bindColors(MapProperty viewColors) {
         viewColors.bind(COLOR_MAP);
     }
 
+    /**
+     * Simple getter method, used on setbackground and setpen color commands
+     * @return
+     */
     public MapProperty getColorMap() {
 
         return COLOR_MAP;
