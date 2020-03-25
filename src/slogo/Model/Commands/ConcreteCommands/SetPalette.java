@@ -6,6 +6,10 @@ import slogo.Model.Commands.Command;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * SetPalette is the class for the command to add a color to the color map
+ */
+
 public class SetPalette extends Command {
 
     private CommandDatabase database;
@@ -14,7 +18,7 @@ public class SetPalette extends Command {
     private List<Integer> rgb;
     /**
      * Superconstructor for a Turtle Command
-     *
+     * Create a new arraylist to represent the rgb color value inputted by the command
      * @param data
      */
     public SetPalette(CommandDatabase data) {
@@ -23,6 +27,12 @@ public class SetPalette extends Command {
         rgb = new ArrayList<>();
     }
 
+    /**
+     * Get the index of the color from the command
+     * Creates a "color" from the rgb values from the command
+     * Add the color to the color map with the index as its key
+     * @return
+     */
     @Override
     public Number executeAndReturnValue() {
         index = database.getParameterStack().pop().intValue();
