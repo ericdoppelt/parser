@@ -1,7 +1,7 @@
 parser
 ====
 
-This project implements a development environment that helps users write SLogo programs.
+This project implements a development environment that helps users write SLogo programs similar to the one found here: https://www.calormen.com/jslogo/.
 
 Names: Benjamin Lu, Eric Doppelt, Frank Tang, Erik Gregario
 
@@ -36,8 +36,6 @@ defined commands, provide different type of turtle images, ability to
 save and load game configurations, turtle animations, ability to recognize
 various languages, recognize display commands, update command history when
 language changes, allow user to undo/redo last command. 
-
-
 
 ### Notes/Assumptions
 
